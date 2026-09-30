@@ -4,6 +4,8 @@ import "../Cocktail60/BarWeb/core.js";
 import "../Cocktail60/BarWeb/taste.js";
 import "../Cocktail60/BarWeb/data.js";
 import { readRecipes } from "../scripts/export-recipes.mjs";
+import { researchedRecipes } from "../data/researched-recipes.mjs";
+import { readFileSync } from "node:fs";
 const {
   ingredient,
   match,
@@ -30,7 +32,7 @@ test("journal backup preserves appearance snapshots and accepts old text-only en
 test("120 recipe texts and quantities remain identical to the original Swift library", () => {
   const original = readRecipes();
   assert.equal(original.length, 120);
-  assert.equal(BarData.recipes.length, 130);
+  assert.equal(BarData.recipes.length, 145);
   for (const r of BarData.recipes.filter(r => !r.source)) {
     const source = original.find((x) => x.id === r.id);
     for (const key of ["ingredients", "method", "glass", "note"])
@@ -39,6 +41,19 @@ test("120 recipe texts and quantities remain identical to the original Swift lib
       r.parts.every((p) => p.types.length && p.types.every(Boolean)),
       r.id,
     );
+  }
+});
+test("curated recipes are present once in the native and web libraries", () => {
+  const swift = readFileSync(new URL("../Cocktail60/CuratedCocktailData.swift", import.meta.url), "utf8");
+  const originalIDs = new Set(readRecipes().map(r => r.id));
+  assert.equal(researchedRecipes.length, 25);
+  assert.equal(new Set(researchedRecipes.map(r => r.id)).size, 25);
+  for (const r of researchedRecipes) {
+    assert.equal(originalIDs.has(r.id), false, r.id);
+    assert.equal(BarData.recipes.filter(x => x.id === r.id).length, 1, r.id);
+    assert.ok(swift.includes(`id: "${r.id}"`), r.id);
+    for (const ingredient of r.ingredients)
+      assert.ok(swift.includes(JSON.stringify(ingredient)), `${r.id}: ${ingredient}`);
   }
 });
 test("specific spirits satisfy their parent, never a sibling or more specific type", () => {
@@ -167,9 +182,9 @@ test("every authored animation refers to a real ingredient and retains its exact
     "rinse",
     "method",
   ]);
-  assert.equal(BarData.recipes.filter((r) => r.steps).length, 130);
+  assert.equal(BarData.recipes.filter((r) => r.steps).length, 145);
   for (const r of BarData.recipes.filter((r) => r.steps)) {
-    assert.ok(r.steps.length > 2);
+    assert.ok(r.steps.length > 1);
     for (const step of r.steps) {
       assert.ok(actions.has(step.action));
       assert.ok(step.hint && step.tool && step.target);

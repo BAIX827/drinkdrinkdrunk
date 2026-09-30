@@ -528,7 +528,7 @@
         )
         .join(
           "",
-        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>包含新吧台的材料、手绘外观、收藏、自建配方、日记（含压缩照片）和口味 DNA（小测与评价）。不同设备不会自动同步。原 iOS 照片日历和导入内容仍保留在原功能中。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>130 款配方均提供步骤与动作演示，新增 10 款 IBA 精选附官方来源；自建配方提供逐项备料和原方指引。所有配方都支持材料检查。</p><p class="muted">新吧台在 iOS、网页与 Mac 使用相同界面和匹配规则。小红书网页导入、系统小组件和照片日历继续由原 iOS App 提供。</p></section>`;
+        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>包含新吧台的材料、手绘外观、收藏、自建配方、日记（含压缩照片）和口味 DNA（小测与评价）。不同设备不会自动同步。原 iOS 照片日历和导入内容仍保留在原功能中。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>${BarData.recipes.length} 款配方均提供步骤与动作演示，其中 ${BarData.recipes.filter(r => r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length} 款 IBA 精选附官方来源；自建配方提供逐项备料和原方指引。所有配方都支持材料检查。</p><p class="muted">新吧台在 iOS、网页与 Mac 使用相同界面和匹配规则。小红书网页导入、系统小组件和照片日历继续由原 iOS App 提供。</p></section>`;
     document.querySelector("#theme").onchange = (event) => {
       if (save({ ...state, theme: event.target.value })) applyTheme();
     };

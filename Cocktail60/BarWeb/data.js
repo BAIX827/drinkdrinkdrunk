@@ -21399,6 +21399,2287 @@ globalThis.BarData = {
           "category": "other"
         }
       ]
+    },
+    {
+      "id": "iba-angel-face",
+      "chineseName": "天使之面",
+      "englishName": "Angel Face",
+      "ingredients": [
+        "金酒 30 ml",
+        "杏子白兰地 30 ml",
+        "卡尔瓦多斯 30 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 金酒 30 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 30 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 杏子白兰地 30 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "杏子白兰地 30 ml",
+            "types": [
+              "杏子白兰地"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 卡尔瓦多斯 30 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "卡尔瓦多斯 30 ml",
+            "types": [
+              "卡尔瓦多斯"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#dfb46d",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/angel-face/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 30 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "杏子白兰地 30 ml",
+          "types": [
+            "杏子白兰地"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "卡尔瓦多斯 30 ml",
+          "types": [
+            "卡尔瓦多斯"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "id": "iba-between-the-sheets",
+      "chineseName": "床笫之间",
+      "englishName": "Between the Sheets",
+      "ingredients": [
+        "白朗姆 30 ml",
+        "干邑 30 ml",
+        "三秒酒 30 ml",
+        "柠檬汁 20 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 白朗姆 30 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "白朗姆 30 ml",
+            "types": [
+              "白朗姆"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 干邑 30 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "干邑 30 ml",
+            "types": [
+              "干邑"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 三秒酒 30 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "三秒酒 30 ml",
+            "types": [
+              "三秒酒"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 柠檬汁 20 ml。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "柠檬汁 20 ml",
+            "types": [
+              "柠檬汁"
+            ],
+            "amount": "20 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#e6cf9c",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/between-the-sheets/"
+      },
+      "parts": [
+        {
+          "raw": "白朗姆 30 ml",
+          "types": [
+            "白朗姆"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "干邑 30 ml",
+          "types": [
+            "干邑"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "三秒酒 30 ml",
+          "types": [
+            "三秒酒"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "柠檬汁 20 ml",
+          "types": [
+            "柠檬汁"
+          ],
+          "amount": "20 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        }
+      ]
+    },
+    {
+      "id": "iba-cardinale",
+      "chineseName": "红衣主教",
+      "englishName": "Cardinale",
+      "ingredients": [
+        "金酒 40 ml",
+        "干味美思 20 ml",
+        "金巴利 10 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰搅拌，过滤入冰镇鸡尾酒杯；以柠檬皮装饰。",
+      "tags": [
+        "IBA 精选",
+        "搅拌"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 金酒 40 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 40 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "40 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 干味美思 20 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "干味美思 20 ml",
+            "types": [
+              "干味美思"
+            ],
+            "amount": "20 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 金巴利 10 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "金巴利 10 ml",
+            "types": [
+              "金巴利"
+            ],
+            "amount": "10 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "mixing",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "stir",
+          "target": "mixing",
+          "hint": "搅拌至充分冷却。",
+          "tool": "吧勺",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以柠檬皮装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#ca654e",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/cardinale/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 40 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "40 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "干味美思 20 ml",
+          "types": [
+            "干味美思"
+          ],
+          "amount": "20 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "金巴利 10 ml",
+          "types": [
+            "金巴利"
+          ],
+          "amount": "10 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        }
+      ]
+    },
+    {
+      "id": "iba-champagne-cocktail",
+      "chineseName": "香槟鸡尾酒",
+      "englishName": "Champagne Cocktail",
+      "ingredients": [
+        "香槟 90 ml",
+        "干邑 10 ml",
+        "安格仕苦精 2 dash",
+        "方糖 1 块",
+        "Grand Marnier 少量可选"
+      ],
+      "glass": "香槟杯",
+      "method": "杯中放方糖并滴上苦精，加入干邑与可选的 Grand Marnier，缓缓倒入冰镇香槟；以橙皮和酒渍樱桃装饰。",
+      "tags": [
+        "IBA 精选",
+        "直接调和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "glass",
+          "hint": "加入 方糖 1 块。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "方糖 1 块",
+            "types": [
+              "方糖"
+            ],
+            "amount": "1 块",
+            "optional": false,
+            "substitution": false,
+            "category": "syrup"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "glass",
+          "hint": "加入 安格仕苦精 2 dash。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "安格仕苦精 2 dash",
+            "types": [
+              "安格仕苦精"
+            ],
+            "amount": "2 dash",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "glass",
+          "hint": "加入 干邑 10 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "干邑 10 ml",
+            "types": [
+              "干邑"
+            ],
+            "amount": "10 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "glass",
+          "hint": "加入 Grand Marnier 少量可选。",
+          "tool": "量酒器",
+          "part": 4,
+          "ingredient": {
+            "raw": "Grand Marnier 少量可选",
+            "types": [
+              "Grand Marnier"
+            ],
+            "amount": "少量可选",
+            "optional": true,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "top",
+          "target": "glass",
+          "hint": "加入 香槟 90 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "香槟 90 ml",
+            "types": [
+              "香槟"
+            ],
+            "amount": "90 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "用橙皮和酒渍樱桃装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#e9d49a",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/champagne-cocktail/"
+      },
+      "parts": [
+        {
+          "raw": "香槟 90 ml",
+          "types": [
+            "香槟"
+          ],
+          "amount": "90 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "干邑 10 ml",
+          "types": [
+            "干邑"
+          ],
+          "amount": "10 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "安格仕苦精 2 dash",
+          "types": [
+            "安格仕苦精"
+          ],
+          "amount": "2 dash",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        },
+        {
+          "raw": "方糖 1 块",
+          "types": [
+            "方糖"
+          ],
+          "amount": "1 块",
+          "optional": false,
+          "substitution": false,
+          "category": "syrup"
+        },
+        {
+          "raw": "Grand Marnier 少量可选",
+          "types": [
+            "Grand Marnier"
+          ],
+          "amount": "少量可选",
+          "optional": true,
+          "substitution": false,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "id": "iba-hanky-panky",
+      "chineseName": "汉基潘基",
+      "englishName": "Hanky Panky",
+      "ingredients": [
+        "金酒 45 ml",
+        "甜味美思 45 ml",
+        "费奈特 7.5 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰搅拌，过滤入冰镇鸡尾酒杯；以橙皮装饰。",
+      "tags": [
+        "IBA 精选",
+        "搅拌"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 金酒 45 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 45 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 甜味美思 45 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "甜味美思 45 ml",
+            "types": [
+              "甜味美思"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 费奈特 7.5 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "费奈特 7.5 ml",
+            "types": [
+              "费奈特"
+            ],
+            "amount": "7.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "mixing",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "stir",
+          "target": "mixing",
+          "hint": "搅拌至充分冷却。",
+          "tool": "吧勺",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以橙皮装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#a6573e",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/hanky-panky/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 45 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "甜味美思 45 ml",
+          "types": [
+            "甜味美思"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "费奈特 7.5 ml",
+          "types": [
+            "费奈特"
+          ],
+          "amount": "7.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "id": "iba-jungle-bird",
+      "chineseName": "丛林鸟",
+      "englishName": "Jungle Bird",
+      "ingredients": [
+        "黑朗姆 45 ml",
+        "金巴利 22.5 ml",
+        "菠萝汁 45 ml",
+        "青柠汁 15 ml",
+        "德梅拉拉糖浆 15 ml"
+      ],
+      "glass": "岩石杯",
+      "method": "加冰摇匀，过滤入盛冰的岩石杯；以菠萝角装饰。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 黑朗姆 45 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "黑朗姆 45 ml",
+            "types": [
+              "黑朗姆"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 金巴利 22.5 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "金巴利 22.5 ml",
+            "types": [
+              "金巴利"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 菠萝汁 45 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "菠萝汁 45 ml",
+            "types": [
+              "菠萝汁"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 青柠汁 15 ml。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "青柠汁 15 ml",
+            "types": [
+              "青柠汁"
+            ],
+            "amount": "15 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 德梅拉拉糖浆 15 ml。",
+          "tool": "量酒器",
+          "part": 4,
+          "ingredient": {
+            "raw": "德梅拉拉糖浆 15 ml",
+            "types": [
+              "德梅拉拉糖浆"
+            ],
+            "amount": "15 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "syrup"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "ice",
+          "target": "glass",
+          "hint": "在岩石杯中加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入盛冰的岩石杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以菠萝角装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#bf6841",
+        "ice": true
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/jungle-bird/"
+      },
+      "parts": [
+        {
+          "raw": "黑朗姆 45 ml",
+          "types": [
+            "黑朗姆"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "金巴利 22.5 ml",
+          "types": [
+            "金巴利"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "菠萝汁 45 ml",
+          "types": [
+            "菠萝汁"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        },
+        {
+          "raw": "青柠汁 15 ml",
+          "types": [
+            "青柠汁"
+          ],
+          "amount": "15 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        },
+        {
+          "raw": "德梅拉拉糖浆 15 ml",
+          "types": [
+            "德梅拉拉糖浆"
+          ],
+          "amount": "15 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "syrup"
+        }
+      ]
+    },
+    {
+      "id": "iba-kir",
+      "chineseName": "基尔",
+      "englishName": "Kir",
+      "ingredients": [
+        "黑醋栗利口酒 10 ml",
+        "干白葡萄酒 90 ml"
+      ],
+      "glass": "葡萄酒杯",
+      "method": "先倒入黑醋栗利口酒，再缓缓加入干白葡萄酒。",
+      "tags": [
+        "IBA 精选",
+        "直接调和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "glass",
+          "hint": "加入 黑醋栗利口酒 10 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "黑醋栗利口酒 10 ml",
+            "types": [
+              "黑醋栗利口酒"
+            ],
+            "amount": "10 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "top",
+          "target": "glass",
+          "hint": "加入 干白葡萄酒 90 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "干白葡萄酒 90 ml",
+            "types": [
+              "干白葡萄酒"
+            ],
+            "amount": "90 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        }
+      ],
+      "appearance": {
+        "color": "#a94a66",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/kir/"
+      },
+      "parts": [
+        {
+          "raw": "黑醋栗利口酒 10 ml",
+          "types": [
+            "黑醋栗利口酒"
+          ],
+          "amount": "10 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "干白葡萄酒 90 ml",
+          "types": [
+            "干白葡萄酒"
+          ],
+          "amount": "90 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        }
+      ]
+    },
+    {
+      "id": "iba-lemon-drop-martini",
+      "chineseName": "柠檬滴马天尼",
+      "englishName": "Lemon Drop Martini",
+      "ingredients": [
+        "伏特加 30 ml",
+        "三秒酒 20 ml",
+        "柠檬汁 15 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 伏特加 30 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "伏特加 30 ml",
+            "types": [
+              "伏特加"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 三秒酒 20 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "三秒酒 20 ml",
+            "types": [
+              "三秒酒"
+            ],
+            "amount": "20 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 柠檬汁 15 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "柠檬汁 15 ml",
+            "types": [
+              "柠檬汁"
+            ],
+            "amount": "15 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#e6d381",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/lemon-drop-martini/"
+      },
+      "parts": [
+        {
+          "raw": "伏特加 30 ml",
+          "types": [
+            "伏特加"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "三秒酒 20 ml",
+          "types": [
+            "三秒酒"
+          ],
+          "amount": "20 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "柠檬汁 15 ml",
+          "types": [
+            "柠檬汁"
+          ],
+          "amount": "15 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        }
+      ]
+    },
+    {
+      "id": "iba-martinez",
+      "chineseName": "马丁内斯",
+      "englishName": "Martinez",
+      "ingredients": [
+        "金酒 45 ml",
+        "甜味美思 45 ml",
+        "马拉斯奇诺 1 吧勺",
+        "橙味苦精 2 dash"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰搅拌，过滤入冰镇鸡尾酒杯；以柠檬皮装饰。",
+      "tags": [
+        "IBA 精选",
+        "搅拌"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 金酒 45 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 45 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 甜味美思 45 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "甜味美思 45 ml",
+            "types": [
+              "甜味美思"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 马拉斯奇诺 1 吧勺。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "马拉斯奇诺 1 吧勺",
+            "types": [
+              "马拉斯奇诺"
+            ],
+            "amount": "1 吧勺",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 橙味苦精 2 dash。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "橙味苦精 2 dash",
+            "types": [
+              "橙味苦精"
+            ],
+            "amount": "2 dash",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "mixing",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "stir",
+          "target": "mixing",
+          "hint": "搅拌至充分冷却。",
+          "tool": "吧勺",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以柠檬皮装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#aa593e",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/martinez/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 45 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "甜味美思 45 ml",
+          "types": [
+            "甜味美思"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "马拉斯奇诺 1 吧勺",
+          "types": [
+            "马拉斯奇诺"
+          ],
+          "amount": "1 吧勺",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "橙味苦精 2 dash",
+          "types": [
+            "橙味苦精"
+          ],
+          "amount": "2 dash",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "id": "iba-monkey-gland",
+      "chineseName": "猴腺",
+      "englishName": "Monkey Gland",
+      "ingredients": [
+        "金酒 45 ml",
+        "橙汁 45 ml",
+        "苦艾酒 1 汤匙",
+        "石榴糖浆 1 汤匙"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 金酒 45 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 45 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 橙汁 45 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "橙汁 45 ml",
+            "types": [
+              "橙汁"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 苦艾酒 1 汤匙。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "苦艾酒 1 汤匙",
+            "types": [
+              "苦艾酒"
+            ],
+            "amount": "1 汤匙",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 石榴糖浆 1 汤匙。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "石榴糖浆 1 汤匙",
+            "types": [
+              "石榴糖浆"
+            ],
+            "amount": "1 汤匙",
+            "optional": false,
+            "substitution": false,
+            "category": "syrup"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#d3995b",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/monkey-gland/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 45 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "橙汁 45 ml",
+          "types": [
+            "橙汁"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        },
+        {
+          "raw": "苦艾酒 1 汤匙",
+          "types": [
+            "苦艾酒"
+          ],
+          "amount": "1 汤匙",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "石榴糖浆 1 汤匙",
+          "types": [
+            "石榴糖浆"
+          ],
+          "amount": "1 汤匙",
+          "optional": false,
+          "substitution": false,
+          "category": "syrup"
+        }
+      ]
+    },
+    {
+      "id": "iba-naked-and-famous",
+      "chineseName": "赤裸与名声",
+      "englishName": "Naked and Famous",
+      "ingredients": [
+        "梅斯卡尔 22.5 ml",
+        "黄查特酒 22.5 ml",
+        "阿佩罗 22.5 ml",
+        "青柠汁 22.5 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 梅斯卡尔 22.5 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "梅斯卡尔 22.5 ml",
+            "types": [
+              "梅斯卡尔"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 黄查特酒 22.5 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "黄查特酒 22.5 ml",
+            "types": [
+              "黄查特酒"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 阿佩罗 22.5 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "阿佩罗 22.5 ml",
+            "types": [
+              "阿佩罗"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 青柠汁 22.5 ml。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "青柠汁 22.5 ml",
+            "types": [
+              "青柠汁"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#de9b61",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/naked-and-famous/"
+      },
+      "parts": [
+        {
+          "raw": "梅斯卡尔 22.5 ml",
+          "types": [
+            "梅斯卡尔"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        },
+        {
+          "raw": "黄查特酒 22.5 ml",
+          "types": [
+            "黄查特酒"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "阿佩罗 22.5 ml",
+          "types": [
+            "阿佩罗"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "青柠汁 22.5 ml",
+          "types": [
+            "青柠汁"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        }
+      ]
+    },
+    {
+      "id": "iba-old-cuban",
+      "chineseName": "老古巴",
+      "englishName": "Old Cuban",
+      "ingredients": [
+        "薄荷 6 到 8 片",
+        "陈年朗姆 45 ml",
+        "青柠汁 22.5 ml",
+        "糖浆 30 ml",
+        "安格仕苦精 2 dash",
+        "香槟或普罗塞克 60 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "薄荷、朗姆、青柠汁、糖浆与苦精加冰摇匀，过滤入冰镇杯，最后加入起泡酒；以薄荷枝装饰。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 薄荷 6 到 8 片。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "薄荷 6 到 8 片",
+            "types": [
+              "薄荷"
+            ],
+            "amount": "6 到 8 片",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 陈年朗姆 45 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "陈年朗姆 45 ml",
+            "types": [
+              "陈年朗姆"
+            ],
+            "amount": "45 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 青柠汁 22.5 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "青柠汁 22.5 ml",
+            "types": [
+              "青柠汁"
+            ],
+            "amount": "22.5 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 糖浆 30 ml。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "糖浆 30 ml",
+            "types": [
+              "糖浆"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "syrup"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 安格仕苦精 2 dash。",
+          "tool": "量酒器",
+          "part": 4,
+          "ingredient": {
+            "raw": "安格仕苦精 2 dash",
+            "types": [
+              "安格仕苦精"
+            ],
+            "amount": "2 dash",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "top",
+          "target": "glass",
+          "hint": "加入 香槟或普罗塞克 60 ml。",
+          "tool": "量酒器",
+          "part": 5,
+          "ingredient": {
+            "raw": "香槟或普罗塞克 60 ml",
+            "types": [
+              "香槟",
+              "普洛赛克"
+            ],
+            "amount": "60 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以薄荷枝装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#b89c5a",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/old-cuban/"
+      },
+      "parts": [
+        {
+          "raw": "薄荷 6 到 8 片",
+          "types": [
+            "薄荷"
+          ],
+          "amount": "6 到 8 片",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        },
+        {
+          "raw": "陈年朗姆 45 ml",
+          "types": [
+            "陈年朗姆"
+          ],
+          "amount": "45 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "青柠汁 22.5 ml",
+          "types": [
+            "青柠汁"
+          ],
+          "amount": "22.5 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        },
+        {
+          "raw": "糖浆 30 ml",
+          "types": [
+            "糖浆"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "syrup"
+        },
+        {
+          "raw": "安格仕苦精 2 dash",
+          "types": [
+            "安格仕苦精"
+          ],
+          "amount": "2 dash",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        },
+        {
+          "raw": "香槟或普罗塞克 60 ml",
+          "types": [
+            "香槟",
+            "普洛赛克"
+          ],
+          "amount": "60 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        }
+      ]
+    },
+    {
+      "id": "iba-paradise",
+      "chineseName": "天堂",
+      "englishName": "Paradise",
+      "ingredients": [
+        "金酒 30 ml",
+        "杏子白兰地 20 ml",
+        "橙汁 15 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰摇匀，过滤入冰镇鸡尾酒杯。",
+      "tags": [
+        "IBA 精选",
+        "摇和"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 金酒 30 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "金酒 30 ml",
+            "types": [
+              "金酒"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 杏子白兰地 20 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "杏子白兰地 20 ml",
+            "types": [
+              "杏子白兰地"
+            ],
+            "amount": "20 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "shaker",
+          "hint": "加入 橙汁 15 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "橙汁 15 ml",
+            "types": [
+              "橙汁"
+            ],
+            "amount": "15 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "juice"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "shaker",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "shake",
+          "target": "shaker",
+          "hint": "摇匀至充分冷却。",
+          "tool": "摇壶",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#e7a569",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/paradise/"
+      },
+      "parts": [
+        {
+          "raw": "金酒 30 ml",
+          "types": [
+            "金酒"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "杏子白兰地 20 ml",
+          "types": [
+            "杏子白兰地"
+          ],
+          "amount": "20 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "橙汁 15 ml",
+          "types": [
+            "橙汁"
+          ],
+          "amount": "15 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "juice"
+        }
+      ]
+    },
+    {
+      "id": "iba-stinger",
+      "chineseName": "毒刺",
+      "englishName": "Stinger",
+      "ingredients": [
+        "干邑 50 ml",
+        "白薄荷利口酒 20 ml"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰搅拌，过滤入冰镇鸡尾酒杯；可用薄荷叶装饰。",
+      "tags": [
+        "IBA 精选",
+        "搅拌"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 干邑 50 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "干邑 50 ml",
+            "types": [
+              "干邑"
+            ],
+            "amount": "50 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 白薄荷利口酒 20 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "白薄荷利口酒 20 ml",
+            "types": [
+              "白薄荷利口酒"
+            ],
+            "amount": "20 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "mixing",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "stir",
+          "target": "mixing",
+          "hint": "搅拌至充分冷却。",
+          "tool": "吧勺",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "可用薄荷叶装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#d4c6ab",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/stinger/"
+      },
+      "parts": [
+        {
+          "raw": "干邑 50 ml",
+          "types": [
+            "干邑"
+          ],
+          "amount": "50 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "白薄荷利口酒 20 ml",
+          "types": [
+            "白薄荷利口酒"
+          ],
+          "amount": "20 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        }
+      ]
+    },
+    {
+      "id": "iba-vieux-carre",
+      "chineseName": "老广场",
+      "englishName": "Vieux Carré",
+      "ingredients": [
+        "黑麦威士忌 30 ml",
+        "干邑 30 ml",
+        "甜味美思 30 ml",
+        "廊酒 1 吧勺",
+        "佩乔氏苦精 2 dash"
+      ],
+      "glass": "鸡尾酒杯",
+      "method": "加冰搅拌，过滤入冰镇鸡尾酒杯；以橙皮和酒渍樱桃装饰。",
+      "tags": [
+        "IBA 精选",
+        "搅拌"
+      ],
+      "steps": [
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 黑麦威士忌 30 ml。",
+          "tool": "量酒器",
+          "part": 0,
+          "ingredient": {
+            "raw": "黑麦威士忌 30 ml",
+            "types": [
+              "黑麦"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 干邑 30 ml。",
+          "tool": "量酒器",
+          "part": 1,
+          "ingredient": {
+            "raw": "干邑 30 ml",
+            "types": [
+              "干邑"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 甜味美思 30 ml。",
+          "tool": "量酒器",
+          "part": 2,
+          "ingredient": {
+            "raw": "甜味美思 30 ml",
+            "types": [
+              "甜味美思"
+            ],
+            "amount": "30 ml",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 廊酒 1 吧勺。",
+          "tool": "量酒器",
+          "part": 3,
+          "ingredient": {
+            "raw": "廊酒 1 吧勺",
+            "types": [
+              "廊酒"
+            ],
+            "amount": "1 吧勺",
+            "optional": false,
+            "substitution": false,
+            "category": "spirit"
+          }
+        },
+        {
+          "action": "pour",
+          "target": "mixing",
+          "hint": "加入 佩乔氏苦精 2 dash。",
+          "tool": "量酒器",
+          "part": 4,
+          "ingredient": {
+            "raw": "佩乔氏苦精 2 dash",
+            "types": [
+              "佩乔氏苦精"
+            ],
+            "amount": "2 dash",
+            "optional": false,
+            "substitution": false,
+            "category": "other"
+          }
+        },
+        {
+          "action": "ice",
+          "target": "mixing",
+          "hint": "加入冰块。",
+          "tool": "冰铲",
+          "ingredient": null
+        },
+        {
+          "action": "stir",
+          "target": "mixing",
+          "hint": "搅拌至充分冷却。",
+          "tool": "吧勺",
+          "ingredient": null
+        },
+        {
+          "action": "strain",
+          "target": "glass",
+          "hint": "过滤入冰镇酒杯。",
+          "tool": "滤冰器",
+          "ingredient": null
+        },
+        {
+          "action": "garnish",
+          "target": "glass",
+          "hint": "以橙皮和酒渍樱桃装饰。",
+          "tool": "装饰夹",
+          "ingredient": null
+        }
+      ],
+      "appearance": {
+        "color": "#b87345",
+        "ice": false
+      },
+      "source": {
+        "title": "IBA · 官方配方与教程",
+        "url": "https://iba-world.com/iba-cocktail/vieux-carre/"
+      },
+      "parts": [
+        {
+          "raw": "黑麦威士忌 30 ml",
+          "types": [
+            "黑麦"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "干邑 30 ml",
+          "types": [
+            "干邑"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "甜味美思 30 ml",
+          "types": [
+            "甜味美思"
+          ],
+          "amount": "30 ml",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "廊酒 1 吧勺",
+          "types": [
+            "廊酒"
+          ],
+          "amount": "1 吧勺",
+          "optional": false,
+          "substitution": false,
+          "category": "spirit"
+        },
+        {
+          "raw": "佩乔氏苦精 2 dash",
+          "types": [
+            "佩乔氏苦精"
+          ],
+          "amount": "2 dash",
+          "optional": false,
+          "substitution": false,
+          "category": "other"
+        }
+      ]
     }
   ],
   "catalog": [
@@ -21408,6 +23689,14 @@ globalThis.BarData = {
     },
     {
       "name": "爱尔兰威士忌",
+      "category": "spirit"
+    },
+    {
+      "name": "安格仕苦精",
+      "category": "other"
+    },
+    {
+      "name": "白薄荷利口酒",
       "category": "spirit"
     },
     {
@@ -21447,7 +23736,15 @@ globalThis.BarData = {
       "category": "juice"
     },
     {
+      "name": "陈年朗姆",
+      "category": "spirit"
+    },
+    {
       "name": "橙花水",
+      "category": "other"
+    },
+    {
+      "name": "橙味苦精",
       "category": "other"
     },
     {
@@ -21463,6 +23760,10 @@ globalThis.BarData = {
       "category": "other"
     },
     {
+      "name": "德梅拉拉糖浆",
+      "category": "syrup"
+    },
+    {
       "name": "杜林标",
       "category": "spirit"
     },
@@ -21473,6 +23774,10 @@ globalThis.BarData = {
     {
       "name": "方糖",
       "category": "syrup"
+    },
+    {
+      "name": "费奈特",
+      "category": "other"
     },
     {
       "name": "蜂蜜姜糖浆",
@@ -21493,6 +23798,10 @@ globalThis.BarData = {
     {
       "name": "覆盆子糖浆",
       "category": "syrup"
+    },
+    {
+      "name": "干白葡萄酒",
+      "category": "spirit"
     },
     {
       "name": "干味美思",
@@ -21535,6 +23844,10 @@ globalThis.BarData = {
       "category": "other"
     },
     {
+      "name": "黄查特酒",
+      "category": "spirit"
+    },
+    {
       "name": "姜汁啤酒",
       "category": "mixer"
     },
@@ -21563,6 +23876,10 @@ globalThis.BarData = {
       "category": "spirit"
     },
     {
+      "name": "卡尔瓦多斯",
+      "category": "other"
+    },
+    {
       "name": "卡莎萨",
       "category": "spirit"
     },
@@ -21588,6 +23905,10 @@ globalThis.BarData = {
     },
     {
       "name": "蓝橙酒",
+      "category": "spirit"
+    },
+    {
+      "name": "廊酒",
       "category": "spirit"
     },
     {
@@ -21621,6 +23942,10 @@ globalThis.BarData = {
     {
       "name": "蔓越莓汁",
       "category": "juice"
+    },
+    {
+      "name": "梅斯卡尔",
+      "category": "other"
     },
     {
       "name": "奶油",
@@ -21657,6 +23982,10 @@ globalThis.BarData = {
     {
       "name": "浓缩咖啡",
       "category": "mixer"
+    },
+    {
+      "name": "佩乔氏苦精",
+      "category": "other"
     },
     {
       "name": "皮斯科",
@@ -21767,6 +24096,10 @@ globalThis.BarData = {
       "category": "syrup"
     },
     {
+      "name": "杏子白兰地",
+      "category": "spirit"
+    },
+    {
       "name": "雪碧",
       "category": "mixer"
     },
@@ -21797,6 +24130,10 @@ globalThis.BarData = {
     {
       "name": "DOM",
       "category": "spirit"
+    },
+    {
+      "name": "Grand Marnier",
+      "category": "other"
     },
     {
       "name": "Lillet Blanc",

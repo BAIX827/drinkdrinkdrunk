@@ -2,9 +2,11 @@ import { mkdirSync, writeFileSync, cpSync, readFileSync } from "node:fs";
 import { readRecipes } from "./export-recipes.mjs";
 import { compileProcedure } from "../data/procedures.mjs";
 import { researchedRecipes } from "../data/researched-recipes.mjs";
+import { syncCuratedSwift } from './sync-curated-swift.mjs';
 import { appearanceFor } from "../data/drink-appearance.mjs";
 import "../Cocktail60/BarWeb/core.js";
 const { ingredient, canonical, category } = globalThis.BarCore;
+syncCuratedSwift();
 const recipes = [...readRecipes(), ...researchedRecipes].map((r) => ({
   ...r,
   appearance: appearanceFor(r),

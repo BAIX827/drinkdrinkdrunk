@@ -8,7 +8,7 @@ const T=BarTaste;
 const answers={drink:'lemonade',style:'fresh',flavors:['lemon','mint']};
 const record=(i,changes={})=>({recipeID:`test-${i}`,name:`测试 ${i}`,value:'like',vector:[70,80,10,30,85,40,0,20],base:'金酒',family:'酸甜系 Sour',feedback:[],updatedAt:new Date(Date.UTC(2026,0,i+1)).toISOString(),...changes});
 
-test('all 120 recipes and catalogue ingredients have bounded deterministic estimates',()=>{
+test('all built-in recipes and catalogue ingredients have bounded deterministic estimates',()=>{
   for(const item of BarData.catalog) assert.ok(BarTasteData[BarCore.canonical(item.name)],item.name);
   for(const recipe of BarData.recipes) {
     const p=T.profile(recipe);
