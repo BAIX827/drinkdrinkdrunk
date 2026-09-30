@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F00000000000000000000020 /* Cocktail60App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000010 /* Cocktail60App.swift */; };
+		F00000000000000000000021 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000011 /* ContentView.swift */; };
+		F00000000000000000000022 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
+		F00000000000000000000023 /* CocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000013 /* CocktailData.swift */; };
+		F00000000000000000000024 /* FavoritesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000014 /* FavoritesStore.swift */; };
+		F00000000000000000000025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000015 /* Assets.xcassets */; };
+		F00000000000000000000026 /* RecipeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000016 /* RecipeStore.swift */; };
+		F00000000000000000000027 /* AddRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000017 /* AddRecipeView.swift */; };
+		F00000000000000000000028 /* RecipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000018 /* RecipeSearch.swift */; };
+		F00000000000000000000029 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
+		F0000000000000000000002A /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
+		F0000000000000000000002B /* AppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001C /* AppearanceStore.swift */; };
+		F0000000000000000000002C /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001D /* AppearanceSettingsView.swift */; };
+		F0000000000000000000002D /* DrinkLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001E /* DrinkLogStore.swift */; };
+		F0000000000000000000002E /* DrinkCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001F /* DrinkCalendarView.swift */; };
+		F0000000000000000000002F /* MyLiquorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000034 /* MyLiquorStore.swift */; };
+		F00000000000000000000035 /* MyLiquorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000036 /* MyLiquorView.swift */; };
+		F00000000000000000000037 /* CocktailThumbnailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000038 /* CocktailThumbnailStore.swift */; };
+		F00000000000000000000046 /* RecipeLocalThumbnailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */; };
+		F00000000000000000000048 /* XiaohongshuImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000049 /* XiaohongshuImportView.swift */; };
+		F00000000000000000000040 /* Cocktail60Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000031 /* Cocktail60Widget.swift */; };
+		F00000000000000000000041 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
+		F00000000000000000000042 /* CocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000013 /* CocktailData.swift */; };
+		F00000000000000000000043 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
+		F00000000000000000000044 /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
+		F00000000000000000000045 /* Cocktail60Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F00000000000000000000033 /* Cocktail60Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F00000000000000000000059 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F00000000000000000000053;
+			remoteInfo = Cocktail60Widget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F00000000000000000000057 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				F00000000000000000000045 /* Cocktail60Widget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F00000000000000000000005 /* Cocktail60.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cocktail60.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000000000000000000010 /* Cocktail60App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocktail60App.swift; sourceTree = "<group>"; };
+		F00000000000000000000011 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F00000000000000000000012 /* CocktailRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailRecipe.swift; sourceTree = "<group>"; };
+		F00000000000000000000013 /* CocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailData.swift; sourceTree = "<group>"; };
+		F00000000000000000000014 /* FavoritesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F00000000000000000000016 /* RecipeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000017 /* AddRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeView.swift; sourceTree = "<group>"; };
+		F00000000000000000000018 /* RecipeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSearch.swift; sourceTree = "<group>"; };
+		F00000000000000000000019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0000000000000000000001A /* WorldCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldCocktailData.swift; sourceTree = "<group>"; };
+		F0000000000000000000001B /* CocktailLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailLibrary.swift; sourceTree = "<group>"; };
+		F0000000000000000000001C /* AppearanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceStore.swift; sourceTree = "<group>"; };
+		F0000000000000000000001D /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
+		F0000000000000000000001E /* DrinkLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkLogStore.swift; sourceTree = "<group>"; };
+		F0000000000000000000001F /* DrinkCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkCalendarView.swift; sourceTree = "<group>"; };
+		F00000000000000000000031 /* Cocktail60Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocktail60Widget.swift; sourceTree = "<group>"; };
+		F00000000000000000000032 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F00000000000000000000033 /* Cocktail60Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Cocktail60Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000000000000000000034 /* MyLiquorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLiquorStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000036 /* MyLiquorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLiquorView.swift; sourceTree = "<group>"; };
+		F00000000000000000000038 /* CocktailThumbnailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailThumbnailStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLocalThumbnailStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000049 /* XiaohongshuImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiaohongshuImportView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F00000000000000000000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		F00000000000000000000051 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F00000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000004 /* Cocktail60 */,
+				F00000000000000000000030 /* Cocktail60Widget */,
+				F00000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F00000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000005 /* Cocktail60.app */,
+				F00000000000000000000033 /* Cocktail60Widget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F00000000000000000000004 /* Cocktail60 */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000010 /* Cocktail60App.swift */,
+				F00000000000000000000011 /* ContentView.swift */,
+				F00000000000000000000012 /* CocktailRecipe.swift */,
+				F00000000000000000000013 /* CocktailData.swift */,
+				F0000000000000000000001A /* WorldCocktailData.swift */,
+				F0000000000000000000001B /* CocktailLibrary.swift */,
+				F00000000000000000000014 /* FavoritesStore.swift */,
+				F00000000000000000000016 /* RecipeStore.swift */,
+				F00000000000000000000018 /* RecipeSearch.swift */,
+				F0000000000000000000001C /* AppearanceStore.swift */,
+				F0000000000000000000001D /* AppearanceSettingsView.swift */,
+				F00000000000000000000038 /* CocktailThumbnailStore.swift */,
+				F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */,
+				F00000000000000000000034 /* MyLiquorStore.swift */,
+				F00000000000000000000036 /* MyLiquorView.swift */,
+				F0000000000000000000001E /* DrinkLogStore.swift */,
+				F0000000000000000000001F /* DrinkCalendarView.swift */,
+				F00000000000000000000049 /* XiaohongshuImportView.swift */,
+				F00000000000000000000017 /* AddRecipeView.swift */,
+				F00000000000000000000019 /* Info.plist */,
+				F00000000000000000000015 /* Assets.xcassets */,
+			);
+			path = Cocktail60;
+			sourceTree = "<group>";
+		};
+		F00000000000000000000030 /* Cocktail60Widget */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000031 /* Cocktail60Widget.swift */,
+				F00000000000000000000032 /* Info.plist */,
+			);
+			path = Cocktail60Widget;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F00000000000000000000006 /* Cocktail60 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F0000000000000000000000B /* Build configuration list for PBXNativeTarget "Cocktail60" */;
+			buildPhases = (
+				F00000000000000000000007 /* Sources */,
+				F00000000000000000000008 /* Frameworks */,
+				F00000000000000000000009 /* Resources */,
+				F00000000000000000000057 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F00000000000000000000058 /* PBXTargetDependency */,
+			);
+			name = Cocktail60;
+			productName = Cocktail60;
+			productReference = F00000000000000000000005 /* Cocktail60.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F00000000000000000000053 /* Cocktail60Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F00000000000000000000054 /* Build configuration list for PBXNativeTarget "Cocktail60Widget" */;
+			buildPhases = (
+				F00000000000000000000050 /* Sources */,
+				F00000000000000000000051 /* Frameworks */,
+				F00000000000000000000052 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = Cocktail60Widget;
+			productName = Cocktail60Widget;
+			productReference = F00000000000000000000033 /* Cocktail60Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F00000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					F00000000000000000000006 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					F00000000000000000000053 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = F0000000000000000000000A /* Build configuration list for PBXProject "Cocktail60" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = F00000000000000000000002;
+			preferredProjectObjectVersion = 110;
+			productRefGroup = F00000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F00000000000000000000006 /* Cocktail60 */,
+				F00000000000000000000053 /* Cocktail60Widget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F00000000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				F00000000000000000000025 /* Assets.xcassets in Resources */,
+			);
+		};
+		F00000000000000000000052 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F00000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				F00000000000000000000020 /* Cocktail60App.swift in Sources */,
+				F00000000000000000000021 /* ContentView.swift in Sources */,
+				F00000000000000000000022 /* CocktailRecipe.swift in Sources */,
+				F00000000000000000000023 /* CocktailData.swift in Sources */,
+				F00000000000000000000024 /* FavoritesStore.swift in Sources */,
+				F00000000000000000000026 /* RecipeStore.swift in Sources */,
+				F00000000000000000000027 /* AddRecipeView.swift in Sources */,
+				F00000000000000000000028 /* RecipeSearch.swift in Sources */,
+				F00000000000000000000029 /* WorldCocktailData.swift in Sources */,
+				F0000000000000000000002A /* CocktailLibrary.swift in Sources */,
+				F0000000000000000000002B /* AppearanceStore.swift in Sources */,
+				F0000000000000000000002C /* AppearanceSettingsView.swift in Sources */,
+				F00000000000000000000037 /* CocktailThumbnailStore.swift in Sources */,
+				F00000000000000000000046 /* RecipeLocalThumbnailStore.swift in Sources */,
+				F0000000000000000000002F /* MyLiquorStore.swift in Sources */,
+				F00000000000000000000035 /* MyLiquorView.swift in Sources */,
+				F0000000000000000000002D /* DrinkLogStore.swift in Sources */,
+				F0000000000000000000002E /* DrinkCalendarView.swift in Sources */,
+				F00000000000000000000048 /* XiaohongshuImportView.swift in Sources */,
+			);
+		};
+		F00000000000000000000050 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				F00000000000000000000040 /* Cocktail60Widget.swift in Sources */,
+				F00000000000000000000041 /* CocktailRecipe.swift in Sources */,
+				F00000000000000000000042 /* CocktailData.swift in Sources */,
+				F00000000000000000000043 /* WorldCocktailData.swift in Sources */,
+				F00000000000000000000044 /* CocktailLibrary.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F00000000000000000000058 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F00000000000000000000053 /* Cocktail60Widget */;
+			targetProxy = F00000000000000000000059 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F0000000000000000000000C /* Debug configuration for PBXProject "Cocktail60" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XRCX6GU9B2;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F0000000000000000000000D /* Release configuration for PBXProject "Cocktail60" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XRCX6GU9B2;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F0000000000000000000000E /* Debug configuration for PBXNativeTarget "Cocktail60" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cocktail60/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "大喝特喝";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codex.cocktail60;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F0000000000000000000000F /* Release configuration for PBXNativeTarget "Cocktail60" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cocktail60/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "大喝特喝";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codex.cocktail60;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		F00000000000000000000055 /* Debug configuration for PBXNativeTarget "Cocktail60Widget" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cocktail60Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codex.cocktail60.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F00000000000000000000056 /* Release configuration for PBXNativeTarget "Cocktail60Widget" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Cocktail60Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codex.cocktail60.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F0000000000000000000000A /* Build configuration list for PBXProject "Cocktail60" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0000000000000000000000C /* Debug configuration for PBXProject "Cocktail60" */,
+				F0000000000000000000000D /* Release configuration for PBXProject "Cocktail60" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		F0000000000000000000000B /* Build configuration list for PBXNativeTarget "Cocktail60" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0000000000000000000000E /* Debug configuration for PBXNativeTarget "Cocktail60" */,
+				F0000000000000000000000F /* Release configuration for PBXNativeTarget "Cocktail60" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		F00000000000000000000054 /* Build configuration list for PBXNativeTarget "Cocktail60Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F00000000000000000000055 /* Debug configuration for PBXNativeTarget "Cocktail60Widget" */,
+				F00000000000000000000056 /* Release configuration for PBXNativeTarget "Cocktail60Widget" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F00000000000000000000001 /* Project object */;
+}
