@@ -154,7 +154,7 @@ struct ContentView: View {
                 DrinkCalendarView(initialDate: drinkCalendarInitialDate)
             }
             .sheet(isPresented: $isShowingMyLiquor) {
-                MyLiquorView()
+                BarWebView()
             }
             .navigationDestination(for: CocktailRecipe.self) { recipe in
                 RecipeDetailView(recipe: recipe)
@@ -223,7 +223,7 @@ private struct BottomFunctionBar: View {
             )
 
             BottomFunctionButton(
-                title: "我的酒",
+                title: "我的吧台",
                 systemImage: "wineglass.fill",
                 isExpanded: isExpanded,
                 onExpand: onExpand,
@@ -857,6 +857,7 @@ private struct RecipeDetailView: View {
     @EnvironmentObject private var recipeStore: RecipeStore
     @EnvironmentObject private var myLiquorStore: MyLiquorStore
     @State private var isShowingDeleteConfirmation = false
+    @State private var isShowingFollowAlong = false
 
     let recipe: CocktailRecipe
 
@@ -871,6 +872,15 @@ private struct RecipeDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     DetailHero(recipe: recipe, isFavorite: favoritesStore.contains(recipe), missingLiquors: missingLiquors)
+
+                    Button {
+                        isShowingFollowAlong = true
+                    } label: {
+                        Label("开始跟做 · 查看我的材料", systemImage: "play.circle.fill")
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.borderedProminent)
 
                     DetailSection(title: "配料") {
                         VStack(spacing: 10) {
@@ -919,6 +929,9 @@ private struct RecipeDetailView: View {
         }
         .navigationTitle(recipe.chineseName)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $isShowingFollowAlong) {
+            BarWebView(initialRoute: "recipe/\(recipe.id)")
+        }
         .toolbar {
             if recipe.isUserCreated {
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10000000000000000000001 /* BarWebHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011; };
+		B10000000000000000000002 /* BarWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012; };
+		B10000000000000000000003 /* BarWeb in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013; };
 		F00000000000000000000020 /* Cocktail60App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000010 /* Cocktail60App.swift */; };
 		F00000000000000000000021 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000011 /* ContentView.swift */; };
 		F00000000000000000000022 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
@@ -58,6 +61,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10000000000000000000011 /* BarWebHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWebHost.swift; sourceTree = "<group>"; };
+		B10000000000000000000012 /* BarWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWebView.swift; sourceTree = "<group>"; };
+		B10000000000000000000013 /* BarWeb */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BarWeb; sourceTree = "<group>"; };
 		F00000000000000000000005 /* Cocktail60.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cocktail60.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F00000000000000000000010 /* Cocktail60App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cocktail60App.swift; sourceTree = "<group>"; };
 		F00000000000000000000011 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +127,9 @@
 			isa = PBXGroup;
 			children = (
 				F00000000000000000000010 /* Cocktail60App.swift */,
+				B10000000000000000000011 /* BarWebHost.swift */,
+				B10000000000000000000012 /* BarWebView.swift */,
+				B10000000000000000000013 /* BarWeb */,
 				F00000000000000000000011 /* ContentView.swift */,
 				F00000000000000000000012 /* CocktailRecipe.swift */,
 				F00000000000000000000013 /* CocktailData.swift */,
@@ -234,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				F00000000000000000000025 /* Assets.xcassets in Resources */,
+				B10000000000000000000003 /* BarWeb in Resources */,
 			);
 		};
 		F00000000000000000000052 /* Resources */ = {
@@ -248,6 +258,8 @@
 			isa = PBXSourcesBuildPhase;
 			files = (
 				F00000000000000000000020 /* Cocktail60App.swift in Sources */,
+				B10000000000000000000001 /* BarWebHost.swift in Sources */,
+				B10000000000000000000002 /* BarWebView.swift in Sources */,
 				F00000000000000000000021 /* ContentView.swift in Sources */,
 				F00000000000000000000022 /* CocktailRecipe.swift in Sources */,
 				F00000000000000000000023 /* CocktailData.swift in Sources */,

@@ -35,6 +35,10 @@ final class FavoritesStore: ObservableObject {
         favoriteIDs.remove(recipe.id)
     }
 
+    func replace(with ids: [String]) {
+        favoriteIDs = Set(ids)
+    }
+
     private func save() {
         let ids = favoriteIDs.sorted()
         guard let data = try? JSONEncoder().encode(ids) else { return }

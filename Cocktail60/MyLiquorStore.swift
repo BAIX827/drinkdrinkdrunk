@@ -38,6 +38,10 @@ final class MyLiquorStore: ObservableObject {
         ownedLiquors.remove(LiquorInventoryCatalog.normalizedName(name))
     }
 
+    func replace(with names: [String]) {
+        ownedLiquors = Set(names.map(LiquorInventoryCatalog.normalizedName).filter { !$0.isEmpty })
+    }
+
     private func save() {
         UserDefaults.standard.set(ownedLiquors.sorted(), forKey: storageKey)
     }
@@ -117,6 +121,11 @@ enum LiquorInventoryCatalog {
         rawName.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private static let aliases = [
+        "深色朗姆": "黑朗姆", "苏格兰威士忌": "苏格兰",
+        "黑麦威士忌": "黑麦", "普罗塞克": "普洛赛克"
+    ]
+
     static func categories(from recipes: [CocktailRecipe], ownedLiquors: Set<String>) -> [String] {
         let discovered = Set(recipes.flatMap { stockCategories(for: $0) })
         let allCategories = discovered.union(ownedLiquors).union(broadCategories)
@@ -153,7 +162,10 @@ enum LiquorInventoryCatalog {
     }
 
     static func liquorName(forIngredient ingredient: String) -> String? {
-        for category in orderedCategories {
+        for (alias, canonical) in aliases where ingredient.contains(alias) {
+            return canonical
+        }
+        for category in orderedCategories.sorted(by: { $0.count > $1.count }) {
             if ingredient.contains(category) {
                 return category
             }
@@ -163,12 +175,18 @@ enum LiquorInventoryCatalog {
     }
 
     private static func isOwned(_ requiredName: String, in ownedLiquors: Set<String>) -> Bool {
-        let required = normalizedName(requiredName)
+        let name = normalizedName(requiredName)
+        let required = aliases[name] ?? name
         guard !required.isEmpty else { return true }
 
         return ownedLiquors.contains { ownedName in
-            let owned = normalizedName(ownedName)
-            return owned == required || owned.contains(required)
+            let name = normalizedName(ownedName)
+            var current: String? = aliases[name] ?? name
+            while let type = current {
+                if type == required { return true }
+                current = parentCategories[type]
+            }
+            return false
         }
     }
 
