@@ -52,7 +52,7 @@
     )
       return "mixer";
     if (
-      /酒|伏特加|威士忌|白兰地|朗姆|金巴利|阿佩罗|普洛赛克|香槟|干邑|波本|黑麦|苏格兰|君度|三秒|味美思|百利甜|Lillet|杜林标|DOM|皮斯科|卡莎萨|龙舌兰|柑曼怡|马拉斯奇诺/.test(
+      /酒|伏特加|威士忌|白兰地|朗姆|金巴利|阿佩罗|普洛赛克|香槟|干邑|波本|黑麦|苏格兰|君度|三秒|味美思|百利甜|Amaro|Lillet|杜林标|DOM|皮斯科|卡莎萨|龙舌兰|柑曼怡|马拉斯奇诺/.test(
         name,
       )
     )
@@ -127,15 +127,34 @@
     highball: "高球杯",
     rocks: "古典杯",
     wine: "葡萄酒杯",
+    hurricane: "飓风杯",
+    mug: "热饮杯",
+    shot: "烈酒杯",
+    margarita: "玛格丽特杯",
+    bowl: "分享碗",
   };
+  const bottleShapes = { bottle: '经典长瓶', round: '圆肚酒瓶', whiskey: '方肩威士忌瓶', gin: '平肩金酒瓶', vodka: '圆肩伏特加瓶', tequila: '矮身龙舌兰瓶', rum: '修长朗姆瓶', carton: '果汁纸盒', jar: '糖浆罐' };
+  const sunsetLook = { layers: ['#f1a344', '#32a7dc'], garnish: 'orange', ice: true };
+  const validColor = value => /^#[0-9a-f]{6}$/i.test(value);
+  function validVisual(v) {
+    return v && typeof v === 'object' && !Array.isArray(v) &&
+      (v.layers === undefined || (Array.isArray(v.layers) && v.layers.length === 2 && v.layers.every(validColor))) &&
+      (v.garnish === undefined || ['none','orange','lime','lemon','mint','olive','coffee'].includes(v.garnish)) &&
+      ['ice','foam'].every(k => v[k] === undefined || typeof v[k] === 'boolean');
+  }
   function drinkAppearance(recipe = {}, selected = {}) {
-    const defaultGlass = /高球|铜|柯林/.test(recipe.glass) ? "highball"
+    const defaultGlass = /飓风/.test(recipe.glass) ? 'hurricane' : /热饮/.test(recipe.glass) ? 'mug'
+      : /烈酒/.test(recipe.glass) ? 'shot' : /玛格丽特/.test(recipe.glass) ? 'margarita'
+      : /碗/.test(recipe.glass) ? 'bowl' : /高球|铜|柯林/.test(recipe.glass) ? "highball"
       : /岩石|古典/.test(recipe.glass) ? "rocks"
       : /马天尼|鸡尾酒/.test(recipe.glass) ? "martini"
       : /葡萄酒/.test(recipe.glass) ? "wine" : "coupe";
     return {
+      ...(recipe.appearance ? { visual: { ...recipe.appearance } } : {}),
+      ...(selected.visual ? { visual: { ...selected.visual } } : {}),
       glass: Object.hasOwn(glassNames, selected.glass) ? selected.glass : defaultGlass,
       color: /^#[0-9a-f]{6}$/i.test(selected.color) ? selected.color
+        : validColor(recipe.appearance?.color) ? recipe.appearance.color
         : /^#[0-9a-f]{6}$/i.test(recipe.accentHex) ? recipe.accentHex : "#da9561",
     };
   }
@@ -172,6 +191,7 @@
     favorites: [],
     customRecipes: [],
     logs: [],
+    taste: { onboarding: null, ratings: [] },
     theme: "system",
     migrated: false,
   });
@@ -199,7 +219,7 @@
           isText(i.name) &&
           isText(i.type) &&
           /^#[0-9a-f]{6}$/i.test(i.color) &&
-          ["bottle", "round", "carton", "jar"].includes(i.shape) &&
+          Object.hasOwn(bottleShapes, i.shape) &&
           Array.isArray(i.drawing) &&
           i.drawing.length <= 200 &&
           i.drawing.every(
@@ -227,6 +247,7 @@
           isText(r.englishName) &&
           isText(r.method) &&
           isText(r.glass) &&
+          (r.appearance === undefined || (validVisual(r.appearance) && validColor(r.appearance.color))) &&
           Array.isArray(r.ingredients) &&
           r.ingredients.length > 0 &&
           r.ingredients.length <= 100 &&
@@ -245,6 +266,8 @@
           isText(l.name) &&
           isText(l.note) &&
           (l.recipeID === undefined || isText(l.recipeID)) &&
+          (l.visual === undefined || validVisual(l.visual)) &&
+          (l.photos === undefined || (Array.isArray(l.photos) && l.photos.length <= 3 && l.photos.every(p => typeof p === 'string' && p.length <= 180000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(p)))) &&
           ((l.glass === undefined && l.color === undefined) ||
             (Object.hasOwn(glassNames, l.glass) && /^#[0-9a-f]{6}$/i.test(l.color))),
       )
@@ -260,11 +283,14 @@
     return {
       ...blankState(),
       ...value,
+      taste: value.taste === undefined ? { onboarding: null, ratings: [] } : BarTaste.validate(value.taste),
       customRecipes: value.customRecipes.map(r => ({
         id: r.id, chineseName: r.chineseName, englishName: r.englishName,
         ingredients: r.ingredients, tags: r.tags, glass: r.glass,
         method: r.method, note: typeof r.note === 'string' ? r.note : null,
         accentHex: /^#[0-9a-f]{6}$/i.test(r.accentHex) ? r.accentHex : '#b87b5d',
+        ...(r.appearance ? { appearance: { color: r.appearance.color, layers: r.appearance.layers,
+          garnish: r.appearance.garnish, ice: r.appearance.ice, foam: r.appearance.foam } } : {}),
         isUserCreated: true,
       })),
       theme: ["system", "light", "dark"].includes(value.theme)
@@ -283,6 +309,8 @@
     blankState,
     validateState,
     glassNames,
+    bottleShapes,
+    sunsetLook,
     drinkAppearance,
     journalMonth,
   };

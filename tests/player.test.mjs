@@ -42,6 +42,20 @@ function playerHarness() {
     tick:()=>{const [id,timer]=pending.entries().next().value;pending.delete(id);timer.fn();},
   };
 }
+
+test('layers appear only after their ingredient enters the glass and custom appearance survives completion', () => {
+  const h=playerHarness();
+  const visual={layers:['#773322','#eacb90'],layerPart:'黑朗姆',garnish:'lime'};
+  const steps=[{action:'pour',target:'glass',ingredient:{raw:'姜汁啤酒 100 ml'}},{action:'float',target:'glass',ingredient:{raw:'黑朗姆 60 ml'}}];
+  assert.equal(h.player.visualAt(visual,steps,0,'glass').layers,undefined);
+  assert.equal(h.player.visualAt(visual,steps,1,'shaker').layers,undefined);
+  assert.deepEqual(h.player.visualAt(visual,steps,1,'glass').layers,visual.layers);
+  let saved;
+  h.player.mount(h.root,h.recipe,[],(r,look)=>{saved=look;return true;});
+  h.controls.get('#player-look').onchange({target:{value:'sunset'}});
+  h.click('next');h.click('next');h.click('next');h.click('record');
+  assert.deepEqual(Array.from(saved.visual.layers),['#f1a344','#32a7dc']);
+});
 test('autoplay respects action duration, pause cancels timers, resume schedules once',()=>{
   const h=playerHarness();h.player.mount(h.root,h.recipe,[],()=>{});
   assert.equal(h.pending.size,1);assert.equal([...h.pending.values()][0].ms,8000);

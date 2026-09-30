@@ -1,8 +1,14 @@
 import Foundation
 import WebKit
+#if os(macOS)
+import AppKit
+import UniformTypeIdentifiers
+#else
+import UIKit
+#endif
 
 /// The same local bundle powers iOS, macOS, and the browser. No remote content is loaded.
-final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
+final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate, WKUIDelegate {
     static let storageKey = "sharedBarStateV1"
     private let onSave: ([String: Any]) -> Void
     private var resourceRoot: URL?
@@ -31,6 +37,7 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         configuration.websiteDataStore = .default()
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         if let folder = Bundle.main.resourceURL?.appendingPathComponent("BarWeb", isDirectory: true),
            FileManager.default.fileExists(atPath: folder.appendingPathComponent("index.html").path) {
@@ -59,8 +66,32 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if navigationAction.navigationType == .linkActivated, url.scheme == "https" {
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #else
+            UIApplication.shared.open(url)
+            #endif
+            decisionHandler(.cancel)
+            return
+        }
         decisionHandler(isLocalResource(url) || url.absoluteString == "about:blank" ? .allow : .cancel)
     }
+
+    #if os(macOS)
+    func webView(_ webView: WKWebView, runOpenPanelWith parameters: WKOpenPanelParameters,
+                 initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping ([URL]?) -> Void) {
+        guard let url = webView.url, isLocalResource(url), frame.isMainFrame else {
+            completionHandler(nil)
+            return
+        }
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = parameters.allowsMultipleSelection
+        panel.allowedContentTypes = [.jpeg, .png, .webP, .json]
+        panel.begin { response in completionHandler(response == .OK ? panel.urls : nil) }
+    }
+    #endif
 
     private func isLocalResource(_ url: URL) -> Bool {
         guard url.isFileURL, let root = resourceRoot else { return false }

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import "../Cocktail60/BarWeb/core.js";
+import "../Cocktail60/BarWeb/taste.js";
 import "../Cocktail60/BarWeb/data.js";
 import { readRecipes } from "../scripts/export-recipes.mjs";
 const {
@@ -28,8 +29,9 @@ test("journal backup preserves appearance snapshots and accepts old text-only en
 
 test("120 recipe texts and quantities remain identical to the original Swift library", () => {
   const original = readRecipes();
-  assert.equal(BarData.recipes.length, 120);
-  for (const r of BarData.recipes) {
+  assert.equal(original.length, 120);
+  assert.equal(BarData.recipes.length, 130);
+  for (const r of BarData.recipes.filter(r => !r.source)) {
     const source = original.find((x) => x.id === r.id);
     for (const key of ["ingredients", "method", "glass", "note"])
       assert.deepEqual(r[key], source[key]);
@@ -165,7 +167,7 @@ test("every authored animation refers to a real ingredient and retains its exact
     "rinse",
     "method",
   ]);
-  assert.equal(BarData.recipes.filter((r) => r.steps).length, 120);
+  assert.equal(BarData.recipes.filter((r) => r.steps).length, 130);
   for (const r of BarData.recipes.filter((r) => r.steps)) {
     assert.ok(r.steps.length > 2);
     for (const step of r.steps) {

@@ -39,6 +39,7 @@
     limit = "all",
     scope = Object.keys(categories),
     collection = "all";
+  let tasteSort = "match";
   let modalReturnFocus, toastTimer;
   const app = document.querySelector("#app"),
     modal = document.querySelector("#modal");
@@ -84,7 +85,9 @@
     }
     try {
       next = validateState(next);
-      localStorage.setItem(key, JSON.stringify(next));
+      const serialized = JSON.stringify(next);
+      if (serialized.length > 3800000) { toast('本地数据已接近容量上限，请先导出备份，再减少日记照片。原记录未更改。'); return false; }
+      localStorage.setItem(key, serialized);
       window.webkit?.messageHandlers?.barState?.postMessage(
         JSON.stringify(next),
       );
@@ -109,6 +112,7 @@
       ["bar", "▥", "我的吧台"],
       ["favorites", "♡", "我的收藏"],
       ["journal", "▤", "饮酒日记"],
+      ["dna", "✦", "口味 DNA"],
     ]
       .map(
         ([id, icon, label]) =>
@@ -116,12 +120,12 @@
       )
       .join(
         "",
-      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles">${bottle({ color: "#b87b5d", shape: "round" })}${bottle({ color: "#8da88b" })}${bottle({ color: "#b3c6cd", shape: "carton" })}</div><p>好好调一杯，<br>慢慢享受此刻。</p><a href="#settings">设置与数据备份 ↗</a><small>离线配方 · 本地保存</small></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer>按自己的节奏，调一杯喜欢的。<span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`;
+      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles">${bottle({ color: "#b87b5d", shape: "round" })}${bottle({ color: "#8da88b" })}${bottle({ color: "#b3c6cd", shape: "carton" })}</div><a href="#settings">设置与数据备份 ↗</a></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer><span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`;
   }
   function route() {
     BarPlayer.stop();
     const [section = "discover", id] = location.hash.slice(1).split("/");
-    page = ["bar", "favorites", "journal", "settings"].includes(section)
+    page = ["bar", "favorites", "journal", "settings", "dna"].includes(section)
       ? section
       : "discover";
     shell();
@@ -149,14 +153,16 @@
     } else if (page === "bar") renderBar();
     else if (page === "journal") renderJournal();
     else if (page === "settings") settings();
+    else if (page === "dna") tasteUI.renderDna();
+    else if (section === "compare") tasteUI.compare(id);
     else discover();
     window.scrollTo(0, 0);
   }
   function discover() {
     document.querySelector("#main").innerHTML =
-      `<section class="hero"><div class="hero-copy"><span class="eyebrow">A LITTLE MIX, A LITTLE MAGIC</span><h1>${page === "favorites" ? "留住喜欢的那一杯。" : "今晚，调一杯什么？"}</h1><p>从你的吧台出发，让手边的材料变成一点小惊喜。</p><a class="primary" href="#bar">整理我的吧台 <span>↗</span></a><div class="hero-stats"><span><b>${recipes().length}</b> 款灵感配方</span><span><b>${state.inventory.length}</b> 件吧台材料</span><span><b id="favorite-count">${state.favorites.length}</b> 杯心头好</span></div></div><div class="hero-art"><span class="spark one">✦</span><span class="spark two">✧</span><div class="hero-bottle">${bottle({ color: "#95ac8c", shape: "round" })}</div><div class="hero-glass">${glass("coupe", "#e5a365")}</div><span class="hero-art-note">Made by you, with a little joy.</span></div></section>
-      <section class="discovery"><div class="section-heading"><div><span class="eyebrow">THE RECIPE COLLECTION</span><h2>${page === "favorites" ? "我的收藏" : "发现你的下一杯"}</h2></div><div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="搜索酒名、基酒、材料…" aria-label="搜索配方" value="${e(query)}"></div></div>
-      <div class="filter-row" aria-label="基酒筛选">${["", "金酒", "伏特加", "朗姆", "威士忌", "龙舌兰", "白兰地"].map((v) => `<button class="chip ${base === v ? "selected" : ""}" data-base="${v}" aria-pressed="${base === v}">${v || "全部配方"}</button>`).join("")}<button class="chip ${collection === "mine" ? "selected" : ""}" data-action="mine">我的配方</button><button class="chip ${collection === "guided" ? "selected" : ""}" data-action="guided">动画跟做</button></div>
+      `<section class="hero"><div class="hero-copy"><h1>${page === "favorites" ? "我的收藏" : "配方库"}</h1><a class="primary" href="#bar">整理我的吧台 <span>↗</span></a><div class="hero-stats"><span><b>${recipes().length}</b> 款配方</span><span><b>${state.inventory.length}</b> 件吧台材料</span><span><b id="favorite-count">${state.favorites.length}</b> 款收藏</span></div></div><div class="hero-art"><span class="spark one">✦</span><span class="spark two">✧</span><div class="hero-bottle">${bottle({ color: "#95ac8c", shape: "round" })}</div><div class="hero-glass">${glass("coupe", "#e5a365")}</div></div></section>
+      <section class="discovery"><div class="section-heading"><div><h2>${page === "favorites" ? "我的收藏" : "配方列表"}</h2></div><div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="搜索酒名、基酒、材料…" aria-label="搜索配方" value="${e(query)}"></div></div>
+      <div class="filter-row" aria-label="基酒筛选">${["", "金酒", "伏特加", "朗姆", "威士忌", "龙舌兰", "白兰地"].map((v) => `<button class="chip ${base === v ? "selected" : ""}" data-base="${v}" aria-pressed="${base === v}">${v || "全部配方"}</button>`).join("")}<button class="chip ${collection === "mine" ? "selected" : ""}" data-action="mine">我的配方</button><button class="chip ${collection === "guided" ? "selected" : ""}" data-action="guided">动画跟做</button><button class="chip ${collection === "researched" ? "selected" : ""}" data-action="researched">新增 IBA 精选</button></div>
       <div class="inventory-filter"><div><strong>按我的材料找酒</strong><span class="muted small">按所选材料检查 · 可选配料不计缺项</span></div><div class="match-options">${[
         ["all", "不限"],
         ["0", "缺 0 项"],
@@ -176,6 +182,14 @@
         )
         .join("")}</div></div>
       <div class="result-heading"><span id="result-count" role="status"></span><span class="muted small">${scope.length === 5 ? "检查配方所列材料；冰块、方法中的装饰请另外备妥" : "未检查的类别不代表已经拥有"}</span></div><div id="recipe-grid" class="recipe-grid"></div></section>`;
+    if(page === "discover") {
+      document.querySelector(".hero").insertAdjacentHTML("afterend", tasteUI.welcome() + '<div id="taste-recommendations"></div>');
+      document.querySelector(".hero-copy > .primary").outerHTML = tasteUI.current().ready
+        ? '<a class="primary" href="#dna">我的口味 DNA ↗</a>'
+        : '<button class="primary" data-taste-onboard>口味小测</button>';
+    }
+    document.querySelector(".result-heading").insertAdjacentHTML("beforebegin", `<div class="taste-sort-row"><label>配方排序 <select id="taste-sort"><option value="match" ${tasteSort==="match"?"selected":""}>按我的口味匹配</option><option value="original" ${tasteSort==="original"?"selected":""}>原有顺序</option></select></label><a class="text-button" href="#compare">比较两杯 ↗</a></div>`);
+    document.querySelector("#taste-sort").onchange=event=>{tasteSort=event.target.value;renderCards();};
     renderCards();
     document.querySelector("#search").oninput = (event) => {
       query = event.target.value;
@@ -183,6 +197,7 @@
     };
   }
   function renderCards() {
+    const user = tasteUI.current();
     const count = document.querySelector("#favorite-count");
     if (count) count.textContent = state.favorites.length;
     const q = query.trim().toLowerCase();
@@ -192,6 +207,7 @@
         (!base || r.tags.includes(base)) &&
         (collection !== "mine" || r.isUserCreated) &&
         (collection !== "guided" || r.steps) &&
+        (collection !== "researched" || r.source) &&
         `${r.chineseName} ${r.englishName} ${r.ingredients.join(" ")} ${r.tags.join(" ")}`
           .toLowerCase()
           .includes(q) &&
@@ -199,16 +215,22 @@
           (scope.length &&
             match(r, state.inventory, scope).count <= Number(limit))),
     );
+    if(tasteSort === "match" && user.ready) list.sort((a,b)=>{
+      const pa=BarTaste.profile(a),pb=BarTaste.profile(b);
+      return (pb.unknown.length?-1:BarTaste.score(pb.vector,user.vector)) - (pa.unknown.length?-1:BarTaste.score(pa.vector,user.vector)) || a.id.localeCompare(b.id);
+    });
+    const suggestions=document.querySelector("#taste-recommendations");
+    if(suggestions) suggestions.innerHTML=tasteUI.recommendations(list);
     document.querySelector("#result-count").textContent =
-      `${list.length} 款配方，等你尝试`;
+      `${list.length} 款配方`;
     document.querySelector("#recipe-grid").innerHTML = list.length
       ? list
           .map(
             (r, index) =>
-              `<article class="recipe-card"><a href="#recipe/${e(r.id)}" class="recipe-visual palette-${index % 4}" aria-label="查看${e(r.chineseName)}"><span class="card-number">NO. ${String(BarData.recipes.findIndex((x) => x.id === r.id) + 1 || index + 1).padStart(3, "0")}</span>${glass(/高球|长饮/.test(r.glass) ? "highball" : /古典|岩石/.test(r.glass) ? "rocks" : "coupe", r.accentHex)}<span class="visual-tag">${r.steps ? "动画跟做" : e(r.baseSummary || r.tags[0] || "我的配方")}</span></a><button class="favorite ${state.favorites.includes(r.id) ? "saved" : ""}" data-favorite="${e(r.id)}" aria-label="${state.favorites.includes(r.id) ? "取消收藏" : "收藏"}${e(r.chineseName)}" aria-pressed="${state.favorites.includes(r.id)}">${state.favorites.includes(r.id) ? "♥" : "♡"}</button><div class="recipe-copy"><a href="#recipe/${e(r.id)}"><h3>${e(r.chineseName)}</h3><p class="english">${e(r.englishName)}</p></a><div class="recipe-tags">${r.tags
+              `<article class="recipe-card"><a href="#recipe/${e(r.id)}" class="recipe-visual palette-${index % 4}" aria-label="查看${e(r.chineseName)}"><span class="card-number">NO. ${String(BarData.recipes.findIndex((x) => x.id === r.id) + 1 || index + 1).padStart(3, "0")}</span>${BarArt.drink(r)}<span class="visual-tag">${r.steps ? "动画跟做" : e(r.baseSummary || r.tags[0] || "我的配方")}</span></a><button class="favorite ${state.favorites.includes(r.id) ? "saved" : ""}" data-favorite="${e(r.id)}" aria-label="${state.favorites.includes(r.id) ? "取消收藏" : "收藏"}${e(r.chineseName)}" aria-pressed="${state.favorites.includes(r.id)}">${state.favorites.includes(r.id) ? "♥" : "♡"}</button><div class="recipe-copy"><a href="#recipe/${e(r.id)}"><h3>${e(r.chineseName)}</h3><p class="english">${e(r.englishName)}</p></a><div class="recipe-tags">${r.tags
                 .slice(0, 3)
                 .map((t) => `<span>${e(t)}</span>`)
-                .join("")}</div>${badge(r)}</div></article>`,
+                .join("")}</div>${tasteUI.card(r,user)}${badge(r)}</div></article>`,
           )
           .join("")
       : `<div class="empty"><span>◇</span><h3>${page === "favorites" ? "收藏夹还在等第一杯" : "还没有找到合适的配方"}</h3><p>试试调整搜索、检查类别或缺项上限。</p><button class="secondary" data-action="reset-filters">重置筛选</button></div>`;
@@ -221,7 +243,7 @@
     if (state.inventory.some((i) => !i.type))
       groups.push(["unmapped", state.inventory.filter((i) => !i.type)]);
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><span class="eyebrow">YOUR PERSONAL COLLECTION</span><h1>我的吧台</h1><p>给每一瓶起个名字，让灵感从这里开始。</p></div><button class="primary" data-action="add-item">＋ 登记材料</button></div><div class="bar-intro"><div><b>${state.inventory.length}</b> 件材料 · ${new Set(state.inventory.map((i) => i.type).filter(Boolean)).size} 种标准类型<p class="muted">名字和外观由你决定，配方按标准类型匹配。</p></div><a class="secondary" href="#discover">看看能调什么 ↗</a></div>${
+      `<div class="page-heading"><div><h1>我的吧台</h1></div><button class="primary" data-action="add-item">＋ 登记材料</button></div><div class="bar-room"><div class="bar-sign"><span>EST. AT HOME</span><b>AFTER HOURS</b><span>YOUR LITTLE COCKTAIL CLUB</span></div><div class="bar-intro"><div><b>${state.inventory.length}</b> 件材料 · ${new Set(state.inventory.map((i) => i.type).filter(Boolean)).size} 种标准类型<p class="muted">名字和外观由你决定，配方按标准类型匹配。</p></div><a class="secondary" href="#discover">看看能调什么 ↗</a></div>${
         state.inventory.length
           ? groups
               .filter(([, items]) => items.length)
@@ -232,13 +254,13 @@
               .join("")
           : '<div class="empty bar-empty"><div class="empty-bottle">' +
             bottle({ color: "#b4c2ad" }) +
-            '</div><h2>你的吧台，等你来布置</h2><p>先登记家里的一瓶酒、一盒果汁或一罐糖浆。</p><button class="primary" data-action="add-item">登记第一件材料</button></div>'
-      }`;
+            '</div><h2>暂无材料</h2><p>先登记家里的一瓶酒、一盒果汁或一罐糖浆。</p><button class="primary" data-action="add-item">登记第一件材料</button></div>'
+      }</div>`;
   }
   function detail(r) {
     const full = match(r, state.inventory);
     document.querySelector("#main").innerHTML =
-      `<a class="back-link" href="#discover">← 回到配方库</a><div class="detail-layout"><div class="detail-art palette-1">${glass(/高球/.test(r.glass) ? "highball" : "coupe", r.accentHex)}<span>${e(r.glass)}</span></div><section class="detail-copy"><span class="eyebrow">${r.isUserCreated ? "MY OWN RECIPE" : "FROM THE COLLECTION"}</span><h1>${e(r.chineseName)}</h1><p class="detail-english">${e(r.englishName)}</p><div class="recipe-tags">${r.tags.map((t) => `<span>${e(t)}</span>`).join("")}</div><h2>这一杯，需要</h2><p class="small muted">详情检查全部类别 · ${full.count ? `所列必需材料缺 ${full.count} 项` : "所列必需材料齐全"} · 冰块与方法中的装饰另备</p><ul class="ingredients">${r.parts
+      `<a class="back-link" href="#discover">← 回到配方库</a><div class="detail-layout"><div class="detail-art palette-1">${BarArt.drink(r)}<span>${e(r.glass)}</span></div><section class="detail-copy"><h1>${e(r.chineseName)}</h1><p class="detail-english">${e(r.englishName)}</p><div class="recipe-tags">${r.tags.map((t) => `<span>${e(t)}</span>`).join("")}</div>${tasteUI.detail(r)}<h2>配料</h2><p class="small muted">详情检查全部类别 · ${full.count ? `所列必需材料缺 ${full.count} 项` : "所列必需材料齐全"} · 冰块与方法中的装饰另备</p><ul class="ingredients">${r.parts
         .map((p) => {
           const owned = state.inventory.some((i) =>
             p.types.some((t) => BarCore.satisfies(i.type, t)),
@@ -247,7 +269,7 @@
         })
         .join(
           "",
-        )}</ul><h2>做法</h2><p class="method">${e(r.method)}</p>${r.note ? `<p class="notice">${e(r.note)}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div><p class="small muted">${r.steps ? "逐步动作演示 · 可暂停、调速、选择杯型" : "逐项备料 + 完整原方指引；详细动画将逐批补充"}</p></section></div>`;
+        )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<p class="small muted">外观为材料与做法示意，品牌、用量和操作会影响实际颜色。</p><h2>做法</h2><p class="method">${e(r.method)}</p>${r.note ? `<p class="notice">${e(r.note)}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div><p class="small muted">${r.steps ? "逐步动作演示 · 可暂停、调速、选择杯型" : "逐项备料 + 完整原方指引；详细动画将逐批补充"}</p></section></div>`;
   }
   function showModal(html) {
     modalReturnFocus = document.activeElement;
@@ -281,7 +303,7 @@
     };
     let drawing = structuredClone(item.drawing);
     showModal(
-      `<form id="item-form"><span class="eyebrow">MAKE IT YOURS</span><h2>${id ? "编辑材料" : "登记一件材料"}</h2><div class="item-editor"><div id="bottle-preview">${bottle(item)}</div><div><label>展示名称<input name="name" maxlength="80" required value="${e(item.name)}" placeholder="例如：我的蓝瓶酒"></label><label>标准材料类型<select name="type" required><option value="">请选择标准类型</option>${Object.entries(
+      `<form id="item-form"><h2>${id ? "编辑材料" : "登记一件材料"}</h2><div class="item-editor"><div id="bottle-preview">${bottle(item)}</div><div><label>展示名称<input name="name" maxlength="80" required value="${e(item.name)}" placeholder="例如：我的蓝瓶酒"></label><label>标准材料类型<select name="type" required><option value="">请选择标准类型</option>${Object.entries(
         categories,
       )
         .map(
@@ -296,12 +318,7 @@
         )
         .join(
           "",
-        )}</select></label><p class="small muted">配方只按这个类型匹配，与展示名称无关。</p></div></div><div class="form-row"><label>容器造型<select name="shape">${[
-        ["bottle", "经典长瓶"],
-        ["round", "圆肚酒瓶"],
-        ["carton", "果汁纸盒"],
-        ["jar", "糖浆罐"],
-      ]
+        )}</select></label><p class="small muted">配方只按这个类型匹配，与展示名称无关。</p></div></div><div class="form-row"><label>容器造型<select name="shape">${Object.entries(BarCore.bottleShapes)
         .map(
           ([k, v]) =>
             `<option value="${k}" ${item.shape === k ? "selected" : ""}>${v}</option>`,
@@ -400,7 +417,7 @@
   }
   function openRecipe() {
     showModal(
-      `<form id="recipe-form"><span class="eyebrow">YOUR OWN MIX</span><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label><p class="small muted">建议使用吧台中的标准材料名称；未知类型会保留为缺料，不会自动认定已有。</p><label>杯型<input name="glass" required value="高球杯" maxlength="40"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存配方</button></div></form>`,
+      `<form id="recipe-form"><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label><p class="small muted">建议使用吧台中的标准材料名称；未知类型会保留为缺料，不会自动认定已有。</p><label>杯型<input name="glass" required value="高球杯" maxlength="40"></label><label>成品外观<select name="appearance"><option value="plain">自选纯色</option><option value="sunset">下蓝上橙 · 自定义</option></select></label><label>主色<input name="color" type="color" value="#d8ac6d"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存配方</button></div></form>`,
     );
     document.querySelector("#recipe-form").onsubmit = (event) => {
       event.preventDefault();
@@ -421,7 +438,8 @@
         glass: f.glass.value.trim(),
         method,
         note: null,
-        accentHex: "#b87b5d",
+        accentHex: f.color.value,
+        appearance: { color: f.color.value, ...(f.appearance.value === "sunset" ? BarCore.sunsetLook : { garnish: "none" }) },
         isUserCreated: true,
       };
       if (save({ ...state, customRecipes: [...state.customRecipes, r] })) {
@@ -435,49 +453,58 @@
     const entries = state.logs.filter(l => l.date === journalDate).reverse();
     const currentDate = today();
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><span class="eyebrow">SIPS & MEMORIES</span><h1>饮酒日记</h1><p>把喜欢的那一杯，留在日历里。</p></div><button class="primary" data-action="log">＋ 记一杯</button></div>
+      `<div class="page-heading"><div><h1>饮酒日记</h1></div><button class="primary" data-action="log">＋ 记一杯</button></div>
       <section class="journal-calendar" aria-label="饮酒日记月历">
         <div class="calendar-heading"><div><h2 id="calendar-month" aria-live="polite">${month.year} 年 ${month.number} 月</h2><p class="muted small">本月 ${month.count} 条记录</p></div><div class="calendar-controls"><button class="secondary" data-journal-month="${month.previous || ""}" aria-label="上个月" ${month.previous ? "" : "disabled"}>‹</button><button class="secondary" data-action="journal-today">今天</button><button class="secondary" data-journal-month="${month.next || ""}" aria-label="下个月" ${month.next ? "" : "disabled"}>›</button></div></div>
         <div class="calendar-weekdays" aria-hidden="true">${["一", "二", "三", "四", "五", "六", "日"].map(day => `<span>${day}</span>`).join("")}</div>
         <div class="calendar-days">${month.cells.map(day => day ? `
           <button class="calendar-day ${day.entries.length ? "has-entries" : ""}" data-journal-date="${day.date}" aria-pressed="${day.date === journalDate}" ${day.date === currentDate ? 'aria-current="date"' : ""} aria-label="${day.date}，${day.entries.length ? `${day.entries.length} 条记录：${e(day.entries.map(l => l.name).join("、"))}` : "暂无记录"}">
-            <span class="calendar-day-number">${day.day}</span><span class="calendar-drinks" aria-hidden="true">${day.entries.slice(-2).map(l => l.glass ? `<span class="calendar-drink">${glass(l.glass, l.color)}</span>` : '<span class="calendar-legacy">●</span>').join("")}</span>${day.entries.length > 2 ? `<span class="calendar-more">+${day.entries.length - 2}</span>` : ""}
+            <span class="calendar-day-number">${day.day}</span><span class="calendar-drinks" aria-hidden="true">${day.entries.slice(-2).map(l => l.glass ? `<span class="calendar-drink">${glass(l.glass, l.color, l.visual || {})}</span>` : '<span class="calendar-legacy">●</span>').join("")}</span>${day.entries.length > 2 ? `<span class="calendar-more">+${day.entries.length - 2}</span>` : ""}
           </button>` : '<span class="calendar-blank" aria-hidden="true"></span>').join("")}</div>
       </section>
-      <section class="journal-day-detail" aria-labelledby="journal-day-title"><div class="section-heading"><div><span class="eyebrow">THE LITTLE MOMENTS</span><h2 id="journal-day-title" aria-live="polite">${Number(journalDate.slice(5, 7))} 月 ${Number(journalDate.slice(8))} 日${journalDate === currentDate ? " · 今天" : ""}</h2></div><span class="muted small">${entries.length} 条记录</span></div><div class="journal-list">${
+      <section class="journal-day-detail" aria-labelledby="journal-day-title"><div class="section-heading"><div><h2 id="journal-day-title" aria-live="polite">${Number(journalDate.slice(5, 7))} 月 ${Number(journalDate.slice(8))} 日${journalDate === currentDate ? " · 今天" : ""}</h2></div><span class="muted small">${entries.length} 条记录</span></div><div class="journal-list">${
         entries.length
           ? entries
               .map(
                 (l) =>
-                  `<article class="journal-entry"><div class="journal-glass" role="img" aria-label="${l.glass ? `${e(BarCore.glassNames[l.glass])} · 酒液颜色 ${e(l.color)}` : "旧日记未记录外观"}">${l.glass ? glass(l.glass, l.color) : '<span class="muted small">未记录外观</span>'}</div><div class="journal-copy"><time>${e(l.date)}</time><h2>${e(l.name)}</h2>${l.glass ? `<span class="muted small">${e(BarCore.glassNames[l.glass])}</span>` : ""}<p>${e(l.note || "今天，简单记录一下。")}</p></div><div class="journal-actions"><button class="text-button" data-edit-log="${e(l.id)}" aria-label="编辑${e(l.name)}日记">${l.note ? "编辑" : "补充备注"}</button><button class="text-button" data-delete-log="${e(l.id)}" aria-label="删除${e(l.name)}日记">删除</button></div></article>`,
+                  `<article class="journal-entry"><div class="journal-glass" role="img" aria-label="${l.glass ? `${e(BarCore.glassNames[l.glass])} · 酒液颜色 ${e(l.color)}` : "旧日记未记录外观"}">${l.glass ? glass(l.glass, l.color, l.visual || {}) : '<span class="muted small">未记录外观</span>'}</div><div class="journal-copy"><time>${e(l.date)}</time><h2>${e(l.name)}</h2>${l.glass ? `<span class="muted small">${e(BarCore.glassNames[l.glass])}</span>` : ""}<p>${e(l.note || "未填写备注")}</p>${l.photos?.length ? `<div class="journal-photos">${l.photos.map((p,i)=>`<a href="${p}" download="cocktail-${e(l.date)}-${i+1}.jpg" aria-label="下载日记照片 ${i+1}"><img src="${p}" alt="${e(l.name)}的照片 ${i+1}" loading="lazy"></a>`).join("")}</div>` : ""}</div><div class="journal-actions">${l.recipeID && recipes().some(r=>r.id===l.recipeID) ? tasteUI.rateButton(l.recipeID) : ""}<button class="text-button" data-edit-log="${e(l.id)}" aria-label="编辑${e(l.name)}日记">${l.note ? "编辑" : "补充备注"}</button><button class="text-button" data-delete-log="${e(l.id)}" aria-label="删除${e(l.name)}日记">删除</button></div></article>`,
               )
               .join("")
-          : '<div class="calendar-empty"><p>这一天还没有记录</p><span class="muted small">选中日期后，点击“记一杯”就能补记当天的故事。</span></div>'
+          : '<div class="calendar-empty"><p>这一天还没有记录</p><span class="muted small">选中日期后，点击“记一杯”添加记录。</span></div>'
       }</div></section>`;
   }
-  function openLog(name = "", appearance = {}, entry = null) {
+  function openLog(name = "", appearance = {}, entry = null, recipeID = entry?.recipeID) {
     const look = BarCore.drinkAppearance({}, appearance);
     showModal(
-      `<form id="log-form"><h2>${entry ? "编辑这一杯" : "记下这一杯"}</h2><div id="log-preview" class="log-preview">${glass(look.glass, look.color)}</div><div class="form-row"><label>杯型<select name="glass">${Object.entries(BarCore.glassNames).map(([k,v]) => `<option value="${k}" ${look.glass === k ? "selected" : ""}>${v}</option>`).join("")}</select></label><label>酒液颜色<input name="color" type="color" value="${look.color}"></label></div><label>日期<input name="date" type="date" min="0001-01-01" max="9999-12-31" value="${e(entry?.date || (page === "journal" ? journalDate : today()))}" required></label><label>酒名<input name="name" required maxlength="100" value="${e(name)}"></label><label>今天的感受<textarea name="note" maxlength="3000" rows="4" placeholder="有一点酸，刚好是喜欢的味道。">${e(entry?.note || "")}</textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存日记</button></div></form>`,
+      `<form id="log-form"><h2>${entry ? "编辑日记" : "添加日记"}</h2><div id="log-preview" class="log-preview">${glass(look.glass, look.color, look.visual || {})}</div><div class="form-row"><label>杯型<select name="glass">${Object.entries(BarCore.glassNames).map(([k,v]) => `<option value="${k}" ${look.glass === k ? "selected" : ""}>${v}</option>`).join("")}</select></label><label>酒液颜色<input name="color" type="color" value="${look.color}"></label></div><label>外观<select name="visual"><option value="keep">保留当前外观</option><option value="plain">自选纯色</option><option value="sunset">下蓝上橙 · 自定义外观参考</option></select></label><label>日期<input name="date" type="date" min="0001-01-01" max="9999-12-31" value="${e(entry?.date || (page === "journal" ? journalDate : today()))}" required></label><label>酒名<input name="name" required maxlength="100" value="${e(name)}"></label><label>今天的感受<textarea name="note" maxlength="3000" rows="4" placeholder="口味、用量调整或其他备注">${e(entry?.note || "")}</textarea></label><label>这一杯的照片<input type="file" data-photo-input accept="image/jpeg,image/png,image/webp" multiple></label><p class="small muted">最多 3 张，每张原图不超过 12 MB。仅在本机压缩保存，备份包含照片，不保留原图。</p><div class="photo-gallery" data-photo-preview></div><p class="small" data-photo-status role="status"></p><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存日记</button></div></form>`,
     );
     const form = document.querySelector("#log-form");
+    const photos = BarPhotos.mount(form, entry?.photos || []);
+    let visual = { ...look.visual };
     const preview = () => {
-      document.querySelector("#log-preview").innerHTML = glass(form.elements.glass.value, form.elements.color.value);
+      document.querySelector("#log-preview").innerHTML = glass(form.elements.glass.value, form.elements.color.value, visual);
     };
     form.elements.glass.onchange = preview;
-    form.elements.color.oninput = preview;
+    form.elements.color.oninput = () => { visual = { ...visual, layers: undefined }; form.elements.visual.value = 'plain'; preview(); };
+    form.elements.visual.onchange = () => {
+      visual = form.elements.visual.value === 'sunset' ? { ...BarCore.sunsetLook } : form.elements.visual.value === 'keep' ? { ...look.visual } : { ...look.visual, layers: undefined };
+      preview();
+    };
     form.onsubmit = (event) => {
       event.preventDefault();
       const f = event.target.elements;
-      if (!f.name.value.trim()) return;
+      if (!f.name.value.trim() || photos.busy()) return;
       const updated = {
         ...entry,
         id: entry?.id || uid(),
+        ...(recipeID ? { recipeID } : {}),
         date: f.date.value,
         name: f.name.value.trim(),
         note: f.note.value.trim(),
         glass: f.glass.value,
         color: f.color.value,
+        visual,
+        photos: photos.value(),
       };
       const logs = entry ? state.logs.map(l => l.id === entry.id ? updated : l) : [...state.logs, updated];
       if (save({ ...state, logs })) {
@@ -490,7 +517,7 @@
   }
   function settings() {
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><span class="eyebrow">MAKE YOURSELF AT HOME</span><h1>设置与数据</h1><p>吧台保存在当前设备，备份可以带到另一台设备。</p></div></div>${storageError ? `<p class="notice">${e(storageError)}</p>` : ""}<section class="settings-card"><h2>显示外观</h2><label>主题<select id="theme">${[
+      `<div class="page-heading"><div><h1>设置与数据</h1><p>吧台保存在当前设备，备份可以带到另一台设备。</p></div></div>${storageError ? `<p class="notice">${e(storageError)}</p>` : ""}<section class="settings-card"><h2>显示外观</h2><label>主题<select id="theme">${[
         ["system", "跟随系统"],
         ["light", "浅色"],
         ["dark", "深色"],
@@ -501,7 +528,7 @@
         )
         .join(
           "",
-        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>包含新吧台的材料、手绘外观、收藏、自建配方和文字日记。不同设备不会自动同步。原 iOS 照片日历和导入内容仍保留在原功能中。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于这间小吧台</h2><p>120 款原有配方均已提供步骤与动作演示，12 款采用单独编排，其余按原有做法生成；自建配方提供逐项备料和原方指引。所有配方都支持材料检查。</p><p class="muted">新吧台在 iOS、网页与 Mac 使用相同界面和匹配规则。小红书网页导入、系统小组件和照片日历继续由原 iOS App 提供。</p></section>`;
+        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>包含新吧台的材料、手绘外观、收藏、自建配方、日记（含压缩照片）和口味 DNA（小测与评价）。不同设备不会自动同步。原 iOS 照片日历和导入内容仍保留在原功能中。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>130 款配方均提供步骤与动作演示，新增 10 款 IBA 精选附官方来源；自建配方提供逐项备料和原方指引。所有配方都支持材料检查。</p><p class="muted">新吧台在 iOS、网页与 Mac 使用相同界面和匹配规则。小红书网页导入、系统小组件和照片日历继续由原 iOS App 提供。</p></section>`;
     document.querySelector("#theme").onchange = (event) => {
       if (save({ ...state, theme: event.target.value })) applyTheme();
     };
@@ -627,7 +654,7 @@
     if (d.action === "log" || d.log) openLog(d.log || "");
     if (d.logRecipe) {
       const recipe = recipes().find(r => r.id === d.logRecipe);
-      if (recipe) openLog(recipe.chineseName, BarCore.drinkAppearance(recipe));
+      if (recipe) openLog(recipe.chineseName, BarCore.drinkAppearance(recipe), null, recipe.id);
     }
     if (d.editLog) {
       const entry = state.logs.find(l => l.id === d.editLog);
@@ -658,8 +685,8 @@
       limit = d.limit;
       discover();
     }
-    if (d.action === "mine" || d.action === "guided") {
-      const v = d.action === "mine" ? "mine" : "guided";
+    if (["mine", "guided", "researched"].includes(d.action)) {
+      const v = d.action;
       collection = collection === v ? "all" : v;
       discover();
     }
@@ -700,6 +727,7 @@
     }
   });
   applyTheme();
+  const tasteUI = BarTasteUI.create({ getState:()=>state, getRecipes:recipes, save, showModal, closeModal, toast, refresh:route, badge });
   if (host.route) history.replaceState(null, "", `#${host.route}`);
   route();
   if (storageError) toast(storageError);

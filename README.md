@@ -1,6 +1,6 @@
 # 大喝特喝 · iOS / Web / Mac
 
-新增共用吧台、材料匹配和动画跟做。Windows 测试可双击 `启动网页版.cmd`，或运行 `npm.cmd start` 后打开 `http://127.0.0.1:5173`。跨平台运行、功能边界和数据迁移见 [README-CROSS-PLATFORM.md](README-CROSS-PLATFORM.md)。以下保留原 iOS 功能说明。
+Discover your Cocktail DNA：通过本地八维风味档案、口味小测、评价和可解释推荐，发现自己喜欢什么，以及下一杯可以尝试什么。共用吧台、材料匹配、动画跟做与月历日记串联完整流程，无账号或外部 AI 依赖。Windows 测试可双击 `启动网页版.cmd`，或运行 `npm.cmd start` 后打开 `http://127.0.0.1:5173`。跨平台运行、功能边界和数据迁移见 [README-CROSS-PLATFORM.md](README-CROSS-PLATFORM.md)。以下保留原 iOS 功能说明。
 
 这是从 `60款鸡尾酒配方整理.docx` 和 `60款世界著名鸡尾酒调法.docx` 校对整理出来的 SwiftUI 离线应用，适合在 iPhone 上查看配方。
 
