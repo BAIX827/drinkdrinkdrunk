@@ -1,0 +1,1 @@
+.music{display:flex;align-items:center;gap:10rpx;margin:18rpx 0}.music button{font-size:23rpx;line-height:1.6;padding:12rpx 20rpx;border:1rpx solid #78876a;border-radius:22rpx;background:transparent;color:#b9ab72;margin:0}.music button::after{border:0}.music slider{flex:1;margin:0 6rpx}

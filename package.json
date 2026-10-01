@@ -7,6 +7,8 @@
     "start": "node scripts/serve.mjs",
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
+    "build:weapp": "node scripts/build-weapp.mjs",
+    "test:weapp": "node --test tests/weapp.test.mjs",
     "test": "node --test tests/*.test.mjs",
     "verify": "npm run build && npm test"
   }

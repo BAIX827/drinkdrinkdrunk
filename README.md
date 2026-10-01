@@ -1,5 +1,17 @@
 # 大喝特喝 · iOS / Web / Mac
 
+微信小程序版本已生成在 [`wechat/`](wechat/README.md)。在微信开发者工具中直接导入这个目录，后端服务选「不使用云服务」；不需要启动网页版服务器。功能范围、备份迁移和导入步骤见小程序说明。
+
+## 项目目录与清理约定
+
+- `Cocktail60/`、`Cocktail60Widget/`、`Cocktail60.xcodeproj/`、`macOS/`：iOS、小组件、Mac 工程和各端共用的 `BarWeb/` 源码。
+- `data/`：配方补充、步骤和外观数据；`scripts/`：构建、资源生成和检查脚本；`tests/`：自动测试。
+- `wechat/`：可直接导入的小程序，包含源码及运行必需的已生成页面、图片和语音。
+- `wechat-templates/`：**必须保留的中文 WXML 源模板**，`npm.cmd run build:weapp` 读取它们生成双语页面，不是废弃示例。页面修改应在模板中进行，避免下次构建覆盖。
+- `dist/`、`output/`、`test-results/`：构建副本、截图、报告和临时资源，已忽略 Git。旧产物可清理，按需重新生成；`test-results/weapp-tools/` 是可选语音编码工具的本地安装，清理后须重新安装才能重建音频。
+
+完整代码验证：运行 `npm.cmd run build:weapp`，然后运行 `npm.cmd test`。小程序原生模板编译方式见小程序说明。浏览器检查脚本集中在 `scripts/`；从仓库根目录运行，需可选依赖 Playwright 和 Edge，也可用环境变量 `PLAYWRIGHT_PATH` 指向已有 Playwright 安装。旧 Web 检查脚本使用各自指定的本地测试端口，截图与报告写入 `output/`。
+
 Discover your Cocktail DNA：通过本地八维风味档案、口味小测、评价和可解释推荐，发现自己喜欢什么，以及下一杯可以尝试什么。共用吧台、材料匹配、动画跟做与月历日记串联完整流程，无账号或外部 AI 依赖。Windows 测试可双击 `启动网页版.cmd`，或运行 `npm.cmd start` 后打开 `http://127.0.0.1:5173`。跨平台运行、功能边界和数据迁移见 [README-CROSS-PLATFORM.md](README-CROSS-PLATFORM.md)。以下保留原 iOS 功能说明。
 
 这是从 `60款鸡尾酒配方整理.docx` 和 `60款世界著名鸡尾酒调法.docx` 校对整理出来的 SwiftUI 离线应用，适合在 iPhone 上查看配方。

@@ -6,4 +6,6 @@ build/
 dist/
 node_modules/
 test-results/
+output/
 *.log
+wechat/project.private.config.json

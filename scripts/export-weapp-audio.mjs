@@ -1,0 +1,49 @@
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
+import vm from 'node:vm';
+const require = createRequire(import.meta.url), E = require('../wechat/shared/engine'), D = require('../wechat/shared/data');
+const root = new URL('../', import.meta.url), temp = new URL('test-results/wechat/audio/', root);
+mkdirSync(temp, { recursive: true });
+if (process.argv.includes('--prepare')) {
+  const phrases = new Map();
+  for (const locale of ['zh-CN','en']) {
+    E.i18n.setLocale(locale);
+    for (const recipe of D.recipes) for (const step of recipe.steps) {
+      const text = E.i18n.recipeText(recipe, step.hint), key = locale + ':' + text;
+      if (!phrases.has(key)) phrases.set(key, { key, text, locale, id: createHash('sha256').update(key).digest('hex').slice(0,16) });
+    }
+  }
+  writeFileSync(new URL('phrases.json',temp), JSON.stringify([...phrases.values()]));
+  console.log(`${phrases.size} unique spoken instructions prepared.`);
+} else {
+  const library = process.env.WEAPP_LAME_PATH || '../test-results/weapp-tools/node_modules/lamejs/lame.all.js';
+  const context = {}; vm.runInNewContext(readFileSync(new URL(library, import.meta.url),'utf8'),context);
+  function encode(buffer, bitrate) {
+    let offset=12, rate, channels, bits, pcm;
+    while (offset+8<=buffer.length) { const tag=buffer.toString('ascii',offset,offset+4), length=buffer.readUInt32LE(offset+4), start=offset+8;
+      if(tag==='fmt ') { if(buffer.readUInt16LE(start)!==1) throw new Error('PCM WAV required'); channels=buffer.readUInt16LE(start+2); rate=buffer.readUInt32LE(start+4); bits=buffer.readUInt16LE(start+14); }
+      if(tag==='data') pcm=buffer.subarray(start,start+length); offset=start+length+(length%2);
+    }
+    if(bits!==16 || !pcm) throw new Error('16-bit PCM WAV required');
+    const encoder=new context.lamejs.Mp3Encoder(1,rate,bitrate), chunks=[];
+    const samples=new Int16Array(pcm.length/2/channels);
+    for(let i=0;i<samples.length;i++) { let sum=0; for(let c=0;c<channels;c++) sum+=pcm.readInt16LE((i*channels+c)*2); samples[i]=Math.round(sum/channels); }
+    for(let i=0;i<samples.length;i+=1152) chunks.push(Buffer.from(encoder.encodeBuffer(samples.subarray(i,i+1152))));
+    chunks.push(Buffer.from(encoder.flush())); return Buffer.concat(chunks);
+  }
+  mkdirSync(new URL('wechat/assets/audio/',root),{recursive:true});
+  writeFileSync(new URL('wechat/assets/audio/after-hours.mp3',root),encode(readFileSync(new URL('Cocktail60/BarWeb/audio/after-hours.wav',root)),48));
+  const manifest={}, packages=[]; let group=0, bytes=200, count=0;
+  for(const item of JSON.parse(readFileSync(new URL('phrases.json',temp),'utf8'))) {
+    const cached=new URL(item.id+'.mp3',temp);
+    const mp3=existsSync(cached)?readFileSync(cached):encode(readFileSync(new URL(item.id+'.wav',temp)),24);
+    if(!existsSync(cached))writeFileSync(cached,mp3);
+    if(!group || bytes+mp3.length>1650000) { group++; bytes=200; const name='voice-'+String(group).padStart(2,'0'); packages.push({root:name,pages:['index']}); mkdirSync(new URL('wechat/'+name+'/',root),{recursive:true});
+      writeFileSync(new URL('wechat/'+name+'/index.js',root),'Page({});\n'); writeFileSync(new URL('wechat/'+name+'/index.wxml',root),'<view>Voice resources</view>\n'); }
+    const name=packages[group-1].root, file=name+'/'+item.id+'.mp3'; writeFileSync(new URL('wechat/'+file,root),mp3); bytes+=mp3.length; manifest[item.key]={file,package:name}; count++;
+  }
+  writeFileSync(new URL('wechat/shared/voice-index.js',root),'// Generated local speech index.\nmodule.exports='+JSON.stringify(manifest)+';\n');
+  const config=JSON.parse(readFileSync(new URL('wechat/app.json',root),'utf8')); config.subPackages=packages; writeFileSync(new URL('wechat/app.json',root),JSON.stringify(config,null,2)+'\n');
+  console.log(`Compressed music and ${count} speech clips into ${group} resource subpackages.`);
+}

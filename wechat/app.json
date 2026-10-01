@@ -1,0 +1,99 @@
+{
+  "pages": [
+    "pages/discover/index",
+    "pages/inventory/index",
+    "pages/taste/index",
+    "pages/journal/index",
+    "pages/recipe/index",
+    "pages/guide/index",
+    "pages/editor/index",
+    "pages/settings/index",
+    "pages/bottle/index",
+    "pages/share/index",
+    "pages/intro/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "大喝特喝",
+    "navigationBarBackgroundColor": "#122f2a",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#122f2a",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#a4b9ae",
+    "selectedColor": "#e8c68d",
+    "backgroundColor": "#122f2a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "assets/tab-discover.png",
+        "selectedIconPath": "assets/tab-discover-active.png"
+      },
+      {
+        "pagePath": "pages/inventory/index",
+        "text": "我的酒",
+        "iconPath": "assets/tab-inventory.png",
+        "selectedIconPath": "assets/tab-inventory-active.png"
+      },
+      {
+        "pagePath": "pages/taste/index",
+        "text": "口味 DNA",
+        "iconPath": "assets/tab-taste.png",
+        "selectedIconPath": "assets/tab-taste-active.png"
+      },
+      {
+        "pagePath": "pages/journal/index",
+        "text": "日记",
+        "iconPath": "assets/tab-journal.png",
+        "selectedIconPath": "assets/tab-journal-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "bar-art": "/components/art/index",
+    "bar-music": "/components/music/index"
+  },
+  "subPackages": [
+    {
+      "root": "voice-01",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "voice-02",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "voice-03",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "voice-04",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "voice-05",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "voice-06",
+      "pages": [
+        "index"
+      ]
+    }
+  ]
+}

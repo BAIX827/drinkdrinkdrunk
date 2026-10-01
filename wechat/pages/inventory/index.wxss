@@ -1,0 +1,2 @@
+.stock-tile{padding:25rpx 22rpx;border:1rpx solid var(--line);border-radius:20rpx;background:var(--panel)}.stock-tile.owned{border-color:#adc693;background:rgba(150,175,115,.16)}.check{font-size:32rpx;color:#ccca8f}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);background:linear-gradient(#263e2d,#36412a);border-bottom:12rpx solid #88704c;border-radius:18rpx;margin:24rpx 0}.shelf-bottle{text-align:center;padding:10rpx 5rpx;color:#f7efd9}

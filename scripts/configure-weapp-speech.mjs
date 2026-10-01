@@ -1,0 +1,10 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+const version = process.argv[2];
+if (!/^\d+\.\d+\.\d+$/.test(version || '')) throw new Error('Provide the WechatSI version approved in your WeChat console, e.g. node scripts/configure-weapp-speech.mjs <version>');
+const project = JSON.parse(readFileSync(new URL('../wechat/project.config.json',import.meta.url),'utf8'));
+if (!/^wx[0-9a-f]{16}$/i.test(project.appid)) throw new Error('Set your own Mini Program AppID first, then authorize WechatSI in the WeChat console.');
+const file = new URL('../wechat/app.json',import.meta.url), config = JSON.parse(readFileSync(file,'utf8'));
+config.plugins = { ...config.plugins, WechatSI: { provider: 'wx069ba97219f66d99', version } };
+writeFileSync(file,JSON.stringify(config,null,2)+'\n');
+writeFileSync(new URL('../wechat/shared/voice-provider.js',import.meta.url),"module.exports = { enabled: true, create() { return requirePlugin('WechatSI'); } };\n");
+console.log('Custom-text TTS adapter enabled. Plugin access and playback must be verified under your AppID.');
