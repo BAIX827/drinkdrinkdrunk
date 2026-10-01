@@ -27,7 +27,7 @@ test('all recipes have consistent renderable appearance and additional glass fam
   }
   for (const [glass, expected] of [['热饮杯','mug'],['飓风杯','hurricane'],['玛格丽特杯','margarita'],['烈酒杯','shot']])
     assert.equal(BarCore.drinkAppearance({glass}).glass,expected);
-  assert.equal(BarData.recipes.filter(r=>r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length,10);
+  assert.equal(BarData.recipes.filter(r=>r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length,25);
 });
 
 test('layer order is top to bottom and journal backup preserves photos and visual snapshots', () => {

@@ -20,6 +20,7 @@
 		F00000000000000000000027 /* AddRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000017 /* AddRecipeView.swift */; };
 		F00000000000000000000028 /* RecipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000018 /* RecipeSearch.swift */; };
 		F00000000000000000000029 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
+		F00000000000000000000060 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
 		F0000000000000000000002A /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
 		F0000000000000000000002B /* AppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001C /* AppearanceStore.swift */; };
 		F0000000000000000000002C /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001D /* AppearanceSettingsView.swift */; };
@@ -34,6 +35,7 @@
 		F00000000000000000000041 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
 		F00000000000000000000042 /* CocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000013 /* CocktailData.swift */; };
 		F00000000000000000000043 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
+		F00000000000000000000061 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
 		F00000000000000000000044 /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
 		F00000000000000000000045 /* Cocktail60Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F00000000000000000000033 /* Cocktail60Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -76,6 +78,7 @@
 		F00000000000000000000018 /* RecipeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSearch.swift; sourceTree = "<group>"; };
 		F00000000000000000000019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0000000000000000000001A /* WorldCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldCocktailData.swift; sourceTree = "<group>"; };
+		F00000000000000000000062 /* CuratedCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCocktailData.swift; sourceTree = "<group>"; };
 		F0000000000000000000001B /* CocktailLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailLibrary.swift; sourceTree = "<group>"; };
 		F0000000000000000000001C /* AppearanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceStore.swift; sourceTree = "<group>"; };
 		F0000000000000000000001D /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 				F00000000000000000000012 /* CocktailRecipe.swift */,
 				F00000000000000000000013 /* CocktailData.swift */,
 				F0000000000000000000001A /* WorldCocktailData.swift */,
+				F00000000000000000000062 /* CuratedCocktailData.swift */,
 				F0000000000000000000001B /* CocktailLibrary.swift */,
 				F00000000000000000000014 /* FavoritesStore.swift */,
 				F00000000000000000000016 /* RecipeStore.swift */,
@@ -268,6 +272,7 @@
 				F00000000000000000000027 /* AddRecipeView.swift in Sources */,
 				F00000000000000000000028 /* RecipeSearch.swift in Sources */,
 				F00000000000000000000029 /* WorldCocktailData.swift in Sources */,
+				F00000000000000000000060 /* CuratedCocktailData.swift in Sources */,
 				F0000000000000000000002A /* CocktailLibrary.swift in Sources */,
 				F0000000000000000000002B /* AppearanceStore.swift in Sources */,
 				F0000000000000000000002C /* AppearanceSettingsView.swift in Sources */,
@@ -287,6 +292,7 @@
 				F00000000000000000000041 /* CocktailRecipe.swift in Sources */,
 				F00000000000000000000042 /* CocktailData.swift in Sources */,
 				F00000000000000000000043 /* WorldCocktailData.swift in Sources */,
+				F00000000000000000000061 /* CuratedCocktailData.swift in Sources */,
 				F00000000000000000000044 /* CocktailLibrary.swift in Sources */,
 			);
 		};

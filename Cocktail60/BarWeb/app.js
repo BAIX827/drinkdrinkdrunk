@@ -527,7 +527,7 @@
         )
         .join(
           "",
-        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>备份包含材料、收藏、自建配方、日记照片和口味档案。设备之间不自动同步。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>130 款配方，含 10 款 IBA 精选。</p></section>`;
+        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>备份包含材料、收藏、自建配方、日记照片和口味档案。设备之间不自动同步。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>${BarData.recipes.length} 款配方，含 ${BarData.recipes.filter(r => r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length} 款 IBA 精选。</p></section>`;
     document.querySelector("#theme").onchange = (event) => {
       if (save({ ...state, theme: event.target.value })) applyTheme();
     };

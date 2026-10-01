@@ -41,7 +41,7 @@ test('empty, duplicate or invalid palette preferences cannot enter a backup', ()
   ]) assert.throws(()=>T.validate({onboarding,ratings:[]}));
 });
 
-test('all 120 recipes and catalogue ingredients have bounded deterministic estimates',()=>{
+test('all built-in recipes and catalogue ingredients have bounded deterministic estimates',()=>{
   for(const item of BarData.catalog) assert.ok(BarTasteData[BarCore.canonical(item.name)],item.name);
   for(const recipe of BarData.recipes) {
     const p=T.profile(recipe);
