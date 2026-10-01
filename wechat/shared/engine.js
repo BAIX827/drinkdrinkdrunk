@@ -219,6 +219,9 @@ const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
     )
       throw new Error("备份内容过大。");
     const isText = (x) => typeof x === "string" && x.length <= 5000;
+    if (['nativeImportedRecipeIDs', 'nativeMigrationSources'].some(key => value[key] !== undefined &&
+      (!Array.isArray(value[key]) || value[key].length > 10000 || !value[key].every(isText))))
+      throw new Error("迁移记录格式不正确。");
     if (
       !value.inventory.every(
         (i) =>
@@ -255,6 +258,7 @@ const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
           isText(r.englishName) &&
           isText(r.method) &&
           isText(r.glass) &&
+          (r.photo === undefined || (typeof r.photo === 'string' && r.photo.length <= 180000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(r.photo))) &&
           (r.appearance === undefined || (validVisual(r.appearance) && validColor(r.appearance.color))) &&
           Array.isArray(r.ingredients) &&
           r.ingredients.length > 0 &&
@@ -275,7 +279,7 @@ const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
           isText(l.note) &&
           (l.recipeID === undefined || isText(l.recipeID)) &&
           (l.visual === undefined || validVisual(l.visual)) &&
-          (l.photos === undefined || (Array.isArray(l.photos) && l.photos.length <= 3 && l.photos.every(p => typeof p === 'string' && p.length <= 180000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(p)))) &&
+          (l.photos === undefined || (Array.isArray(l.photos) && l.photos.length <= (l.legacyPhotos === true ? 256 : 3) && l.photos.every(p => typeof p === 'string' && p.length <= 180000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(p)))) &&
           ((l.glass === undefined && l.color === undefined) ||
             (hasOwn(glassNames, l.glass) && /^#[0-9a-f]{6}$/i.test(l.color))),
       )
@@ -299,6 +303,7 @@ const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
         accentHex: /^#[0-9a-f]{6}$/i.test(r.accentHex) ? r.accentHex : '#b87b5d',
         ...(r.appearance ? { appearance: { color: r.appearance.color, layers: r.appearance.layers,
           garnish: r.appearance.garnish, ice: r.appearance.ice, foam: r.appearance.foam } } : {}),
+        ...(r.photo ? { photo: r.photo } : {}),
         isUserCreated: true,
       })),
       theme: ["bar", "light", "dark"].includes(value.theme)
