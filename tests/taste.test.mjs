@@ -8,6 +8,39 @@ const T=BarTaste;
 const answers={drink:'lemonade',style:'fresh',flavors:['lemon','mint']};
 const record=(i,changes={})=>({recipeID:`test-${i}`,name:`测试 ${i}`,value:'like',vector:[70,80,10,30,85,40,0,20],base:'金酒',family:'酸甜系 Sour',feedback:[],updatedAt:new Date(Date.UTC(2026,0,i+1)).toISOString(),...changes});
 
+test('flavor palette reacts to ingredients and strength without depending on selection order', () => {
+  const seed = keys => ({ palette: keys, strength: 'balanced' });
+  assert.ok(T.initial(seed(['lemon']))[1] > T.initial(seed(['coconut']))[1]);
+  assert.ok(T.initial(seed(['coffee']))[2] > T.initial(seed(['orange']))[2]);
+  assert.ok(T.initial(seed(['mint']))[5] > T.initial(seed(['berry']))[5]);
+  assert.ok(T.initial(seed(['smoky']))[6] > T.initial(seed(['mint']))[6]);
+  assert.deepEqual(T.initial(seed(['lemon','mint'])), T.initial(seed(['mint','lemon'])));
+  const light = T.initial({ ...seed(['lemon']), strength: 'light' });
+  const bold = T.initial({ ...seed(['lemon']), strength: 'bold' });
+  assert.ok(bold[3] > light[3]);
+  assert.deepEqual(bold.filter((_,i)=>i!==3), light.filter((_,i)=>i!==3));
+  for(const key of Object.keys(T.palette)) assert.ok(T.initial(seed([key])).every(v=>Number.isInteger(v)&&v>=0&&v<=100));
+});
+
+test('palette backups preserve ratings and produce the same DNA and recommendations after restore', () => {
+  const taste = { onboarding: { palette:['lemon','mint'], strength:'light' }, ratings:[record(0)] };
+  const state = { ...BarCore.blankState(), taste };
+  const restored = BarCore.validateState(JSON.parse(JSON.stringify(state)));
+  assert.deepEqual(restored, state);
+  assert.deepEqual(T.dna(restored.taste), T.dna(taste));
+  assert.deepEqual(T.recommend(BarData.recipes,restored.taste), T.recommend(BarData.recipes,taste));
+  assert.notDeepEqual(T.dna(taste).vector, T.dna({...taste,ratings:[]}).vector);
+  assert.deepEqual(T.validate({onboarding:answers,ratings:[]}).onboarding, answers);
+});
+
+test('empty, duplicate or invalid palette preferences cannot enter a backup', () => {
+  for(const onboarding of [
+    {palette:[],strength:'balanced'}, {palette:['lemon','lemon'],strength:'balanced'},
+    {palette:['invented'],strength:'balanced'}, {palette:['constructor'],strength:'balanced'},
+    {palette:['mint'],strength:'unknown'}, {palette:null,strength:'light'},
+  ]) assert.throws(()=>T.validate({onboarding,ratings:[]}));
+});
+
 test('all 120 recipes and catalogue ingredients have bounded deterministic estimates',()=>{
   for(const item of BarData.catalog) assert.ok(BarTasteData[BarCore.canonical(item.name)],item.name);
   for(const recipe of BarData.recipes) {

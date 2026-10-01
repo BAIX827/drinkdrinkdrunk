@@ -21,6 +21,18 @@
     coffee: ["咖啡", 2], lemon: ["柠檬", 1], orange: ["橙子", 4], berry: ["莓果", 4],
     mint: ["薄荷", 5], ginger: ["生姜", 5], coconut: ["椰子", 7], chocolate: ["巧克力", 7], smoky: ["烟熏", 6],
   };
+  const palette = {
+    lemon: ["柠檬", "#d6b958", [30,85,10,45,75,15,5,20]],
+    orange: ["橙子", "#da945a", [65,50,15,45,85,15,5,30]],
+    berry: ["莓果", "#b77189", [60,60,10,45,90,10,5,35]],
+    mint: ["薄荷", "#78a891", [25,40,25,45,25,90,5,15]],
+    ginger: ["生姜", "#bc975d", [30,30,25,45,25,75,10,30]],
+    coffee: ["咖啡", "#956f59", [15,25,80,45,10,25,20,65]],
+    coconut: ["椰子", "#b9ae90", [65,10,10,45,35,10,5,90]],
+    chocolate: ["巧克力", "#916f78", [70,10,45,45,10,10,10,85]],
+    smoky: ["烟熏", "#84969a", [20,15,45,45,10,35,90,55]],
+  };
+  const strengths = { light: ["轻柔", 25], balanced: ["适中", 45], bold: ["浓烈", 75] };
   const feedback = { sweet: ["太甜", 0, -25], sour: ["太酸", 1, -25], bitter: ["太苦", 2, -25], strong: ["太烈", 3, -25], weak: ["太淡", 3, 25] };
   const clamp = n => Math.max(0, Math.min(100, n));
   const vectorValid = v => Array.isArray(v) && v.length === 8 && v.every(n => Number.isFinite(n) && n >= 0 && n <= 100);
@@ -29,18 +41,27 @@
     const text = s => typeof s === "string" && s.length > 0 && s.length <= 200;
     const list = (items, choices) => Array.isArray(items) && items.length <= Object.keys(choices).length && new Set(items).size === items.length && items.every(k => Object.hasOwn(choices, k));
     const o = value?.onboarding;
-    if (!value || (o !== null && (!o || !Object.hasOwn(drinks, o.drink) || !Object.hasOwn(styles, o.style) || !list(o.flavors, flavors))) ||
+    const paletteMode = !!o && Object.hasOwn(o, "palette");
+    const validSeed = o === null || (o && (paletteMode
+      ? list(o.palette, palette) && o.palette.length > 0 && Object.hasOwn(strengths, o.strength)
+      : Object.hasOwn(drinks, o.drink) && Object.hasOwn(styles, o.style) && list(o.flavors, flavors)));
+    if (!value || !validSeed ||
       !Array.isArray(value.ratings) || value.ratings.length > 2000 ||
       !value.ratings.every(r => r && text(r.recipeID) && text(r.name) && ["like","okay","dislike"].includes(r.value) &&
         vectorValid(r.vector) && text(r.base) && text(r.family) && list(r.feedback, feedback) &&
         !(r.feedback.includes("strong") && r.feedback.includes("weak")) &&
         typeof r.updatedAt === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(r.updatedAt) && Number.isFinite(Date.parse(r.updatedAt))) ||
       new Set(value.ratings.map(r => r.recipeID)).size !== value.ratings.length) throw new Error("口味档案格式不正确。");
-    return { onboarding: o ? { drink: o.drink, style: o.style, flavors: [...o.flavors] } : null,
+    return { onboarding: o ? (paletteMode ? { palette: [...o.palette], strength: o.strength } : { drink: o.drink, style: o.style, flavors: [...o.flavors] }) : null,
       ratings: value.ratings.map(r => ({ recipeID:r.recipeID, name:r.name, value:r.value, vector:[...r.vector], base:r.base, family:r.family, feedback:[...r.feedback], updatedAt:r.updatedAt })) };
   }
   function initial(answers) {
     if (!answers) return [...neutral];
+    if (answers.palette) {
+      const vector = neutral.map((n,i) => Math.round((n + answers.palette.reduce((sum,key) => sum + palette[key][2][i], 0)) / (answers.palette.length + 1)));
+      vector[3] = strengths[answers.strength][1];
+      return vector;
+    }
     const vector = drinks[answers.drink][1].map((v,i) => (v + styles[answers.style][1][i]) / 2);
     const selected = new Set(answers.flavors.map(k => flavors[k][1]));
     for (const i of selected) vector[i] = clamp(vector[i] + 12);
@@ -124,7 +145,7 @@
       description:describe(vector) };
   }
   function explain(profile, user) {
-    if (!user.ready) return "完成口味小测或评价一杯，开始发现你的偏好。";
+    if (!user.ready) return "选择喜欢的风味，或评价喝过的酒。";
     if(profile.unknown.length) return "部分材料尚无风味数据，暂不计算匹配度。";
     const closest=profile.vector.map((v,i)=>({i,d:Math.abs(v-user.vector[i])})).filter(x=>user.vector[x.i]>=30 || profile.vector[x.i]>=30).sort((a,b)=>a.d-b.d||a.i-b.i).slice(0,2);
     const different=profile.vector.map((v,i)=>({i,d:v-user.vector[i]})).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)||a.i-b.i)[0];
@@ -142,5 +163,5 @@
       { title:"走出熟悉口味", subtitle:"差异适中，先看看哪里不同", items:ranked.filter(x=>x.score>=45&&x.score<65).slice(0,3) },
     ];
   }
-  globalThis.BarTaste={dimensions,drinks,styles,flavors,feedback,empty,validate,initial,profile,dna,score,distance,strength,characteristics,describe,explain,recommend};
+  globalThis.BarTaste={dimensions,drinks,styles,flavors,palette,strengths,feedback,empty,validate,initial,profile,dna,score,distance,strength,characteristics,describe,explain,recommend};
 })();

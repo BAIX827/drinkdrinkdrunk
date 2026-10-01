@@ -5,15 +5,16 @@ import '../Cocktail60/BarWeb/taste.js';
 import '../Cocktail60/BarWeb/art.js';
 import '../Cocktail60/BarWeb/data.js';
 import '../Cocktail60/BarWeb/photos.js';
+const layeredLook = { layers: ['#96354c', '#e6c286'], garnish: 'orange', ice: true };
 
 test('custom recipe appearance survives backup and unsupported photo inputs fail before decoding', async () => {
-  const recipe = {id:'user-sunset',chineseName:'外观测试',englishName:'',ingredients:['金酒 30 ml'],
+  const recipe = {id:'user-layered',chineseName:'外观测试',englishName:'',ingredients:['金酒 30 ml'],
     method:'自定义操作',glass:'高球杯',tags:['我的配方'],accentHex:'#e6aa66',isUserCreated:true,
-    appearance:{color:'#e6aa66',...BarCore.sunsetLook}};
+    appearance:{color:'#e6aa66',...layeredLook}};
   const state = BarCore.validateState({...BarCore.blankState(),customRecipes:[recipe]});
   const restored = BarCore.validateState(JSON.parse(JSON.stringify(state)));
-  assert.deepEqual(restored.customRecipes[0].appearance.layers,BarCore.sunsetLook.layers);
-  assert.match(BarArt.drink(restored.customRecipes[0]),/stop-color="#32a7dc"/);
+  assert.deepEqual(restored.customRecipes[0].appearance.layers,layeredLook.layers);
+  assert.match(BarArt.drink(restored.customRecipes[0]),/stop-color="#e6c286"/);
   await assert.rejects(BarPhotos.compress({type:'image/svg+xml',size:100}),/JPG/);
   await assert.rejects(BarPhotos.compress({type:'image/jpeg',size:13*1024*1024}),/12 MB/);
 });
@@ -30,9 +31,9 @@ test('all recipes have consistent renderable appearance and additional glass fam
 });
 
 test('layer order is top to bottom and journal backup preserves photos and visual snapshots', () => {
-  const look = {glass:'highball',color:'#eaa456',visual:{...BarCore.sunsetLook}};
+  const look = {glass:'highball',color:'#eaa456',visual:{...layeredLook}};
   const svg = BarArt.glass(look.glass,look.color,look.visual);
-  assert.ok(svg.indexOf('stop-color="#f1a344"') < svg.indexOf('stop-color="#32a7dc"'));
+  assert.ok(svg.indexOf('stop-color="#96354c"') < svg.indexOf('stop-color="#e6c286"'));
   const log = {id:'test',date:'2026-09-30',name:'测试',note:'',...look,photos:['data:image/jpeg;base64,/9j/2Q==']};
   const state = {...BarCore.blankState(),logs:[log]};
   assert.deepEqual(BarCore.validateState(JSON.parse(JSON.stringify(state))).logs,[log]);
@@ -48,5 +49,16 @@ test('carton and jar do not reuse a floating bottle cap; all new shapes survive 
   for (const shape of Object.keys(BarCore.bottleShapes)) {
     const item = {id:shape,name:shape,type:'金酒',shape,color:'#537f82',drawing:[]};
     assert.equal(BarCore.validateState({...BarCore.blankState(),inventory:[item]}).inventory[0].shape,shape);
+  }
+});
+
+test('bottle caps cover and stay centered on their own necks', () => {
+  for (const shape of ['bottle', 'round', 'whiskey', 'gin', 'vodka', 'rum']) {
+    const svg = BarArt.bottle({ shape });
+    const [, left, top, right] = svg.match(/<path d="M(\d+) (\d+)H(\d+)/).map(Number);
+    const [, x, y, width, height] = svg.match(/data-cap="bottle" x="(\d+)" y="(\d+)" width="(\d+)" height="(\d+)"/).map(Number);
+    assert.equal(x + width / 2, (left + right) / 2, `${shape}: centered cap`);
+    assert.ok(x < left && x + width > right, `${shape}: covers both neck edges`);
+    assert.ok(y <= top && y + height > top, `${shape}: overlaps neck opening`);
   }
 });

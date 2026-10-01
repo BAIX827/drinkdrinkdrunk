@@ -134,7 +134,6 @@
     bowl: "分享碗",
   };
   const bottleShapes = { bottle: '经典长瓶', round: '圆肚酒瓶', whiskey: '方肩威士忌瓶', gin: '平肩金酒瓶', vodka: '圆肩伏特加瓶', tequila: '矮身龙舌兰瓶', rum: '修长朗姆瓶', carton: '果汁纸盒', jar: '糖浆罐' };
-  const sunsetLook = { layers: ['#f1a344', '#32a7dc'], garnish: 'orange', ice: true };
   const validColor = value => /^#[0-9a-f]{6}$/i.test(value);
   function validVisual(v) {
     return v && typeof v === 'object' && !Array.isArray(v) &&
@@ -192,7 +191,7 @@
     customRecipes: [],
     logs: [],
     taste: { onboarding: null, ratings: [] },
-    theme: "system",
+    theme: "bar",
     migrated: false,
   });
   function validateState(value) {
@@ -293,9 +292,9 @@
           garnish: r.appearance.garnish, ice: r.appearance.ice, foam: r.appearance.foam } } : {}),
         isUserCreated: true,
       })),
-      theme: ["system", "light", "dark"].includes(value.theme)
+      theme: ["bar", "light", "dark"].includes(value.theme)
         ? value.theme
-        : "system",
+        : "bar",
     };
   }
   globalThis.BarCore = {
@@ -310,7 +309,6 @@
     validateState,
     glassNames,
     bottleShapes,
-    sunsetLook,
     drinkAppearance,
     journalMonth,
   };

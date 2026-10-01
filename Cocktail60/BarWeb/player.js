@@ -144,6 +144,7 @@
     return result;
   }
   function render() {
+    const restoreChoices = BarChoices.remember(root);
     const step = steps[index];
     const target = complete || step.target === "counter" ? "glass" : step.target;
     const content = contentsAt(steps, index, target);
@@ -165,7 +166,7 @@
       name: step.ingredient?.types.join(" / "),
     };
     root.innerHTML = `<div class="player-top"><div><span class="eyebrow">FOLLOW ALONG · ${current.steps ? "动画跟做" : "备料与原方引导"}</span><h1>${e(current.chineseName)}</h1><p>${e(current.englishName)} · 原方杯型：${e(current.glass)}</p></div><button data-player="exit" class="secondary">退出跟做</button></div>
-      ${!current.steps ? '<p class="notice">这款提供逐项备料与原方操作指引，精细动作动画尚未编排。最后一步请按完整原方操作。</p>' : ""}
+      ${!current.steps ? '<p class="notice">自建配方：先备料，再按做法调制。</p>' : ""}
       <div class="player-layout"><section class="stage-panel"><div class="stage ${playing ? "" : "paused"} ${complete ? "completed" : ""} action-${e(step.action)}" style="--target-rim:${targetRim}px;--drink-color:${selectedColor}" role="img" aria-label="${complete ? `调制完成 · ${e(glassNames[selectedGlass])}` : `${e(labels[step.action])} → ${e(targetName)}：${e(step.ingredient?.raw || step.hint)}`}">
       <span class="stage-label">${complete ? "调制完成" : e(labels[step.action])}</span>
       <div class="source-object">${
@@ -185,20 +186,12 @@
       <div class="target-object">${target === "glass" ? glass(selectedGlass, selectedColor, appearance) : vessel(target, appearance)}</div>
       ${!complete && !["glass", "counter"].includes(step.target) ? `<div class="waiting-glass">${glass(selectedGlass, selectedColor, { level: 0, garnish: false })}<small>${e(glassNames[selectedGlass])}</small></div>` : ""}
       <span class="stage-floor">${complete ? e(glassNames[selectedGlass]) : `${item ? `你的「${e(item.name)}」` : e(source.name || step.tool)} → ${e(targetName)}`}</span></div>
-      <label class="glass-select">最终杯型 <select id="player-glass">${Object.entries(
-        glassNames,
-      )
-        .map(
-          ([k, v]) =>
-            `<option value="${k}" ${selectedGlass === k ? "selected" : ""}>${v}</option>`,
-        )
-        .join(
-          "",
-        )}</select></label><label class="glass-select">外观<select id="player-look"><option value="recipe" ${lookMode === "recipe" ? "selected" : ""}>配方默认外观</option><option value="plain" ${lookMode === "plain" ? "selected" : ""}>自选纯色</option><option value="sunset" ${lookMode === "sunset" ? "selected" : ""}>下蓝上橙 · 自定义</option></select></label><label class="glass-select drink-color">酒液颜色 <input type="color" id="player-color" value="${selectedColor}"></label><p class="muted small">日记会保留杯型、颜色和分层。外观随品牌与操作变化，用量以文字为准。</p></section>
-      <section class="step-panel" aria-live="polite"><div class="step-count">STEP ${String(index + 1).padStart(2, "0")} <span>/ ${String(steps.length).padStart(2, "0")}</span></div><progress value="${complete ? steps.length : index + 1}" max="${steps.length}"></progress><h2>${complete ? "这一杯，完成了。" : e(labels[step.action])}</h2><div class="amount">${complete ? "" : e(step.ingredient?.raw || (step.duration ? `${step.duration} 秒` : step.tool))}</div><p class="step-hint">${complete ? "可加入饮酒日记。" : e(step.hint)}</p><p class="muted">器具：${e(step.tool)} · 目标：${e(targetName)}</p><div class="next-step">${index < steps.length - 1 ? `接下来 · ${e(steps[index + 1].ingredient?.raw || labels[steps[index + 1].action])}` : "最后一步 · 完成后记录这一杯"}</div>
+      ${BarChoices.glasses({ id: "player-glass", label: "最终杯型", value: selectedGlass, color: selectedColor, visual: selectedVisual })}${BarChoices.render({ id: "player-look", label: "外观", options: { recipe: "配方外观", plain: "纯色" }, value: lookMode })}<label class="glass-select drink-color">酒液颜色 <input type="color" id="player-color" value="${selectedColor}"></label></section>
+      <section class="step-panel" aria-live="polite"><div class="step-count">STEP ${String(index + 1).padStart(2, "0")} <span>/ ${String(steps.length).padStart(2, "0")}</span></div><progress value="${complete ? steps.length : index + 1}" max="${steps.length}"></progress><h2>${complete ? "这一杯，完成了。" : e(labels[step.action])}</h2><div class="amount">${complete ? "" : e(step.ingredient?.raw || (step.duration ? `${step.duration} 秒` : step.tool))}</div><p class="step-hint">${complete ? "" : e(step.hint)}</p><p class="muted">器具：${e(step.tool)} · 目标：${e(targetName)}</p><div class="next-step">${index < steps.length - 1 ? `接下来 · ${e(steps[index + 1].ingredient?.raw || labels[steps[index + 1].action])}` : "最后一步 · 完成后记录这一杯"}</div>
       <div class="play-controls"><button data-player="prev" class="secondary" ${index === 0 ? "disabled" : ""}>上一步</button><button data-player="toggle" class="primary">${complete ? "重新播放" : playing ? "Ⅱ 暂停" : "▶ 继续"}</button><button data-player="next" class="secondary" ${complete ? "disabled" : ""}>${index === steps.length - 1 ? "完成" : "下一步"}</button></div>
       ${complete ? `<button data-player="record" class="primary wide" ${recorded ? "disabled" : ""}>${recorded ? "已加入饮酒日记" : "一键加入饮酒日记"}</button>` : ""}
-      <div class="play-options"><label>每步等待 <select id="player-delay">${[5, 8, 15, 30, 60].map((s) => `<option value="${s}" ${delay === s ? "selected" : ""}>${s} 秒</option>`).join("")}</select></label><p class="small muted">摇匀、搅拌取操作时长与等待时间的较大值。切换到后台自动暂停。</p><label><input type="checkbox" id="player-speech" ${speech ? "checked" : ""} ${!window.speechSynthesis ? "disabled" : ""}> 语音提示</label><button class="text-button" data-player="wake">${wakeLock ? "已保持常亮" : "保持屏幕常亮"}</button><p id="wake-status" class="small" role="status"></p></div></section></div>`;
+      <div class="play-options"><label>每步等待 <select id="player-delay">${[5, 8, 15, 30, 60].map((s) => `<option value="${s}" ${delay === s ? "selected" : ""}>${s} 秒</option>`).join("")}</select></label><label><input type="checkbox" id="player-speech" ${speech ? "checked" : ""} ${!window.speechSynthesis ? "disabled" : ""}> 语音提示</label><button class="text-button" data-player="wake">${wakeLock ? "已保持常亮" : "保持屏幕常亮"}</button><p id="wake-status" class="small" role="status"></p></div></section></div>`;
+    restoreChoices();
     root.querySelectorAll("[data-player]").forEach(
       (button) =>
         (button.onclick = async () => {
@@ -275,7 +268,7 @@
     root.querySelector("#player-look").onchange = event => {
       lookMode = event.target.value;
       const original = drinkAppearance(current);
-      selectedVisual = lookMode === 'recipe' ? original.visual || {} : lookMode === 'sunset' ? { ...BarCore.sunsetLook } : { garnish: 'none' };
+      selectedVisual = lookMode === 'recipe' ? original.visual || {} : { garnish: 'none' };
       if (lookMode === 'recipe') selectedColor = original.color;
       render();
     };

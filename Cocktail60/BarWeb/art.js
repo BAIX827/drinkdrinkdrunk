@@ -25,11 +25,13 @@
       tequila: 'M44 44H65V63Q87 67 88 85V137Q87 153 69 153H40Q21 153 21 137V85Q22 67 44 63Z',
       rum: 'M46 14H62V66Q76 69 76 82V146Q76 153 67 153H41Q32 153 32 146V82Q32 69 46 66Z',
     };
+    const necks = { bottle: [42, 20], round: [43, 18], whiskey: [43, 22], gin: [44, 20], vodka: [43, 22], rum: [46, 16] };
+    const [neckX, neckWidth] = necks[item.shape] || necks.bottle;
     const cap = item.shape === 'carton'
       ? '<path d="M40 18H69M28 41H82M40 18L52 41L69 18" fill="none" stroke="#fff8e8" stroke-width="3"/>'
       : item.shape === 'jar' ? '<rect data-cap="jar" x="25" y="34" width="57" height="13" rx="4" fill="#ba9560" stroke="#29494d" stroke-width="2"/><path d="M30 39H77" stroke="#e6c892"/>'
       : item.shape === 'tequila' ? '<rect x="41" y="32" width="27" height="17" rx="4" fill="#ba895b" stroke="#765336" stroke-width="2"/>'
-      : `<rect data-cap="bottle" x="${item.shape === 'rum' ? 44 : 41}" y="10" width="${item.shape === 'rum' ? 20 : 26}" height="14" rx="3" fill="#29494d"/><path d="M45 15H61" stroke="#c7a268" stroke-width="2"/>`;
+      : `<rect data-cap="bottle" x="${neckX - 3}" y="10" width="${neckWidth + 6}" height="14" rx="3" fill="#29494d"/><path d="M${neckX + 2} 15H${neckX + neckWidth - 2}" stroke="#c7a268" stroke-width="2"/>`;
     const strokes = (item.drawing || [])
       .map(
         (points) =>

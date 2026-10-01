@@ -8,7 +8,8 @@ function playerHarness() {
   let timerID = 0, html = '';
   const root = {
     set innerHTML(value) { html = value; controls.clear(); },
-    querySelectorAll() {
+    querySelectorAll(selector) {
+      if (selector !== '[data-player]') return [];
       return [...html.matchAll(/data-player="([^"]+)"/g)].map((m) => {
         const button = { dataset: { player: m[1] },
           set textContent(value) { html = html.replace(new RegExp(`(data-player="${m[1]}"[^>]*>)[^<]*`), `$1${value}`); } };
@@ -30,6 +31,7 @@ function playerHarness() {
   });
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/core.js', import.meta.url),'utf8'),context);
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/art.js', import.meta.url),'utf8'),context);
+  vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/choices.js', import.meta.url),'utf8'),context);
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/player.js', import.meta.url),'utf8'),context);
   const recipe = { id:'test', chineseName:'测试', englishName:'Test', glass:'高球杯', accentHex:'#123456', steps:[
     {action:'pour',target:'shaker',tool:'量酒器',hint:'倒入'},
@@ -43,7 +45,7 @@ function playerHarness() {
   };
 }
 
-test('layers appear only after their ingredient enters the glass and custom appearance survives completion', () => {
+test('layers appear only after their ingredient enters the glass and recipe appearance survives completion', () => {
   const h=playerHarness();
   const visual={layers:['#773322','#eacb90'],layerPart:'黑朗姆',garnish:'lime'};
   const steps=[{action:'pour',target:'glass',ingredient:{raw:'姜汁啤酒 100 ml'}},{action:'float',target:'glass',ingredient:{raw:'黑朗姆 60 ml'}}];
@@ -51,10 +53,10 @@ test('layers appear only after their ingredient enters the glass and custom appe
   assert.equal(h.player.visualAt(visual,steps,1,'shaker').layers,undefined);
   assert.deepEqual(h.player.visualAt(visual,steps,1,'glass').layers,visual.layers);
   let saved;
+  h.recipe.appearance = { color: '#eacb90', ...visual };
   h.player.mount(h.root,h.recipe,[],(r,look)=>{saved=look;return true;});
-  h.controls.get('#player-look').onchange({target:{value:'sunset'}});
   h.click('next');h.click('next');h.click('next');h.click('record');
-  assert.deepEqual(Array.from(saved.visual.layers),['#f1a344','#32a7dc']);
+  assert.deepEqual(Array.from(saved.visual.layers),visual.layers);
 });
 test('autoplay respects action duration, pause cancels timers, resume schedules once',()=>{
   const h=playerHarness();h.player.mount(h.root,h.recipe,[],()=>{});

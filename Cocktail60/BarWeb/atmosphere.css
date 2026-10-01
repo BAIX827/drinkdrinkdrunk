@@ -1,0 +1,49 @@
+/* Shared surfaces keep the same lighting across every route and dialog. */
+body { background-image: radial-gradient(ellipse at 85% 0, var(--ambient), transparent 65%); }
+.sidebar { background: linear-gradient(180deg, var(--ambient), transparent 42%), var(--sidebar); box-shadow: 8px 0 35px var(--shadow); }
+.brand { color: var(--ink); }
+.brand small { color: var(--green); letter-spacing: 1.8px; }
+.brand img { box-shadow: 0 0 24px var(--glow); border-radius: 11px; }
+.sidebar nav a.active { background: linear-gradient(90deg, var(--glow), transparent), var(--soft); color: var(--green); box-shadow: inset 2px 0 var(--green), inset 0 0 0 1px var(--line); }
+.sidebar-bottom { border-top: 1px solid var(--line); }
+.tiny-bottles::before { content: ""; position: absolute; z-index: -1; inset: 0 5px 5px; border: 1px solid var(--line); border-radius: 80px 80px 3px 3px; background: radial-gradient(ellipse at 50% 8%, var(--glow), transparent 72%), var(--sidebar); box-shadow: inset 0 4px 20px var(--shadow); }
+.tiny-bottles::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; border-radius: 2px; background: linear-gradient(var(--shelf) 0 2px, var(--wood) 2px); box-shadow: 0 5px 10px var(--shadow); }
+.tiny-bottles svg { filter: drop-shadow(2px 3px 3px var(--shadow)); }
+.topbar { background: linear-gradient(90deg, transparent, var(--ambient)); }
+.topbar-dot { color: var(--green); text-shadow: 0 0 12px var(--green); }
+.page-heading h1, .hero h1 { letter-spacing: 1px; font-weight: 600; }
+.hero { background: radial-gradient(ellipse at 80% 0, var(--glow), transparent 65%), var(--hero); box-shadow: inset 0 1px var(--green), 0 18px 45px var(--shadow); border-radius: 20px; }
+.hero::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 8px; background: linear-gradient(var(--shelf), var(--wood)); }
+.hero-art::before { inset: 0 15px 10px; border-radius: 48% 48% 8px 8px; background: radial-gradient(ellipse at 50% 0, var(--glow), transparent 75%), var(--sidebar); border: 1px solid var(--line); box-shadow: inset 0 12px 32px var(--shadow), 0 0 35px var(--glow); }
+.spark { color: var(--green); text-shadow: 0 0 14px var(--glow); }
+.primary { box-shadow: 0 3px 18px var(--glow); }
+.secondary:hover, .text-button:hover { border-color: var(--green); }
+.recipe-card, .journal-calendar, .taste-panel, .taste-history, .settings-card, .palette-workbench { box-shadow: 0 8px 28px var(--shadow); }
+.recipe-card:hover { border-color: var(--green); box-shadow: 0 12px 32px var(--shadow); }
+.recipe-visual, .detail-art { background-image: radial-gradient(ellipse at 50% 0, var(--glow), transparent 75%); }
+.recipe-visual { border-bottom: 1px solid var(--line); }
+.card-number, .detail-art span { color: var(--muted); }
+.favorite { background: var(--surface); color: var(--green); border: 1px solid var(--line); }
+.favorite.saved { color: var(--orange); }
+.visual-tag { background: var(--sidebar); color: var(--ink); border: 1px solid var(--line); }
+.stage-panel, .dna-identity, .palette-preview { background: radial-gradient(ellipse at 50% 0, var(--glow), transparent 65%), var(--hero); box-shadow: inset 0 1px var(--line); }
+.stage-floor { color: var(--muted); }
+.calendar-heading { padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.calendar-day.has-entries { box-shadow: inset 0 -2px var(--shelf); }
+.calendar-day[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--green); }
+.bar-room { border-color: var(--line); box-shadow: inset 0 0 65px #071a1960, 0 15px 35px var(--shadow); }
+.flavor-token[aria-pressed="true"] { background: radial-gradient(ellipse at 50% 0, var(--glow), transparent 80%), var(--soft); }
+.palette-coaster { border-color: var(--shelf); }
+.choice-card, .flavor-token { box-shadow: 0 3px 10px var(--shadow); }
+dialog { background: linear-gradient(145deg, var(--ambient), transparent 50%), var(--surface); box-shadow: 0 25px 100px #0008; }
+dialog::backdrop { background: #050c0bb8; backdrop-filter: blur(7px); }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: .85; }
+[data-glass] [stroke="#31535a"], [data-vessel] [stroke="#31535a"], [data-bottle] > path[stroke="#29494d"] { stroke: var(--glass-edge); }
+[data-bottle] [data-cap="bottle"] { fill: var(--cap); }
+.hero-art svg, .recipe-visual svg, .detail-art > svg, .target-object svg, .stock-item svg { filter: drop-shadow(0 6px 12px var(--shadow)); }
+@media(max-width: 640px) {
+  .sidebar { background: var(--sidebar); box-shadow: 0 -8px 30px var(--shadow); }
+  .sidebar nav a.active { box-shadow: inset 0 2px var(--green); }
+  .hero-art { width: 290px; right: 12px; bottom: 18px; transform: scale(.58); }
+  .hero-stats { flex-direction: column; gap: 4px; margin-top: 18px; }
+}

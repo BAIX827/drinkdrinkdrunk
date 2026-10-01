@@ -16,6 +16,18 @@ const {
 const recipe = (...ingredients) => ({ ingredients });
 const stock = (...types) => types.map((type) => ({ type, name: "任意名字" }));
 
+test("bar appearance replaces the old default without changing saved records or explicit themes", () => {
+  const state = blankState();
+  state.logs = [{ id: "night-test", date: "2026-10-01", name: "我的一杯", note: "保留记录" }];
+  assert.equal(state.theme, "bar");
+  assert.deepEqual(validateState({ ...state, theme: "system" }), validateState(state));
+  for (const theme of ["bar", "light", "dark"]) {
+    const restored = validateState(JSON.parse(JSON.stringify({ ...state, theme })));
+    assert.equal(restored.theme, theme);
+    assert.deepEqual(restored.logs, state.logs);
+  }
+});
+
 test("journal backup preserves appearance snapshots and accepts old text-only entries", () => {
   const old = {id:"old",date:"2026-09-30",name:"旧日记",note:"保留原文"};
   const current = {id:"new",date:"2026-09-30",name:"金汤力",note:"",recipeID:"gin-and-tonic",glass:"rocks",color:"#b366aa"};
