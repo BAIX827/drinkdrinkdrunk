@@ -28,21 +28,34 @@ U.page(Page, {
     if(!complete&&!this.steps.slice(0,this.data.index+1).some(s=>s.action==='garnish'))visual.garnish='none';
     const stock=S.get().inventory, bottle=step.ingredient && stock.find(item=>step.ingredient.types.some(type=>S.core.satisfies(item.type,type)));
     const previous=this.steps.slice(0,this.data.index).reverse().find(s=>['shaker','mixing','blender'].includes(s.target));
-    this.setData({ scene:{ key:this.logID+':'+this.data.index+':'+complete, action:step.action, target:target||'glass', source:step.source || (previous&&previous.target) || 'shaker', content, visual, glass:this.look.glass,color:this.look.color,bottle:bottle||{color:this.look.color,shape:'bottle'},complete } });
+    const source=step.source || (previous&&previous.target) || 'shaker';
+    // 上一步的状态：用于演示液面从多少涨到多少、摇壶里还剩多少。
+    const before=this.data.index?E.contentsAt(this.steps,this.data.index-1,target||'glass'):{level:0,ice:false};
+    const sourceBefore=this.data.index?E.contentsAt(this.steps,this.data.index-1,source):{level:.65,ice:false};
+    this.setData({ scene:{ key:this.logID+':'+this.data.index+':'+complete, action:step.action, target:target||'glass', source, content, fromLevel:complete?content.level:before.level, sourceLevel:sourceBefore.level||.65, sourceIce:!!sourceBefore.ice, visual, glass:this.look.glass,color:this.look.color,bottle:bottle||{color:this.look.color,shape:'bottle'},complete } });
   },
   glass(e){this.setData({glassIndex:Number(e.currentTarget?.dataset.index ?? e.detail.value)});this.look.glass=Object.keys(S.core.glassNames)[this.data.glassIndex];this.scene();},
   color(e){const color=e.currentTarget?.dataset.color || e.detail.value;if(/^#[0-9a-f]{6}$/i.test(color)){this.look.color=color;this.setData({color,glassChoices:this.data.glassChoices.map(choice=>({...choice,look:{...choice.look,color}}))});this.scene();}else U.toast('请输入六位十六进制颜色，例如 #d4a16e。');},
   look(e){const mode=e.currentTarget.dataset.mode;this.setData({lookMode:mode});this.look.visual=mode==='recipe'?S.core.drinkAppearance(this.data.recipe).visual||{}:{garnish:'none'};this.scene();},
+  // 开关（switch）和步骤卡上的语音按钮共用：switch 带 detail.value，按钮点击则取反。
   voice(e){
-    if(!e.detail.value){this.setData({speech:false});M.stopSpeech();return;}
-    const enable=()=>{this.setData({speech:true});this.say();};
-    if(this.data.recipe.isUserCreated && M.providerEnabled)U.modal({title:U.t('朗读自建配方'),content:U.t('开启后，这段自建配方文字会发送给微信同声传译服务合成语音。内置配方使用本地录音。'),success:r=>{if(r.confirm)enable();}});else enable();
+    const on=e&&e.detail&&typeof e.detail.value==='boolean'?e.detail.value:!this.data.speech;
+    if(!on){this.setData({speech:false});M.stopSpeech();return;}
+    const locale=S.get().locale, texts=this.steps.map(step=>this.stepText(step));
+    if(this.data.recipe.isUserCreated && !M.providerEnabled && !texts.some(text=>M.available(text,locale))){
+      this.setData({speech:false});
+      U.modal({title:'自建配方暂无语音',content:'这段自建文本没有离线录音。任意文本朗读需要在你的小程序账号中启用微信同声传译插件，步骤见导入说明；文字跟做仍可使用。',showCancel:false});
+      return;
+    }
+    const enable=()=>{this.setData({speech:true});this.say();M.preload(texts,locale);};
+    if(this.data.recipe.isUserCreated && M.providerEnabled)U.modal({title:U.t('朗读自建配方'),content:U.t('开启后，这段自建配方文字会发送给微信同声传译服务合成语音。内置配方使用本地录音。'),success:r=>{if(r.confirm)enable();else this.setData({speech:false});}});else enable();
   },
-  say(){if(!this.data.speech||!this.data.playing||this.data.complete)return;const text=E.i18n.recipeText(this.data.recipe,this.steps[this.data.index].hint);M.speak(text,S.get().locale).catch(error=>{this.setData({speech:false});U.error(error);});},
+  stepText(step){return E.i18n.recipeText(this.data.recipe,step.hint);},
+  // 无论自动还是手动翻步，只要开着语音就朗读当前这一步。
+  say(){if(!this.data.speech||this.data.complete||!this.steps)return;M.speak(this.stepText(this.steps[this.data.index]),S.get().locale).catch(error=>{if(!this.data.speech)return;this.setData({speech:false});U.error(error);});},
   schedule() {
     clearInterval(this.timer);
     if (!this.data.playing || this.data.complete) return;
-    this.say();
     this.deadline = Date.now() + this.data.remaining * 1000;
     this.timer = setInterval(() => {
       const remaining = Math.max(0, Math.ceil((this.deadline - Date.now()) / 1000));
@@ -54,7 +67,7 @@ U.page(Page, {
       this.logID = S.id('log'); this.setData({ index: 0, complete: false, recorded: false, playing: true, started:true, panel:'' }); this.showStep();
     } else if (this.data.playing) { this.pause(); return; }
     else this.setData({ playing: true, started:true, panel:'' });
-    this.schedule();
+    this.say(); this.schedule();
   },
   pause() {
     if (this.data.playing && this.deadline) this.setData({ remaining: Math.max(0, Math.ceil((this.deadline - Date.now()) / 1000)) });
@@ -65,13 +78,13 @@ U.page(Page, {
     this.setData({started:true});
     clearInterval(this.timer);
     if (this.data.index + 1 >= this.steps.length) { this.setData({ complete: true, playing: false, remaining: 0, progress: 100 }); M.stopSpeech(); this.scene(); this.releaseScreen(); }
-    else { this.setData({ index: this.data.index + 1 }); this.showStep(); this.schedule(); }
+    else { this.setData({ index: this.data.index + 1 }); this.showStep(); this.say(); this.schedule(); }
   },
-  previous() { if (!this.steps || !this.data.index) return; this.setData({ index: this.data.index - 1, complete: false }); this.showStep(); this.schedule(); },
+  previous() { if (!this.steps || !this.data.index) return; this.setData({ index: this.data.index - 1, complete: false }); this.showStep(); this.say(); this.schedule(); },
   delay(e) { const delayIndex=Number(e.detail.value);if(!this.data.delays[delayIndex]||this.data.complete)return;this.setData({ delayIndex, delay: this.data.delays[delayIndex] }); this.showStep(); this.schedule(); },
   record() { if (!this.data.complete || this.data.recorded) return; U.action(() => { S.addLog(this.data.recipe, this.logID, this.look); this.setData({ recorded: true }); U.toast('已加入今天的日记'); }); },
   journal() { const entry=S.get().logs.find(l=>l.id===this.logID);if(entry){getApp().journalDate=entry.date;wx.switchTab({url:'/pages/journal/index'});} },
-  jump(e) { const index=Number(e.currentTarget.dataset.index);if(!Number.isInteger(index)||index<0||index>=this.steps.length)return;this.pause();this.setData({index,complete:false,started:true,panel:''});this.showStep();if(wx.pageScrollTo)wx.pageScrollTo({scrollTop:0,duration:this.data.reduced?0:200}); },
+  jump(e) { const index=Number(e.currentTarget.dataset.index);if(!Number.isInteger(index)||index<0||index>=this.steps.length)return;this.pause();this.setData({index,complete:false,started:true,panel:''});this.showStep();this.say();if(wx.pageScrollTo)wx.pageScrollTo({scrollTop:0,duration:this.data.reduced?0:200}); },
   awake() { const awake = !this.data.awake; wx.setKeepScreenOn({ keepScreenOn: awake, success: () => this.setData({ awake }), fail: () => U.toast('当前环境无法保持常亮') }); },
   releaseScreen() { if (this.data.awake) wx.setKeepScreenOn({ keepScreenOn: false }); this.setData({ awake: false }); },
   onHide() { this.pause(); this.releaseScreen(); },

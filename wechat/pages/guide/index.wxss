@@ -1,7 +1,7 @@
 .guide-page{padding-top:22rpx;padding-bottom:calc(166rpx + env(safe-area-inset-bottom))}
 .guide-heading .eyebrow{letter-spacing:2rpx}.guide-heading .title{font-size:38rpx;margin:6rpx 0 18rpx;line-height:1.3}
 .guide-progress{display:flex;align-items:center;justify-content:space-between;gap:16rpx;font-size:23rpx;margin-bottom:12rpx}.guide-progress>text:first-child{flex-shrink:0;white-space:nowrap}.guide-status{color:var(--muted);text-align:right}
-.guide-stage{height:280rpx;max-height:26vh;background:linear-gradient(145deg,#ddd9be,#aebfa2);border-radius:24rpx;overflow:hidden;margin:20rpx 0}
+.guide-stage{height:380rpx;max-height:34vh;background:linear-gradient(145deg,#ddd9be,#aebfa2);border-radius:24rpx;overflow:hidden;margin:20rpx 0}
 .guide-current{padding:24rpx;margin-bottom:12rpx}.guide-current .section-title{font-size:30rpx;margin:0;line-height:1.4}.guide-timer{flex-shrink:0;white-space:nowrap;color:#e8c68d;font-size:38rpx;line-height:1.3;font-variant-numeric:tabular-nums}.light .guide-timer{color:#547344}.guide-done{font-size:36rpx;color:#92b58b}
 .amount{font-size:29rpx;color:#d9be88;margin-top:10rpx;overflow-wrap:anywhere}.light .amount{color:#527445}.guide-hint{font-size:27rpx;line-height:1.6;margin-top:12rpx;overflow-wrap:anywhere}.guide-tool{margin-top:12rpx}.guide-next{padding:0 6rpx;overflow-wrap:anywhere}
 .guide-options{margin-top:26rpx;border:1rpx solid var(--line);border-radius:22rpx;overflow:hidden;background:var(--panel)}
@@ -10,3 +10,9 @@
 .guide-dock{position:fixed;bottom:0;left:0;right:0;padding:18rpx 24rpx calc(18rpx + env(safe-area-inset-bottom));z-index:20;background:var(--panel);border-top:1rpx solid var(--line);box-shadow:0 -6rpx 24rpx #00000018}
 .guide-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr);gap:12rpx}.guide-finish-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr);gap:12rpx}
 .guide-controls button,.guide-finish-controls button{width:100%;min-width:0;min-height:84rpx;padding:17rpx 8rpx;font-size:25rpx;line-height:1.6;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+
+.guide-current .row{gap:14rpx}.guide-current .section-title{flex:1;min-width:0}
+.voice-chip{flex-shrink:0;margin:0;padding:6rpx 18rpx;min-height:0;line-height:1.6;font-size:22rpx;border-radius:999rpx;background:transparent;color:var(--muted);border:1rpx solid var(--line)}
+.voice-chip.on{color:#122f2a;background:#92b58b;border-color:#92b58b}
+/* 微信默认 button:not([size=mini]) 固定 184px 宽并居中，需提高选择器优先级才能撑满整行。 */
+.guide-options .guide-disclosure{width:100%;margin:0}

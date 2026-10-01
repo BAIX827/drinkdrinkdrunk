@@ -97,20 +97,36 @@ test('guide disclosures pause playback, retain countdown and keep one panel open
   p.togglePanel(event('panel','steps'));p.jump(event('index',3));assert.equal(p.data.panel,'');assert.equal(p.data.playing,false);assert.equal(p.data.index,3);p.onUnload();
 });
 
-test('introduction is offered once, back and skip are safe, relaunch remembers it and settings can replay', () => {
+test('introduction tour walks the real pages once, never edits data, relaunch remembers it and settings can replay', () => {
   const env=environment(),S=env.store;S.load();S.addLog(S.data.recipes[0]);const before=S.get();
-  const discover=env.page('discover');discover.onShow();discover.onShow();assert.equal(env.calls.filter(c=>c.url==='/pages/intro/index').length,1);
-  const intro=env.page('intro');intro.onLoad({});intro.onShow();assert.equal(intro.data.total,10);intro.previous();assert.equal(intro.data.index,0);intro.next();intro.previous();assert.equal(intro.data.index,0);
-  assert.deepEqual(S.get(),before);intro.finish();intro.finish();assert.equal(S.get().guideVersion,1);assert.equal(env.calls.filter(c=>typeof c.fail==='function'&&!c.url).length,1);assert.deepEqual(S.get().logs,before.logs);
-  const fresh=environment(env.files,env.memory);fresh.store.load();const d=fresh.page('discover');d.onShow();assert.equal(fresh.calls.filter(c=>c.url==='/pages/intro/index').length,0);
-  const settings=fresh.page('settings');settings.intro();assert.equal(fresh.calls.at(-1).url,'/pages/intro/index');
-  const replay=fresh.page('intro');replay.onLoad({});for(let i=0;i<9;i++)replay.next();assert.equal(replay.data.index,9);replay.next();assert.equal(replay.data.finishing,true);
+  const discover=env.page('discover');discover.onShow();discover.onShow();
+  const T=require('../wechat/shared/tour');assert.equal(T.active,true);assert.equal(T.current().index,0);assert.equal(T.current().total,10);
+  assert.equal(env.calls.filter(c=>c.url==='/pages/discover/index').length,1);
+  T.previous();assert.equal(T.current().index,0);
+  const urls=[];for(let i=1;i<10;i++){T.next();assert.equal(T.current().index,i);urls.push(env.calls.at(-1).url);}
+  assert.deepEqual(urls,['/pages/inventory/index','/pages/discover/index','/pages/recipe/index?id=world-004-mojito','/pages/guide/index?id=world-004-mojito','/pages/taste/index','/pages/journal/index','/pages/recipe/index?id=world-004-mojito','/pages/discover/index','/pages/settings/index']);
+  for(const step of T.steps)if(step.target)for(const id of [].concat(step.target)){const page=readFileSync(new URL(`../wechat/pages/${step.page}/index.wxml`,import.meta.url),'utf8');assert.ok(page.includes(`id="${id.slice(1)}"`)||step.page==='taste',`${step.page} ${id}`);}
+  T.previous();assert.equal(T.current().index,8);assert.deepEqual(S.get(),before);
+  T.next();T.next();assert.equal(T.active,false);assert.equal(S.get().guideVersion,1);assert.deepEqual(S.get().logs,before.logs);
+  const fresh=environment(env.files,env.memory);fresh.store.load();fresh.page('discover').onShow();const FT=require('../wechat/shared/tour');assert.equal(FT.active,false);
+  fresh.page('settings').intro();assert.equal(FT.active,true);assert.equal(FT.current().index,0);
 });
 
-test('failed intro navigation can retry and a failed completion save never discards existing data', () => {
-  const env=environment(),S=env.store;S.load();const d=env.page('discover');d.onShow();env.calls.find(c=>c.url==='/pages/intro/index').fail();d.onShow();assert.equal(env.calls.filter(c=>c.url==='/pages/intro/index').length,2);
-  const p=env.page('intro');p.onLoad({});const before=S.get();env.setFailWrite(true);p.finish();assert.equal(p.data.finishing,false);assert.deepEqual(S.get(),before);
-  env.setFailWrite(false);p.finish();assert.equal(S.get().guideVersion,1);env.calls.at(-1).fail();assert.equal(env.calls.at(-1).url,'/pages/discover/index');
+test('a failed tour completion save keeps the tour open and never discards existing data', () => {
+  const env=environment(),S=env.store;S.load();const T=require('../wechat/shared/tour');T.start();const before=S.get();
+  env.setFailWrite(true);assert.throws(()=>T.finish());assert.equal(T.active,true);assert.deepEqual(S.get(),before);
+  env.setFailWrite(false);T.finish();assert.equal(T.active,false);assert.equal(S.get().guideVersion,1);
+});
+
+test('voice can be switched on while paused and speaks on manual steps', async () => {
+  const env=environment();env.store.load();const played=[];
+  wx.createInnerAudioContext=()=>({play(){played.push(this.src);},stop(){},pause(){},onError(){},onPlay(){},onPause(){},onStop(){},onEnded(){}});
+  wx.loadSubpackage=o=>o.success();wx.setInnerAudioOption=o=>{env.calls.push({audioOption:o});};
+  const g=env.page('guide');g.onLoad({id:'world-004-mojito'});assert.equal(g.data.playing,false);
+  g.voice({detail:{x:1,y:1}});await new Promise(r=>setImmediate(r));assert.equal(g.data.speech,true);assert.equal(played.length,1);
+  g.next();await new Promise(r=>setImmediate(r));assert.equal(played.length,2);assert.notEqual(played[0],played[1]);
+  assert.ok(env.calls.some(c=>c.audioOption&&c.audioOption.obeyMuteSwitch===false));
+  g.voice({detail:{value:false}});assert.equal(g.data.speech,false);g.onUnload();
 });
 
 test('discover uses web base tags, filtered recommendations, card favorites and ready-stock entry', () => {
@@ -303,7 +319,7 @@ test('compiled WXML renders every English page without leaked Chinese system cop
   const errors=[],context={window:{},console:{log:e=>errors.push(e),warn:e=>errors.push(e)}};vm.createContext(context);vm.runInContext(readFileSync(new URL('../test-results/wechat/wxml.js',import.meta.url),'utf8'),context);
   const collect=node=>typeof node==='string'?[node]:node&&node.children?node.children.flatMap(collect):[];
   const fixtures=[];
-  for(const name of ['discover','inventory','recipe','guide','journal','settings','taste','bottle','share','intro','editor']){
+  for(const name of ['discover','inventory','recipe','guide','journal','settings','taste','bottle','share','editor']){
     const p=env.page(name);p.route=`pages/${name}/index`;p.onLoad?.(name==='editor'?{type:'recipe'}:{id:'world-004-mojito'});p.onShow?.();
     const render=context.$gwx(`pages/${name}/index.wxml`),tree=render(p.data,{}),chinese=collect(tree).filter(s=>/[\u3400-\u9fff]/.test(s)&&s.trim()!=='简体中文');
     fixtures.push({name,data:JSON.parse(JSON.stringify(p.data))});assert.equal(chinese.length,0,name+': '+chinese.join(' | '));
@@ -313,7 +329,6 @@ test('compiled WXML renders every English page without leaked Chinese system cop
       assert.equal(new Set(images(edited)).size,9,'all nine icon images reach compiled WXML');
     }
     if(name==='bottle')for(const panel of ['type','appearance']){p.setData({panel});assert.equal(collect(render(p.data,{})).filter(s=>/[\u3400-\u9fff]/.test(s)).length,0,'English bottle '+panel);}
-    if(name==='intro')for(let i=1;i<p.data.total;i++){p.next();const text=collect(render(p.data,{})).filter(s=>/[\u3400-\u9fff]/.test(s));assert.equal(text.length,0,'intro '+i+': '+text.join(' | '));}
   }
   assert.deepEqual(errors,[]);
   writeFileSync(new URL('../test-results/wechat/fixtures.json',import.meta.url),JSON.stringify(fixtures));

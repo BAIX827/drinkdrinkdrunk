@@ -95,9 +95,9 @@
 
 ## 8. 新手引导的现状
 
-小程序目前是 10 步独立介绍页，支持首次进入、前后切换、跳过、完成、持久记忆和设置中重看；已处理重复点击返回、保存失败重试与首次导航失败重试。
+小程序已改为与网页版一致的**真实控件引导**：10 步依次切到发现、我的酒、配方详情、分步跟做、口味 DNA、日记和设置页，滚动到目标控件并高亮，说明卡片放在目标上方或下方。首次进入（开场幕布结束后）自动出现一次，可上一步、下一步、跳过，看完回到发现页；设置里“重看新手引导”可重播。引导不创建任何材料、日记、收藏或口味偏好；保存“已看过”失败时引导保持打开，可重试。
 
-**尚未实现网页版那种定位到真实页面控件的逐步引导。** 其他端同步时，应分别核对“介绍页”和“真实控件引导”，不能只因有新手入口就标记完全一致。
+实现：`wechat/shared/tour.js`（步骤、页面跳转与状态）+ `wechat/components/tour/`（浮层组件，各页模板末尾挂 `<bar-tour page="…" />`），目标控件在模板里用 `id="tour-…"` 标记。改动这些控件时保留对应 id。
 
 ## 9. 代码与资源索引
 
@@ -108,7 +108,7 @@
 | 类型卡片、瓶型、手绘 | `wechat/pages/bottle/index.js`、`index.wxss`；`wechat-templates/bottle.wxml` | `Cocktail60/BarWeb/core.js`、`art.js`、`data.js` |
 | 风味图标和保存／编辑态 | `wechat/pages/taste/`；`wechat-templates/taste.wxml`；`wechat/shared/flavors.js` | `Cocktail60/BarWeb/taste-palette.js`、`taste.js`、`taste-ui.js` |
 | 手机布局与年月 | `wechat/app.wxss`；`wechat/pages/journal/index.wxss`；`wechat-templates/journal.wxml` | 各端对应日历和布局样式 |
-| 新手引导 | `wechat/pages/intro/`；`wechat-templates/intro.wxml` | `Cocktail60/BarWeb/guide.js`、`guide.css` |
+| 新手引导 | `wechat/shared/tour.js`；`wechat/components/tour/`；模板中的 `id="tour-…"` | `Cocktail60/BarWeb/guide.js`、`guide.css` |
 | 回归验证 | `tests/weapp.test.mjs`；`scripts/visual-check-weapp.cjs` | 各端增加对应交互验收 |
 
 小程序页面应先修改 `wechat-templates/*.wxml`，再运行 `npm.cmd run build:weapp` 生成双语 `wechat/pages/*/index.wxml`。直接只改生成页面会被下次构建覆盖。
@@ -127,7 +127,7 @@
 - [ ] 跟做完成后保存外观快照，重复操作不生成重复日记，可定位已保存记录。
 - [ ] DNA 的 9 个图标可见，草稿和已保存状态分离，取消恢复原数据。
 - [ ] `2026-10` 等年月不换行；四种手机宽度、中英文均无页面横向溢出或底部按钮遮挡。
-- [ ] 新手首次／跳过／完成／重看有效，明确是否包含真实控件定位引导。
+- [ ] 新手首次／跳过／完成／重看有效，且每一步都定位到真实控件。
 - [ ] 在各端真实运行环境完成触摸、滚动、键盘、画布、后台和持久保存验收。
 
 本轮小程序已有证据：83 项自动测试通过；19 个 WXML、11 个 WXSS 编译通过；受控浏览器检查覆盖 4 种手机尺寸、中英文、10 个页面及相关折叠／编辑／跟做状态。微信 CLI 授权连接超时，尚无本轮微信模拟器或手机真机验收证据；其他端同步进度需另行确认。完整功能差异见 [wechat/FEATURE_PARITY.md](wechat/FEATURE_PARITY.md)。

@@ -9,8 +9,7 @@
     "pages/editor/index",
     "pages/settings/index",
     "pages/bottle/index",
-    "pages/share/index",
-    "pages/intro/index"
+    "pages/share/index"
   ],
   "window": {
     "navigationBarTitleText": "大喝特喝",
@@ -56,7 +55,8 @@
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
     "bar-art": "/components/art/index",
-    "bar-music": "/components/music/index"
+    "bar-music": "/components/music/index",
+    "bar-tour": "/components/tour/index"
   },
   "subPackages": [
     {

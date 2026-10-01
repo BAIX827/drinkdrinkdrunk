@@ -7,7 +7,7 @@ U.page(Page, {
   input(e) { if(S.bytes(e.detail.value)>500000){this.setData({backupText:''});U.toast('备份较大，请使用文件导入。');return;}this.setData({ backupText: e.detail.value }); },
   language(e) { U.action(() => { S.update(s => { s.locale = e.currentTarget.dataset.locale; }); U.theme(this); this.refresh(); }); },
   motion(e) { U.action(() => { S.update(s => { s.reducedMotion = e.detail.value; }); U.theme(this); }); },
-  intro() { wx.navigateTo({ url: '/pages/intro/index' }); },
+  intro() { require('../../shared/tour').start(); },
   export() { U.action(() => {
     if (S.isBlocked()) throw new Error('正常备份不可用，请使用下方的“导出原始数据文件”。');
     const filePath = `${wx.env.USER_DATA_PATH}/dddrunk-backup-${S.today()}.json`;

@@ -1,0 +1,11 @@
+<view wx:if="{{visible}}" class="tour {{theme}}" catchtouchmove="noop" catchtap="noop">
+  <view wx:if="{{spot}}" class="tour-spot" style="top:{{spot.top}}px;left:{{spot.left}}px;width:{{spot.width}}px;height:{{spot.height}}px" />
+  <view wx:else class="tour-dim" />
+  <view class="tour-card {{spot ? '' : 'centered'}} {{placed ? '' : 'pending'}}" style="{{cardStyle}}" role="dialog" aria-label="{{title}}">
+    <view class="tour-head"><text class="tour-count">{{count}}</text><text class="tour-skip" role="button" catchtap="skip">{{labels.skip}}</text></view>
+    <view class="tour-title">{{title}}</view>
+    <view class="tour-text">{{text}}</view>
+    <view class="tour-progress"><view class="tour-progress-fill" style="width:{{progress}}%" /></view>
+    <view class="tour-actions"><button class="tour-prev {{!index || busy ? 'off' : ''}}" disabled="{{!index || busy}}" catchtap="previous">{{labels.previous}}</button><button class="tour-next" disabled="{{busy}}" catchtap="next">{{last ? labels.done : labels.next}}</button></view>
+  </view>
+</view>

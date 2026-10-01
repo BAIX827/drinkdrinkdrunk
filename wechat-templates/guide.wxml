@@ -5,7 +5,7 @@
     <progress percent="{{progress}}" activeColor="#d9be88" backgroundColor="#526a50" stroke-width="3" />
     <view class="guide-stage"><bar-art mode="stage" recipe="{{recipe}}" scene="{{scene}}" playing="{{playing}}" reduced="{{reduced}}" /></view>
     <view class="panel guide-current">
-      <view class="row"><view class="section-title">{{complete ? '为这一杯留个纪念。' : label}}</view><view wx:if="{{!complete}}" class="guide-timer"><text>{{remaining}}</text><text class="small"> 秒</text></view><text wx:else class="guide-done">✓</text></view>
+      <view class="row"><view class="section-title">{{complete ? '为这一杯留个纪念。' : label}}</view><button wx:if="{{!complete}}" class="voice-chip {{speech ? 'on' : ''}}" bindtap="voice" aria-pressed="{{speech}}">{{speech ? '🔊 语音开' : '🔈 语音关'}}</button><view wx:if="{{!complete}}" class="guide-timer"><text>{{remaining}}</text><text class="small"> 秒</text></view><text wx:else class="guide-done">✓</text></view>
       <block wx:if="{{!complete}}"><view wx:if="{{step.ingredient}}" class="amount">{{step.ingredient.raw}}</view><view class="guide-hint">{{step.hint}}</view><view class="small muted guide-tool">器具：{{step.tool}}</view></block>
       <view wx:else class="muted">{{recorded ? '已加入饮酒日记' : '完成后可一键记入今天的日记，再去补上照片和感想。'}}</view>
     </view>
@@ -30,9 +30,9 @@
       <view wx:if="{{panel === 'steps'}}" class="guide-option-body"><view class="small muted">点选步骤后暂停，确认准备好再继续。</view><view wx:for="{{stepList}}" wx:for-index="stepNumber" wx:key="index" class="step-choice {{index === item.index ? 'active' : ''}}" data-index="{{item.index}}" bindtap="jump" role="button"><view>{{item.index + 1}} · {{item.label}}</view><view class="small muted">{{item.hint}}</view></view></view>
     </view>
     <view class="guide-dock">
-      <view wx:if="{{!complete}}" class="guide-controls"><button class="secondary" disabled="{{index === 0}}" bindtap="previous">上一步</button><button class="guide-play" bindtap="toggle">{{playing ? '暂停' : started ? '继续' : '开始跟做'}}</button><button class="secondary" bindtap="next">{{index === total - 1 ? '完成' : '下一步'}}</button></view>
+      <view wx:if="{{!complete}}" id="tour-play" class="guide-controls"><button class="secondary" disabled="{{index === 0}}" bindtap="previous">上一步</button><button class="guide-play" bindtap="toggle">{{playing ? '暂停' : started ? '继续' : '开始跟做'}}</button><button class="secondary" bindtap="next">{{index === total - 1 ? '完成' : '下一步'}}</button></view>
       <view wx:else class="guide-finish-controls"><button class="secondary" bindtap="toggle">再调一杯</button><button wx:if="{{recorded}}" bindtap="journal">查看日记 / 补充照片</button><button wx:else bindtap="record">一键加入饮酒日记</button></view>
     </view>
   </block>
   <view wx:else class="empty">没有找到配方，请返回重试。</view>
-</view>
+<bar-tour page="guide" /></view>

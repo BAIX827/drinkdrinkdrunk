@@ -1,4 +1,4 @@
-const S = require('../../shared/store'), U = require('../../shared/ui');
+const S = require('../../shared/store'), U = require('../../shared/ui'), T = require('../../shared/tour');
 U.page(Page, {
   data: { query: '', scope: 'all', stock: 'all', base: '全部基酒', sort: 'original', cards: [], bases: [], total: 0, checked: Object.keys(S.core.categories) },
   onShow() {
@@ -7,8 +7,10 @@ U.page(Page, {
     this.refresh();
     const app = getApp();
     if (app.storageError) { U.error(new Error(app.storageError)); app.storageError = ''; }
-    if(!S.get().guideVersion && !app.introOffered){app.introOffered=true;wx.navigateTo({url:'/pages/intro/index',fail:()=>{app.introOffered=false;}});}
-    if(!app.openingShown){app.openingShown=true;this.setData({opening:!S.get().reducedMotion});this.openingTimer=setTimeout(()=>this.setData({opening:false}),1200);}
+    let delay=0;
+    if(!app.openingShown){app.openingShown=true;const opening=!S.get().reducedMotion;this.setData({opening});if(opening)delay=1300;this.openingTimer=setTimeout(()=>this.setData({opening:false}),1200);}
+    // 首次使用：开场幕布结束后，在真实页面上逐步引导（只自动出现一次，设置里可重看）。
+    if(!app.storageError && !S.isBlocked() && !T.seen() && !app.introOffered){app.introOffered=true;this.tourTimer=setTimeout(()=>{if(!T.active&&!T.seen())T.start();},delay);}
   },
   refresh() {
     const snapshot = S.get(), dna = S.taste.dna(snapshot.taste), all = S.recipes();
