@@ -39,12 +39,130 @@ function environment(files = new Map(), memory = new Map()) {
       setInterval: fn => { const id = ++timerID; timers.set(id, fn); return id; }, clearInterval: id => timers.delete(id),
       setTimeout: fn => { fn(); return 0; }, clearTimeout() {}
     });
-    const p = { ...pageConfig, data: JSON.parse(JSON.stringify(pageConfig.data)), setData(update) { Object.assign(this.data, JSON.parse(JSON.stringify(update))); } };
+    const p = { ...pageConfig, data: JSON.parse(JSON.stringify(pageConfig.data)), setData(update, callback) { Object.assign(this.data, JSON.parse(JSON.stringify(update))); if(callback)callback(); } };
     return p;
   };
   return { store, files, memory, page, calls, app, setFailWrite: v => { failWrite = v; }, setFailPointer: v => { failPointer = v; }, timers, advance(ms) { now += ms; for (const fn of [...timers.values()]) fn(); } };
 }
 const event = (key, value) => ({ currentTarget: { dataset: { [key]: value } } });
+
+test('DNA displays all nine local web icons and keeps saved flavors visible while editing a draft', () => {
+  const env=environment(),S=env.store;S.load();S.update(s=>{s.taste.onboarding={palette:['lemon','mint'],strength:'light'};});
+  const p=env.page('taste');p.onShow();assert.equal(p.data.palette.length,9);assert.deepEqual(p.data.savedFlavors.map(f=>f.key),['lemon','mint']);
+  const images=new Set();for(const flavor of p.data.palette){const png=readFileSync(root+flavor.image);assert.equal(png.readUInt32BE(16),128);assert.equal(png.readUInt32BE(20),128);images.add(flavor.image);}assert.equal(images.size,9);
+  p.edit();p.toggle(event('key','mint'));assert.deepEqual(p.data.savedFlavors.map(f=>f.key),['lemon','mint']);p.save();assert.deepEqual(p.data.savedFlavors.map(f=>f.key),['lemon']);
+});
+
+test('bottle preview cards search canonical types, preserve custom text and persist chosen appearance', () => {
+  const env=environment(),S=env.store;S.load();const p=env.page('bottle');p.onLoad({});p.onShow();
+  assert.equal(p.data.panel,'');assert.equal(p.data.shapeChoices.length,9);assert.equal(p.data.typeChoices.length,115);
+  p.togglePanel(event('panel','type'));p.search({detail:{value:'Gin'}});assert.ok(p.data.typeChoices.some(c=>c.name==='金酒'));
+  p.name({detail:{value:'我的收藏瓶'}});const index=p.data.types.indexOf('金酒');p.type(event('index',index));assert.equal(p.data.typeIndex,index);assert.equal(p.data.name,'我的收藏瓶');assert.equal(p.data.panel,'');
+  p.togglePanel(event('panel','appearance'));p.shape(event('index',3));p.color(event('color','#123456'));p.setData({drawing:[[[1,2],[3,4]]]});p.preview();p.closePanel();
+  assert.equal(p.data.bottle.shape,'gin');assert.ok(p.data.shapeChoices.every(c=>c.bottle.color==='#123456'&&c.bottle.drawing.length===0));p.save();
+  assert.equal(S.get().inventory[0].shape,'gin');assert.equal(S.get().inventory[0].type,'金酒');assert.deepEqual(S.get().inventory[0].drawing,[[[1,2],[3,4]]]);
+  assert.ok(p.data.typeChoices.every(c=>existsSync(root+c.image)));
+});
+
+test('folded bottle drawing canvas mounts on demand and retains strokes across reopening', () => {
+  const env=environment();env.store.load();let mounts=0;
+  const context={};for(const name of ['fillRect','beginPath','moveTo','lineTo','stroke'])context[name]=()=>{};
+  wx.createSelectorQuery=()=>{const query={in(){return query;},select(){return query;},fields(){return query;},exec(fn){mounts++;fn([{node:{getContext:()=>context},width:200,height:200,left:0,top:0}]);}};return query;};
+  const p=env.page('bottle');p.onLoad({});p.onShow();assert.equal(mounts,0);p.togglePanel(event('panel','drawing'));assert.equal(mounts,1);
+  p.start({touches:[{x:10,y:20}]});p.move({touches:[{x:30,y:40}]});p.closePanel();assert.deepEqual(p.data.drawing,[[[10,20],[30,40]]]);assert.equal(p.ctx,null);
+  p.togglePanel(event('panel','drawing'));assert.equal(mounts,2);assert.deepEqual(p.data.drawing,[[[10,20],[30,40]]]);p.undo();assert.equal(p.data.drawing.length,0);
+});
+
+test('appearance controls start collapsed and keep edits when collapsed and reopened', () => {
+  const env=environment(),S=env.store;S.load();
+  for(const type of ['log','recipe']){
+    const p=env.page('editor');p.onLoad({type});assert.equal(p.data.appearanceOpen,false);
+    p.toggleAppearance();p.glass(event('index',3));p.color({detail:{value:'#123456'}});p.closeAppearance();
+    assert.equal(p.data.appearanceOpen,false);p.toggleAppearance();assert.equal(p.data.look.glass,'rocks');assert.equal(p.data.color,'#123456');
+    p.color({detail:{value:'invalid'}});p.closeAppearance();assert.equal(p.data.appearanceOpen,true);
+    p.color({detail:{value:'#654321'}});p.toggleAppearance();assert.equal(p.data.appearanceOpen,false);
+  }
+  assert.equal(S.get().logs.length,0);assert.equal(S.get().customRecipes.length,0);
+  const guide=env.page('guide');guide.onLoad({id:'world-004-mojito'});guide.togglePanel(event('panel','appearance'));guide.glass(event('index',3));guide.color(event('color','#123456'));guide.closeAppearance();
+  assert.equal(guide.data.panel,'');assert.equal(guide.look.glass,'rocks');assert.equal(guide.look.color,'#123456');
+});
+
+test('guide disclosures pause playback, retain countdown and keep one panel open', () => {
+  const env=environment(),S=env.store;S.load();const p=env.page('guide');p.onLoad({id:'world-004-mojito'});
+  assert.equal(p.data.panel,'');assert.equal(p.data.started,false);p.toggle();env.advance(2000);
+  p.togglePanel(event('panel','settings'));assert.equal(p.data.playing,false);assert.equal(p.data.remaining,6);assert.equal(env.timers.size,0);
+  p.togglePanel(event('panel','appearance'));assert.equal(p.data.panel,'appearance');assert.equal(p.data.remaining,6);
+  p.color(event('color','#123456'));assert.ok(p.data.glassChoices.every(c=>c.look.color==='#123456'));
+  p.toggle();assert.equal(p.data.panel,'');assert.equal(p.data.started,true);env.advance(6000);assert.equal(p.data.index,1);
+  p.togglePanel(event('panel','steps'));p.jump(event('index',3));assert.equal(p.data.panel,'');assert.equal(p.data.playing,false);assert.equal(p.data.index,3);p.onUnload();
+});
+
+test('introduction is offered once, back and skip are safe, relaunch remembers it and settings can replay', () => {
+  const env=environment(),S=env.store;S.load();S.addLog(S.data.recipes[0]);const before=S.get();
+  const discover=env.page('discover');discover.onShow();discover.onShow();assert.equal(env.calls.filter(c=>c.url==='/pages/intro/index').length,1);
+  const intro=env.page('intro');intro.onLoad({});intro.onShow();assert.equal(intro.data.total,10);intro.previous();assert.equal(intro.data.index,0);intro.next();intro.previous();assert.equal(intro.data.index,0);
+  assert.deepEqual(S.get(),before);intro.finish();intro.finish();assert.equal(S.get().guideVersion,1);assert.equal(env.calls.filter(c=>typeof c.fail==='function'&&!c.url).length,1);assert.deepEqual(S.get().logs,before.logs);
+  const fresh=environment(env.files,env.memory);fresh.store.load();const d=fresh.page('discover');d.onShow();assert.equal(fresh.calls.filter(c=>c.url==='/pages/intro/index').length,0);
+  const settings=fresh.page('settings');settings.intro();assert.equal(fresh.calls.at(-1).url,'/pages/intro/index');
+  const replay=fresh.page('intro');replay.onLoad({});for(let i=0;i<9;i++)replay.next();assert.equal(replay.data.index,9);replay.next();assert.equal(replay.data.finishing,true);
+});
+
+test('failed intro navigation can retry and a failed completion save never discards existing data', () => {
+  const env=environment(),S=env.store;S.load();const d=env.page('discover');d.onShow();env.calls.find(c=>c.url==='/pages/intro/index').fail();d.onShow();assert.equal(env.calls.filter(c=>c.url==='/pages/intro/index').length,2);
+  const p=env.page('intro');p.onLoad({});const before=S.get();env.setFailWrite(true);p.finish();assert.equal(p.data.finishing,false);assert.deepEqual(S.get(),before);
+  env.setFailWrite(false);p.finish();assert.equal(S.get().guideVersion,1);env.calls.at(-1).fail();assert.equal(env.calls.at(-1).url,'/pages/discover/index');
+});
+
+test('discover uses web base tags, filtered recommendations, card favorites and ready-stock entry', () => {
+  const env=environment(),S=env.store;S.load();S.update(s=>{s.guideVersion=1;s.taste.onboarding={palette:['lemon'],strength:'balanced'};});
+  const p=env.page('discover');p.onShow();p.base({detail:{value:p.data.bases.indexOf('朗姆')}});
+  const expected=S.recipes().filter(r=>r.tags.includes('朗姆')).map(r=>r.id);
+  assert.deepEqual(p.data.cards.map(r=>r.id),expected);assert.ok(expected.length>0);
+  assert.ok(p.data.recommendations.flatMap(g=>g.items).every(r=>expected.includes(r.id)));
+  const id=expected[0];p.favorite(event('id',id));assert.ok(S.get().favorites.includes(id));
+  p.scope(event('value','favorites'));assert.equal(p.data.cards.length,1);
+  p.reset();assert.equal(p.data.cards.length,145);assert.ok(Buffer.byteLength(JSON.stringify(p.data))<1024*1024);
+  const inventory=env.page('inventory');inventory.onShow();inventory.discover();p.onShow();
+  assert.equal(p.data.stock,'0');assert.ok(p.data.cards.every(r=>S.core.match(S.recipe(r.id),S.get().inventory).count===0));
+  p.category(event('key',p.data.checked[0]));p.search({detail:{value:'no-such-drink'}});assert.equal(p.data.recommendations.flatMap(g=>g.items).length,0);
+});
+
+test('manual and linked diary appearances round-trip with glass, plain mode, invalid input and unlinking', () => {
+  const env=environment(),S=env.store;S.load();const r=S.data.recipes.find(r=>r.appearance?.layers);
+  assert.ok(r);
+  const p=env.page('editor');p.onLoad({type:'log',recipe:r.id,date:'2026-10-01'});
+  assert.deepEqual(p.data.look,S.core.drinkAppearance(r));p.glass(event('index',3));p.color({detail:{value:'#123456'}});p.appearance(event('mode','plain'));p.save();
+  const entry=S.get().logs[0];assert.equal(entry.glass,'rocks');assert.equal(entry.color,'#123456');assert.deepEqual(entry.visual,{});
+  const edit=env.page('editor');edit.onLoad({type:'log',id:entry.id});edit.input({currentTarget:{dataset:{field:'name'}},detail:{value:'我的特调'}});edit.color({detail:{value:'bad'}});edit.save();
+  assert.equal(S.get().logs[0].name,entry.name);assert.ok(env.calls.some(c=>/六位/.test(c.content||'')));
+  edit.color({detail:{value:'#654321'}});edit.save();const saved=S.get().logs[0];assert.equal(saved.recipeID,undefined);assert.equal(saved.glass,'rocks');assert.equal(saved.color,'#654321');
+  const reload=environment(env.files,env.memory).store;assert.deepEqual(reload.load().logs[0],saved);
+});
+
+test('taste palette cancellation preserves legacy quiz and ratings; clear requires confirmation and keeps other data', () => {
+  const env=environment(),S=env.store;S.load();S.addLog(S.data.recipes[0]);
+  S.update(s=>{s.favorites=[S.data.recipes[0].id];s.taste.onboarding={palette:['mint'],strength:'light'};});
+  const p=env.page('taste');p.onShow();const saved=S.get();p.edit();p.toggle(event('key','lemon'));p.strength(event('key','bold'));p.cancel();
+  assert.deepEqual(S.get(),saved);assert.deepEqual(p.data.selected,['mint']);assert.equal(p.data.editing,false);
+  p.edit();p.toggle(event('key','lemon'));p.save();assert.equal(p.data.editing,false);assert.deepEqual(S.get().taste.onboarding.palette,['mint','lemon']);
+  p.clear();env.calls.at(-1).success({confirm:false});assert.ok(S.get().taste.onboarding);
+  p.clear();env.calls.at(-1).success({confirm:true});assert.deepEqual(S.get().taste,S.taste.empty());assert.deepEqual(S.get().logs,saved.logs);assert.deepEqual(S.get().favorites,saved.favorites);
+});
+
+test('rating drafts do not change DNA before save and history revoke recomputes it', () => {
+  const env=environment(),S=env.store;S.load();const p=env.page('recipe');p.onLoad({id:'world-004-mojito'});p.onShow();
+  p.rate(event('key','like'));p.feedback(event('key','strong'));assert.equal(S.get().taste.ratings.length,0);p.cancelRating();assert.equal(p.data.rating,'');
+  p.rate(event('key','okay'));p.feedback(event('key','strong'));p.feedback(event('key','weak'));p.saveRating();
+  assert.equal(S.get().taste.ratings.length,1);assert.deepEqual(S.get().taste.ratings[0].feedback,['weak']);
+  const t=env.page('taste');t.onShow();assert.equal(t.data.history.length,1);t.remove(event('id',p.id));assert.equal(S.get().taste.ratings.length,0);assert.equal(t.data.dna.ready,false);
+});
+
+test('guide jumps pause timers and recorded journal shortcut uses original session date without duplicates', () => {
+  const env=environment(),S=env.store;S.load();const p=env.page('guide');p.onLoad({id:'world-004-mojito'});p.toggle();p.jump(event('index',2));
+  assert.equal(p.data.index,2);assert.equal(p.data.playing,false);assert.equal(env.timers.size,0);p.jump(event('index',-1));assert.equal(p.data.index,2);
+  while(!p.data.complete)p.next();p.record();p.journal();assert.equal(env.app.journalDate,S.get().logs[0].date);
+  p.jump(event('index',0));while(!p.data.complete)p.next();p.record();assert.equal(S.get().logs.length,1);p.onUnload();
+});
 
 test('generated mini program preserves all recipe data and desktop matching/taste results', () => {
   const { store: S } = environment(); S.load();
@@ -102,7 +220,7 @@ test('inventory, filtering, favorites, taste feedback and custom recipe editing 
   discover.search({ detail: { value: 'Negroni' } }); assert.ok(discover.data.cards.length > 0); assert.ok(discover.data.cards.every(c => /negroni/i.test(c.english)));
   const recipe = env.page('recipe'); recipe.onLoad({ id: 'world-015-negroni' }); recipe.onShow(); recipe.favorite();
   discover.scope(event('value', 'favorites')); assert.equal(discover.data.cards.length, 1);
-  recipe.rate(event('key', 'like')); recipe.feedback(event('key', 'strong')); recipe.feedback(event('key', 'weak'));
+  recipe.rate(event('key', 'like')); recipe.feedback(event('key', 'strong')); recipe.feedback(event('key', 'weak')); recipe.saveRating();
   assert.deepEqual(S.get().taste.ratings[0].feedback, ['weak']); assert.equal(S.get().taste.ratings.length, 1);
   const taste = env.page('taste'); taste.onShow(); taste.toggle(event('key', 'mint')); taste.save();
   assert.deepEqual(S.get().taste.onboarding.palette, ['mint']); assert.ok(taste.data.recommendations.length > 0);
@@ -188,7 +306,13 @@ test('compiled WXML renders every English page without leaked Chinese system cop
   for(const name of ['discover','inventory','recipe','guide','journal','settings','taste','bottle','share','intro','editor']){
     const p=env.page(name);p.route=`pages/${name}/index`;p.onLoad?.(name==='editor'?{type:'recipe'}:{id:'world-004-mojito'});p.onShow?.();
     const render=context.$gwx(`pages/${name}/index.wxml`),tree=render(p.data,{}),chinese=collect(tree).filter(s=>/[\u3400-\u9fff]/.test(s)&&s.trim()!=='简体中文');
-    fixtures.push({name,data:p.data});assert.equal(chinese.length,0,name+': '+chinese.join(' | '));
+    fixtures.push({name,data:JSON.parse(JSON.stringify(p.data))});assert.equal(chinese.length,0,name+': '+chinese.join(' | '));
+    if(name==='taste'){
+      p.edit();const edited=render(p.data,{});assert.equal(collect(edited).filter(s=>/[\u3400-\u9fff]/.test(s)).length,0,'English palette labels');
+      const images=node=>node&&typeof node==='object'?[...(node.tag==='wx-image'&&node.attr?.src?.includes('/flavors/')?[node.attr.src]:[]),...(node.children||[]).flatMap(images)]:[];
+      assert.equal(new Set(images(edited)).size,9,'all nine icon images reach compiled WXML');
+    }
+    if(name==='bottle')for(const panel of ['type','appearance']){p.setData({panel});assert.equal(collect(render(p.data,{})).filter(s=>/[\u3400-\u9fff]/.test(s)).length,0,'English bottle '+panel);}
     if(name==='intro')for(let i=1;i<p.data.total;i++){p.next();const text=collect(render(p.data,{})).filter(s=>/[\u3400-\u9fff]/.test(s));assert.equal(text.length,0,'intro '+i+': '+text.join(' | '));}
   }
   assert.deepEqual(errors,[]);

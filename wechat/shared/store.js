@@ -68,6 +68,7 @@ function card(r, snapshot, dna) {
   return { id: r.id, name: r.chineseName, english: r.englishName, image: photo(r),
     base: p.base, family: p.family, color: core.drinkAppearance(r).color, custom: !!r.isUserCreated,
     missing: match.count, favorite: snapshot.favorites.includes(r.id),
+    flavor: p.unknown.length ? '' : taste.characteristics(p.vector).join(' · '), bars: p.unknown.length ? [] : [0,1,3].map(i=>({name:taste.dimensions[i],value:p.vector[i]})),
     score: dna.ready && !p.unknown.length ? taste.score(p.vector, dna.vector) : null };
 }
 module.exports = { core, taste, data, get, load, save, update, recipes, recipe, photo, today, id, addLog, card, bytes, validate,

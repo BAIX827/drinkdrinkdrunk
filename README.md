@@ -2,6 +2,8 @@
 
 微信小程序版本已生成在 [`wechat/`](wechat/README.md)。在微信开发者工具中直接导入这个目录，后端服务选「不使用云服务」；不需要启动网页版服务器。功能范围、备份迁移和导入步骤见小程序说明。
 
+各端同步折叠面板、杯型／瓶型滑动预览、口味 DNA 图标和手机布局时，参照根目录的 [跨端交互同步说明](CROSS_PLATFORM_INTERACTION_SPEC.md)，其中包含交互规则、代码索引和验收清单。
+
 ## 项目目录与清理约定
 
 - `Cocktail60/`、`Cocktail60Widget/`、`Cocktail60.xcodeproj/`、`macOS/`：iOS、小组件、Mac 工程和各端共用的 `BarWeb/` 源码。

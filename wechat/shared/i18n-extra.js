@@ -1,5 +1,15 @@
 // Mini-program-only labels. Shared recipe and long-form translations live in BarWeb.
 module.exports = {
+  '我的风味搭配':'My flavor palette', '点击选择':'Tap to choose', '搜索材料名称':'Search ingredients', '暂不选择类型':'Choose a type later', '瓶型与颜色':'Bottle and color',
+  '杯型与颜色':'Glass and color', '点击修改':'Tap to edit', '完成并收起':'Done · collapse', '收起':'Collapse',
+  '已完成':'Complete', '步骤 ':'Step ', '自动跟做中':'Auto-play', '已暂停，可手动切换':'Paused · manual steps available', '准备好后开始':'Start when ready',
+  '跟做设置':'Playback settings', '酒杯与外观':'Glass and appearance',
+  '切到后台会暂停，返回后点继续。摇匀与搅拌会保留配方要求的时长。':'Pauses in the background. Tap Continue when you return. Shaking and stirring retain the recipe duration.',
+  '点选步骤后暂停，确认准备好再继续。':'Jumping pauses playback. Continue when you are ready.',
+  '当前筛选下暂无推荐':'No recommendations for these filters',
+  '查看日记 / 补充照片':'View diary / add photos',
+  '全部步骤':'All steps',
+  '请输入六位十六进制颜色，例如 #d4a16e。':'Enter a six-digit hex color, for example #d4a16e.',
   '语言 / Language':'Language', '备份较大，请使用文件导入。':'This backup is large. Please import it as a file.',
   '发现':'Discover','我的酒':'My bar','口味 DNA':'Taste DNA','配方详情':'Recipe details','分步跟做':'Guided mixing','日记':'Diary',
   '设置':'Settings', '移除':'Remove', '删除这':'Delete ', '篇日记':'diary entry', '暂停':'Pause', '继续':'Continue', '全部':'All', '回到今天':'Today', '开始跟做':'Start mixing', '简体中文':'简体中文',
