@@ -29,6 +29,7 @@
   function mount(form, initial = []) {
     let photos = [...initial], busy = false;
     const input = form.querySelector('[data-photo-input]');
+    const inputs = [input, form.querySelector('[data-photo-camera]')].filter(Boolean);
     const gallery = form.querySelector('[data-photo-preview]');
     const status = form.querySelector('[data-photo-status]');
     const submit = form.querySelector('button[type="submit"]');
@@ -38,11 +39,11 @@
         if (busy) return;
         photos.splice(Number(button.dataset.removePhoto), 1); render();
       });
-      input.disabled = busy || photos.length >= 3;
+      inputs.forEach(picker => { picker.disabled = busy || photos.length >= 3; });
     };
-    input.onchange = async () => {
-      const files = [...input.files];
-      if (photos.length + files.length > 3) { status.textContent = localText('每篇最多 3 张，请减少选择数量。'); input.value = ''; return; }
+    inputs.forEach(picker => { picker.onchange = async () => {
+      const files = [...picker.files];
+      if (photos.length + files.length > 3) { status.textContent = localText('每篇最多 3 张，请减少选择数量。'); picker.value = ''; return; }
       busy = true; submit.disabled = true; status.textContent = localText('正在本地压缩照片…'); render();
       try {
         const additions = [];
@@ -50,8 +51,8 @@
         photos.push(...additions);
         status.textContent = localText('照片已准备好，保存日记后生效。');
       } catch (error) { status.textContent = localText(error.message); }
-      finally { busy = false; input.value = ''; submit.disabled = false; render(); }
-    };
+      finally { busy = false; picker.value = ''; submit.disabled = false; render(); }
+    }; });
     render();
     return { value: () => [...photos], busy: () => busy };
   }

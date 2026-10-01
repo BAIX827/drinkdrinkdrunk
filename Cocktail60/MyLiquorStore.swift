@@ -3,12 +3,15 @@ import Foundation
 
 final class MyLiquorStore: ObservableObject {
     @Published private(set) var ownedLiquors: Set<String> = [] {
-        didSet { save() }
+        didSet { if hasLoaded { save() } }
     }
 
+    // Loading legacy data must not rewrite or clear the source archive.
+    private var hasLoaded = false
     private let storageKey = "myOwnedLiquors"
 
     init() {
+        defer { hasLoaded = true }
         let saved = UserDefaults.standard.stringArray(forKey: storageKey) ?? []
         ownedLiquors = Set(saved.map(LiquorInventoryCatalog.normalizedName).filter { !$0.isEmpty })
     }

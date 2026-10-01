@@ -17,10 +17,12 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandler
         return state["locale"] as? String == "en"
     }
     private let onSave: ([String: Any]) -> Void
+    private let onEvent: ([String: Any]) -> Void
     private var resourceRoot: URL?
     private var exportingImage = false
 
-    init(onSave: @escaping ([String: Any]) -> Void = { _ in }) {
+    init(onSave: @escaping ([String: Any]) -> Void = { _ in }, onEvent: @escaping ([String: Any]) -> Void = { _ in }) {
+        self.onEvent = onEvent
         self.onSave = onSave
     }
 
@@ -44,6 +46,7 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandler
             ))
         }
         controller.add(self, name: "barState")
+        if bootstrap["nativeNavigation"] as? Bool == true { controller.add(self, name: "barNavigation") }
         controller.addScriptMessageHandler(self, contentWorld: .page, name: "barShare")
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = controller
@@ -63,9 +66,12 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandler
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard message.frameInfo.isMainFrame,
-              let url = message.webView?.url, isLocalResource(url),
-              let raw = message.body as? String,
+        guard message.frameInfo.isMainFrame, let url = message.webView?.url, isLocalResource(url) else { return }
+        if message.name == "barNavigation", let event = message.body as? [String: Any] {
+            onEvent(event)
+            return
+        }
+        guard message.name == "barState", let raw = message.body as? String,
               raw.utf8.count <= 8_000_000,
               let data = raw.data(using: .utf8),
               let state = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],

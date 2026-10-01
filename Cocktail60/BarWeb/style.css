@@ -2005,3 +2005,7 @@ progress::-webkit-progress-value {
   .journal-entry .journal-actions { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
   .journal-entry .journal-copy { min-width: 0; }
 }
+
+.recipe-source-photo { margin: 24px 0 0; }
+.recipe-source-photo img { display: block; max-width: 100%; max-height: 340px; object-fit: contain; border-radius: 14px; }
+.recipe-source-photo figcaption { color: var(--muted); font-size: 12px; margin-top: 8px; }

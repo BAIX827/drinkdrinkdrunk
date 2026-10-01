@@ -125,13 +125,16 @@ struct DrinkLogEntry: Identifiable, Codable, Hashable {
 
 final class DrinkLogStore: ObservableObject {
     @Published private(set) var logs: [DrinkLog] = [] {
-        didSet { save() }
+        didSet { if hasLoaded { save() } }
     }
 
+    // Loading legacy data must not rewrite or clear the source archive.
+    private var hasLoaded = false
     private let storageKey = "dailyDrinkLogs"
     private let calendar = Calendar.current
 
     init() {
+        defer { hasLoaded = true }
         guard
             let data = UserDefaults.standard.data(forKey: storageKey),
             let decodedLogs = try? JSONDecoder().decode([DrinkLog].self, from: data)

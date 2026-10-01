@@ -5,6 +5,8 @@
     <key>CFBundleIdentifier</key><string>com.drinkdrinkdrunk.mac</string>
     <key>CFBundleName</key><string>大喝特喝</string>
     <key>CFBundleDisplayName</key><string>大喝特喝</string>
+    <key>CFBundleIconFile</key><string>AppIcon</string>
+    <key>CFBundleIconName</key><string>AppIcon</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>1.0.0</string>
     <key>CFBundleVersion</key><string>1</string>

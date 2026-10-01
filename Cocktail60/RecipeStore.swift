@@ -2,9 +2,11 @@ import Foundation
 
 final class RecipeStore: ObservableObject {
     @Published private(set) var userRecipes: [CocktailRecipe] = [] {
-        didSet { save() }
+        didSet { if hasLoaded { save() } }
     }
 
+    // Loading legacy data must not rewrite or clear the source archive.
+    private var hasLoaded = false
     private let storageKey = "userCocktailRecipes"
 
     var allRecipes: [CocktailRecipe] {
@@ -12,6 +14,7 @@ final class RecipeStore: ObservableObject {
     }
 
     init() {
+        defer { hasLoaded = true }
         guard
             let data = UserDefaults.standard.data(forKey: storageKey),
             let recipes = try? JSONDecoder().decode([CocktailRecipe].self, from: data)

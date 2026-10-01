@@ -1,0 +1,114 @@
+/* The Web app keeps its own navigation elsewhere. On iPhone SwiftUI owns it. */
+html[data-platform="iphone"] { -webkit-text-size-adjust: 100%; scroll-padding-top: 124px; }
+html[data-platform="iphone"] body { font-size: 15px; overflow-wrap: anywhere; }
+html[data-platform="iphone"] .sidebar { display: none; }
+html[data-platform="iphone"] .workspace { margin: 0; padding-bottom: 104px; }
+html[data-platform="iphone"] .topbar {
+  position: sticky; top: 0; z-index: 20; height: 56px; padding: 0 16px;
+  background: var(--bg); border-bottom: 1px solid var(--line); gap: 8px;
+}
+html[data-platform="iphone"] .topbar > span { display: block; font-size: 17px; font-weight: 650; letter-spacing: 0; white-space: nowrap; }
+html[data-platform="iphone"] .topbar-actions { width: auto; margin-left: auto; gap: 2px; }
+html[data-platform="iphone"] .topbar-actions > a { min-width: 40px; min-height: 44px; text-align: center; font-size: 23px; padding: 3px 8px; }
+html[data-platform="iphone"] .topbar button[data-action="add-recipe"] { font-size: 0; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; }
+html[data-platform="iphone"] .topbar button[data-action="add-recipe"]::after { content: '+'; font-size: 29px; color: var(--green); }
+html[data-platform="iphone"] .iphone-back { min-height: 44px; padding: 4px 6px 4px 0; font-size: 14px; }
+html[data-platform="iphone"] .topbar .bar-music { display: none; }
+html[data-platform="iphone"] .settings-card .bar-music { flex-wrap: wrap; }
+html[data-platform="iphone"] main { padding: 16px 16px 28px; max-width: 680px; margin-inline: auto; }
+html[data-platform="iphone"] h1 { font-size: 26px; }
+html[data-platform="iphone"] h2 { font-size: 20px; }
+html[data-platform="iphone"] .hero { min-height: 166px; padding: 20px; border-radius: 22px; }
+html[data-platform="iphone"] .hero h1 { font-size: 26px; }
+html[data-platform="iphone"] .hero-art { right: 8px; bottom: 12px; transform: scale(.43); opacity: .82; pointer-events: none; }
+html[data-platform="iphone"] .hero-copy { position: relative; z-index: 1; }
+html[data-platform="iphone"] .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 7px 14px; margin-top: 14px; max-width: 260px; }
+html[data-platform="iphone"] .hero-stats span { font-size: 11px; }
+html[data-platform="iphone"] .hero-stats b { font-size: 15px; }
+html[data-platform="iphone"] .hero .primary { margin-top: 10px; }
+html[data-platform="iphone"] .discovery { padding-top: 12px; }
+html[data-platform="iphone"] .discovery > .section-heading { position: sticky; top: 56px; z-index: 15; padding: 10px 0; margin: 0 0 10px; background: var(--bg); }
+html[data-platform="iphone"] .discovery > .section-heading > div:first-child { display: none; }
+html[data-platform="iphone"] .search-wrap { width: 100%; }
+html[data-platform="iphone"] input:not([type="checkbox"], [type="color"], [type="range"]),
+html[data-platform="iphone"] select, html[data-platform="iphone"] textarea { font-size: 16px; min-height: 44px; }
+html[data-platform="iphone"] .filter-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+html[data-platform="iphone"] .filter-row .chip { flex: 0 0 auto; min-height: 40px; font-size: 12px; }
+html[data-platform="iphone"] .inventory-filter { border-radius: 16px; }
+html[data-platform="iphone"] .category-checks label { font-size: 12px; min-height: 32px; }
+html[data-platform="iphone"] .match-options .chip { min-height: 40px; font-size: 11px; }
+html[data-platform="iphone"] .recipe-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+html[data-platform="iphone"] .recipe-card { display: grid; grid-template-columns: 94px minmax(0, 1fr); border-radius: 18px; min-height: 140px; }
+html[data-platform="iphone"] .recipe-visual { height: 100%; min-height: 140px; border: 0; border-right: 1px solid var(--line); border-radius: 0; }
+html[data-platform="iphone"] .recipe-visual svg { width: 82px; height: 102px; }
+html[data-platform="iphone"] .card-number { top: 8px; left: 10px; font-size: 8px; }
+html[data-platform="iphone"] .visual-tag { display: none; }
+html[data-platform="iphone"] .recipe-copy { padding: 13px 40px 13px 13px; min-width: 0; }
+html[data-platform="iphone"] .recipe-copy h3 { font-size: 17px; line-height: 1.35; }
+html[data-platform="iphone"] .english { font-size: 11px; min-height: 0; margin: 4px 0 8px; }
+html[data-platform="iphone"] .recipe-tags { margin-bottom: 7px; gap: 4px; }
+html[data-platform="iphone"] .recipe-tags span { font-size: 10px; }
+html[data-platform="iphone"] .favorite { width: 40px; height: 40px; top: 5px; right: 3px; background: transparent; border: 0; }
+html[data-platform="iphone"] .availability { font-size: 11px; line-height: 1.5; }
+html[data-platform="iphone"] .page-heading { margin-bottom: 18px; gap: 10px; }
+html[data-platform="iphone"] .page-heading h1 { font-size: 25px; }
+html[data-platform="iphone"] .page-heading .primary { padding: 10px 13px; white-space: nowrap; }
+html[data-platform="iphone"] .calendar-controls button { min-width: 38px; min-height: 44px; padding-inline: 8px; }
+html[data-platform="iphone"] .calendar-heading { gap: 8px; padding: 12px 8px; }
+html[data-platform="iphone"] .calendar-heading h2 { font-size: 17px; }
+html[data-platform="iphone"] .calendar-day, html[data-platform="iphone"] .calendar-blank { min-height: 62px; }
+html[data-platform="iphone"] .calendar-drinks { height: 27px; }
+html[data-platform="iphone"] .calendar-day-number { font-size: 13px; }
+html[data-platform="iphone"] .detail-actions { gap: 8px; flex-wrap: wrap; }
+html[data-platform="iphone"] .detail-actions > * { min-height: 44px; }
+html[data-platform="iphone"] .settings-card { padding: 20px; border-radius: 18px; }
+html[data-platform="iphone"] dialog:not(.tour-dialog):not(#bar-opening) { width: calc(100% - 20px); max-width: 540px; max-height: calc(100dvh - 24px); padding: 22px 18px; border-radius: 24px; overscroll-behavior: contain; }
+html[data-platform="iphone"] dialog .modal-close { width: 44px; height: 44px; top: 8px; right: 8px; }
+html[data-platform="iphone"] dialog h2 { font-size: 22px; }
+html[data-platform="iphone"] .modal-actions { position: sticky; bottom: -22px; background: var(--surface); padding: 12px 0; margin-top: 20px; z-index: 3; }
+html[data-platform="iphone"] .ingredient-editor { border: 0; padding: 0; margin: 18px 0; min-width: 0; }
+html[data-platform="iphone"] .ingredient-row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+html[data-platform="iphone"] .ingredient-row input { min-width: 0; }
+html[data-platform="iphone"] .ingredient-row button { min-width: 44px; height: 44px; border-radius: 12px; background: var(--soft); font-size: 24px; }
+html[data-platform="iphone"] footer { padding: 8px 16px; font-size: 11px; }
+html[data-platform="iphone"] #toast { bottom: 106px; max-width: calc(100% - 32px); }
+@media (max-width: 360px) {
+  html[data-platform="iphone"] main { padding-inline: 12px; }
+  html[data-platform="iphone"] .topbar { padding-inline: 12px; }
+  html[data-platform="iphone"] .topbar > span { font-size: 15px; }
+  html[data-platform="iphone"] .recipe-card { grid-template-columns: 78px minmax(0,1fr); }
+  html[data-platform="iphone"] .recipe-copy { padding-left: 10px; padding-right: 30px; }
+  html[data-platform="iphone"] .calendar-heading { flex-wrap: wrap; }
+}
+
+html[data-platform="iphone"] .iphone-search { position: sticky; top: 56px; z-index: 15; background: var(--bg); padding: 8px 0 10px; margin: -8px 0 6px; }
+html[data-platform="iphone"] .iphone-search > div:first-child { display: none; }
+html[data-platform="iphone"] .iphone-filters { margin-bottom: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+html[data-platform="iphone"] .iphone-filters summary { padding: 12px 14px; min-height: 44px; color: var(--green); font-size: 13px; cursor: pointer; }
+html[data-platform="iphone"] .iphone-filters .inventory-filter { border: 0; border-radius: 0; margin: 0; }
+html[data-platform="iphone"] .iphone-filters .taste-sort-row { padding: 12px; margin: 0; gap: 8px; flex-wrap: wrap; }
+html[data-platform="iphone"] .iphone-filters .taste-sort-row label { flex-wrap: wrap; }
+html[data-platform="iphone"] .back-link { display: none; }
+html[data-platform="iphone"] .result-heading { margin: 10px 0; }
+html[data-platform="iphone"][lang="en"] .topbar { padding-block: 0; min-height: 56px; }
+html[data-platform="iphone"][lang="en"] .topbar-actions { flex-wrap: nowrap; gap: 0; }
+html[data-platform="iphone"][lang="en"] .hero h1 { font-size: 26px; }
+
+html[data-platform="iphone"] .iphone-filters { padding: 0; margin-top: 0; }
+html[data-platform="iphone"] .recipe-copy .taste-bars { display: none; }
+html[data-platform="iphone"] .card-taste { margin: 6px 0; }
+html[data-platform="iphone"] .card-taste p { margin: 3px 0; font-size: 11px; }
+html[data-platform="iphone"][data-taste-ready="false"] .card-taste .taste-match { display: none; }
+html[data-platform="iphone"] .recipe-copy .availability { border-top: 0; padding-top: 2px; margin-top: 5px; }
+@media (max-width: 360px) {
+  html[data-platform="iphone"] .hero { min-height: 112px; padding: 16px; }
+  html[data-platform="iphone"] .hero .primary, html[data-platform="iphone"] .hero-art { display: none; }
+  html[data-platform="iphone"] .hero-stats { max-width: none; margin-top: 8px; }
+}
+html[data-platform="iphone"] dialog form, html[data-platform="iphone"] dialog label { min-width: 0; }
+html[data-platform="iphone"] input[type="date"], html[data-platform="iphone"] input[type="file"] { min-width: 0; max-width: 100%; width: 100%; }
+html[data-platform="iphone"] input[type="date"] { display: block; appearance: none; -webkit-appearance: none; }
+html[data-platform="iphone"] input::-webkit-date-and-time-value { text-align: left; }
+html[data-platform="iphone"] .iphone-photo-picker { position: relative; display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--green); background: var(--soft); overflow: hidden; }
+html[data-platform="iphone"] .iphone-photo-picker input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+html[data-platform="iphone"] .iphone-photo-picker:focus-within { outline: 2px solid var(--green); outline-offset: 2px; }

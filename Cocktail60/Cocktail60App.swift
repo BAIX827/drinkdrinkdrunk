@@ -4,7 +4,6 @@ import SwiftUI
 struct Cocktail60App: App {
     @StateObject private var favoritesStore = FavoritesStore()
     @StateObject private var recipeStore = RecipeStore()
-    @StateObject private var appearanceStore = AppearanceStore()
     @StateObject private var drinkLogStore = DrinkLogStore()
     @StateObject private var myLiquorStore = MyLiquorStore()
 
@@ -13,10 +12,8 @@ struct Cocktail60App: App {
             ContentView()
                 .environmentObject(favoritesStore)
                 .environmentObject(recipeStore)
-                .environmentObject(appearanceStore)
                 .environmentObject(drinkLogStore)
                 .environmentObject(myLiquorStore)
-                .preferredColorScheme(appearanceStore.preferredColorScheme)
         }
     }
 }

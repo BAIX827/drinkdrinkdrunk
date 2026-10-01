@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B10000000000000000000001 /* BarWebHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011; };
-		B10000000000000000000002 /* BarWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012; };
-		B10000000000000000000003 /* BarWeb in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013; };
+		B10000000000000000000001 /* BarWebHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* BarWebHost.swift */; };
+		B10000000000000000000002 /* BarWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* BarWebView.swift */; };
+		B10000000000000000000003 /* BarWeb in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* BarWeb */; };
 		F00000000000000000000020 /* Cocktail60App.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000010 /* Cocktail60App.swift */; };
 		F00000000000000000000021 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000011 /* ContentView.swift */; };
 		F00000000000000000000022 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
@@ -20,7 +20,6 @@
 		F00000000000000000000027 /* AddRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000017 /* AddRecipeView.swift */; };
 		F00000000000000000000028 /* RecipeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000018 /* RecipeSearch.swift */; };
 		F00000000000000000000029 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
-		F00000000000000000000060 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
 		F0000000000000000000002A /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
 		F0000000000000000000002B /* AppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001C /* AppearanceStore.swift */; };
 		F0000000000000000000002C /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001D /* AppearanceSettingsView.swift */; };
@@ -29,15 +28,16 @@
 		F0000000000000000000002F /* MyLiquorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000034 /* MyLiquorStore.swift */; };
 		F00000000000000000000035 /* MyLiquorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000036 /* MyLiquorView.swift */; };
 		F00000000000000000000037 /* CocktailThumbnailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000038 /* CocktailThumbnailStore.swift */; };
-		F00000000000000000000046 /* RecipeLocalThumbnailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */; };
-		F00000000000000000000048 /* XiaohongshuImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000049 /* XiaohongshuImportView.swift */; };
 		F00000000000000000000040 /* Cocktail60Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000031 /* Cocktail60Widget.swift */; };
 		F00000000000000000000041 /* CocktailRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000012 /* CocktailRecipe.swift */; };
 		F00000000000000000000042 /* CocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000013 /* CocktailData.swift */; };
 		F00000000000000000000043 /* WorldCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* WorldCocktailData.swift */; };
-		F00000000000000000000061 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
 		F00000000000000000000044 /* CocktailLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001B /* CocktailLibrary.swift */; };
 		F00000000000000000000045 /* Cocktail60Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F00000000000000000000033 /* Cocktail60Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F00000000000000000000046 /* RecipeLocalThumbnailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */; };
+		F00000000000000000000048 /* XiaohongshuImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000049 /* XiaohongshuImportView.swift */; };
+		F00000000000000000000060 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
+		F00000000000000000000061 /* CuratedCocktailData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* CuratedCocktailData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +78,6 @@
 		F00000000000000000000018 /* RecipeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSearch.swift; sourceTree = "<group>"; };
 		F00000000000000000000019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0000000000000000000001A /* WorldCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldCocktailData.swift; sourceTree = "<group>"; };
-		F00000000000000000000062 /* CuratedCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCocktailData.swift; sourceTree = "<group>"; };
 		F0000000000000000000001B /* CocktailLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailLibrary.swift; sourceTree = "<group>"; };
 		F0000000000000000000001C /* AppearanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceStore.swift; sourceTree = "<group>"; };
 		F0000000000000000000001D /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
@@ -92,6 +91,7 @@
 		F00000000000000000000038 /* CocktailThumbnailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailThumbnailStore.swift; sourceTree = "<group>"; };
 		F00000000000000000000047 /* RecipeLocalThumbnailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeLocalThumbnailStore.swift; sourceTree = "<group>"; };
 		F00000000000000000000049 /* XiaohongshuImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiaohongshuImportView.swift; sourceTree = "<group>"; };
+		F00000000000000000000062 /* CuratedCocktailData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedCocktailData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +437,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z2SC5MWSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cocktail60/Info.plist;
@@ -464,6 +465,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z2SC5MWSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cocktail60/Info.plist;
@@ -490,6 +492,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z2SC5MWSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cocktail60Widget/Info.plist;
@@ -518,6 +521,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z2SC5MWSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Cocktail60Widget/Info.plist;

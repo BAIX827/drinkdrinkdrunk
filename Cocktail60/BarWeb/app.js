@@ -7,6 +7,9 @@
   const catalog = BarData.catalog;
   BarI18n.add(Object.fromEntries(BarData.recipes.filter(r => r.englishName).map(r => [r.chineseName, r.englishName])));
   const host = window.barHost || {};
+  const native = host.nativeNavigation === true;
+  if (native) document.documentElement.dataset.platform = "iphone";
+  const nativeEvent = message => { if (native) window.webkit?.messageHandlers?.barNavigation?.postMessage(message); };
   let state = blankState(),
     storageError = "",
     locked = false;
@@ -29,12 +32,15 @@
     }
     if (Array.isArray(legacy))
       state.inventory.push(...BarCore.migrate(legacy, catalog));
-    if (Array.isArray(host.favorites)) state.favorites = host.favorites;
+    if (Array.isArray(host.favorites)) state.favorites = native ? [...new Set([...state.favorites, ...host.favorites])] : host.favorites;
     state.migrated = true;
   }
   // Native favorites may have changed since the previous sheet was closed.
-  if (!locked && Array.isArray(host.favorites))
+  if (!native && !locked && Array.isArray(host.favorites))
     state.favorites = host.favorites;
+  let nativeTab = "discover";
+  const nativeTrail = [], nativeScroll = new Map();
+  let nativeRoute = '';
   let page = "discover",
     query = "",
     base = "",
@@ -42,6 +48,7 @@
     scope = Object.keys(categories),
     collection = "all";
   let tasteSort = "match";
+  let nativeFiltersOpen = false;
   let modalReturnFocus, toastTimer;
   let guide;
   const app = document.querySelector("#app"),
@@ -62,7 +69,7 @@
   function recipes() {
     const all = [
       ...BarData.recipes,
-      ...(host.recipes || []).filter((r) => r.isUserCreated),
+      ...(!native ? host.recipes || [] : []).filter((r) => r.isUserCreated),
       ...state.customRecipes,
     ];
     return [
@@ -102,6 +109,7 @@
     }
   }
   function applyTheme() {
+    nativeEvent({ type: "appearance", theme: state.theme, locale: state.locale });
     BarI18n.setLocale(state.locale);
     document.documentElement.dataset.theme = state.theme;
     document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
@@ -125,22 +133,48 @@
       )
       .join(
         "",
-      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles" aria-hidden="true">${bottle({ color: "#a87949", shape: "whiskey" })}${bottle({ color: "#657f62", shape: "rum" })}${bottle({ color: "#698e89", shape: "gin" })}</div><a href="#settings">设置与数据备份 ↗</a></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer><span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`);
+      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles" aria-hidden="true">${bottle({ color: "#a87949", shape: "whiskey" })}${bottle({ color: "#657f62", shape: "rum" })}${bottle({ color: "#698e89", shape: "gin" })}</div><a href="#settings">设置与数据备份 ↗</a></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" aria-label="添加配方" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer><span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`);
   }
   function mountMusic() {
+    if (native && page !== 'settings') return;
     const music = document.createElement('div');
     music.className = 'bar-music';
-    document.querySelector('.topbar-actions').prepend(music);
+    (native ? document.querySelector('.settings-card') : document.querySelector('.topbar-actions')).prepend(music);
     BarMusic.mount(music);
   }
   function route() {
     BarPlayer.stop();
-    const [section = "discover", id] = location.hash.slice(1).split("/");
+    const destination = location.hash.slice(1) || 'discover';
+    const [section = "discover", id] = destination.split("/");
+    let restoreScroll = false;
+    if (native) {
+      if (nativeRoute) nativeScroll.set(nativeRoute, window.scrollY);
+      restoreScroll = nativeTrail.includes(destination);
+      if (['discover','bar','dna','journal'].includes(section)) {
+        restoreScroll = nativeScroll.has(destination); nativeTrail.length = 0;
+      } else if (restoreScroll) nativeTrail.splice(nativeTrail.indexOf(destination));
+      nativeTrail.push(destination); nativeRoute = destination;
+    }
+    if (["discover", "bar", "dna", "journal"].includes(section)) nativeTab = section;
     page = ["bar", "favorites", "journal", "settings", "dna"].includes(section)
       ? section
       : "discover";
     shell();
-    mountMusic();
+    if (native) {
+      document.documentElement.dataset.route = section;
+      document.querySelector('.topbar > span').textContent = localText({ discover: '配方库', favorites: '我的收藏', bar: '我的吧台', dna: '口味 DNA', journal: '饮酒日记', settings: '设置与数据' }[section] || '配方库');
+      const actions = document.querySelector('.topbar-actions');
+      actions.querySelector('a[href="#settings"]').textContent = "⚙︎";
+      actions.insertAdjacentHTML('afterbegin', localHTML('<a href="#favorites" class="text-button" aria-label="我的收藏">♡</a>'));
+      if (['recipe', 'follow', 'compare', 'settings', 'favorites'].includes(section)) {
+        const back = document.createElement('button'); back.className = 'text-button iphone-back';
+        back.textContent = localText('返回'); back.setAttribute('aria-label', localText('返回'));
+        back.onclick = () => { location.hash = nativeTrail.at(-2) || (section === 'follow' ? `recipe/${id}` : nativeTab); };
+        document.querySelector('.topbar').prepend(back);
+      }
+      nativeEvent({ type: "route", route: section, tab: ['discover','bar','dna','journal'].includes(section) ? section : nativeTab });
+    }
+    if (!native) mountMusic();
     const main = document.querySelector("#main");
     if (section === "recipe" || section === "follow") {
       const recipe = recipes().find((r) => r.id === id);
@@ -168,7 +202,8 @@
     else if (page === "dna") tasteUI.renderDna();
     else if (section === "compare") tasteUI.compare(id);
     else discover();
-    window.scrollTo(0, 0);
+    if (native) mountMusic();
+    window.scrollTo(0, native && restoreScroll && !guide?.active ? nativeScroll.get(destination) || 0 : 0);
   }
   function discover() {
     document.querySelector("#main").innerHTML =
@@ -194,7 +229,7 @@
         )
         .join("")}</div></div>
       <div class="result-heading"><span id="result-count" role="status"></span></div><div id="recipe-grid" class="recipe-grid"></div></section>`);
-    if(page === "discover") {
+    if(page === "discover" && !native) {
       document.querySelector(".hero").insertAdjacentHTML("afterend", localHTML(tasteUI.welcome() + '<div id="taste-recommendations"></div>'));
       document.querySelector(".hero-copy > .primary").outerHTML = localHTML(tasteUI.current().ready
         ? '<a class="primary" href="#dna">我的口味 DNA ↗</a>'
@@ -202,6 +237,20 @@
     }
     document.querySelector(".result-heading").insertAdjacentHTML("beforebegin", localHTML(`<div class="taste-sort-row"><label>配方排序 <select id="taste-sort"><option value="match" ${tasteSort==="match"?"selected":""}>按我的口味匹配</option><option value="original" ${tasteSort==="original"?"selected":""}>原有顺序</option></select></label><a class="text-button" href="#compare">比较两杯 ↗</a></div>`));
     document.querySelector("#taste-sort").onchange=event=>{tasteSort=event.target.value;renderCards();};
+    if (native) {
+      const filter = document.querySelector('.inventory-filter');
+      const disclosure = document.createElement('details'); disclosure.className = 'iphone-filters';
+      disclosure.open = nativeFiltersOpen || !!guide?.active;
+      const summary = document.createElement('summary');
+      const filterLabel = state.locale === 'en' ? 'Materials & sorting' : '材料筛选与排序';
+      const activeFilter = limit !== 'all' || scope.length !== Object.keys(categories).length || tasteSort !== 'match';
+      summary.textContent = filterLabel + (activeFilter ? (state.locale === 'en' ? ' · Active' : ' · 已筛选') : '');
+      disclosure.append(summary); filter.before(disclosure); disclosure.append(filter, document.querySelector('.taste-sort-row'));
+      disclosure.ontoggle = () => { if (!guide?.active) nativeFiltersOpen = disclosure.open; };
+      // Search stays at the top of the phone page, including while its list scrolls.
+      const searchHeading = document.querySelector('.discovery > .section-heading');
+      searchHeading.classList.add('iphone-search'); document.querySelector('#main').prepend(searchHeading);
+    }
     renderCards();
     document.querySelector("#search").oninput = (event) => {
       query = event.target.value;
@@ -210,6 +259,7 @@
   }
   function renderCards() {
     const user = tasteUI.current();
+    if (native) document.documentElement.dataset.tasteReady = String(user.ready);
     const count = document.querySelector("#favorite-count");
     if (count) count.textContent = localText(state.favorites.length);
     const q = query.trim().toLowerCase();
@@ -220,14 +270,13 @@
         (collection !== "mine" || r.isUserCreated) &&
         (collection !== "guided" || r.steps) &&
         (collection !== "researched" || r.source) &&
-        `${r.chineseName} ${r.englishName} ${r.ingredients.join(" ")} ${r.tags.join(" ")} ${localText(r.ingredients.join(" "))} ${localText(r.tags.join(" "))}`
-          .toLowerCase()
-          .includes(q) &&
+        (native ? BarIPhone.searchScore(r, q, localText) > 0 : `${r.chineseName} ${r.englishName} ${r.ingredients.join(" ")} ${r.tags.join(" ")} ${localText(r.ingredients.join(" "))} ${localText(r.tags.join(" "))}`.toLowerCase().includes(q)) &&
         (limit === "all" ||
           (scope.length &&
             match(r, state.inventory, scope).count <= Number(limit))),
     );
-    if(tasteSort === "match" && user.ready) list.sort((a,b)=>{
+    if(native && q) list.sort((a,b) => BarIPhone.searchScore(b,q,localText) - BarIPhone.searchScore(a,q,localText));
+    else if(tasteSort === "match" && user.ready) list.sort((a,b)=>{
       const pa=BarTaste.profile(a),pb=BarTaste.profile(b);
       return (pb.unknown.length?-1:BarTaste.score(pb.vector,user.vector)) - (pa.unknown.length?-1:BarTaste.score(pa.vector,user.vector)) || a.id.localeCompare(b.id);
     });
@@ -282,6 +331,12 @@
         .join(
           "",
         )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<h2>做法</h2><p class="method" translate="no">${e(BarI18n.recipeText(r, r.method))}</p>${r.note ? `<p class="notice" translate="no">${e(BarI18n.recipeText(r, r.note))}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="secondary" data-share-recipe="${e(r.id)}">分享卡片</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div></section></div>`);
+    if (r.photo) {
+      const figure = document.createElement('figure'); figure.className = 'recipe-source-photo';
+      const image = document.createElement('img'); image.src = r.photo; image.alt = BarI18n.name(r); image.loading = 'lazy';
+      const caption = document.createElement('figcaption'); caption.textContent = state.locale === 'en' ? 'Recipe photo' : '配方照片';
+      figure.append(image, caption); document.querySelector('.detail-copy').append(figure);
+    }
   }
   function showModal(html) {
     BarShare.dispose();
@@ -425,9 +480,32 @@
   }
   function openRecipe() {
     showModal(
-      `<form id="recipe-form"><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label>${BarChoices.glasses({ id: "recipe-glass", value: "highball", color: "#d8ac6d" })}<label>主色<input name="color" type="color" value="#d8ac6d"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存配方</button></div></form>`,
+      `<form id="recipe-form"><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label>${BarChoices.glasses({ id: "recipe-glass", value: "highball", color: "#d8ac6d" })}<label>主色<input name="color" type="color" value="#d8ac6d"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存配方</button></div></form>`,
     );
     const form = document.querySelector("#recipe-form");
+    if (native) {
+      const importButton = document.createElement('button'); importButton.type = 'button'; importButton.className = 'secondary wide';
+      importButton.textContent = state.locale === 'en' ? 'Import from Xiaohongshu' : '从小红书导入';
+      importButton.onclick = () => { closeModal(); nativeEvent({ type: 'importRecipe' }); };
+      form.querySelector('h2').after(importButton);
+      const field = form.elements.ingredients;
+      field.closest('label').hidden = true; field.required = false;
+      const editor = document.createElement('fieldset'); editor.className = 'ingredient-editor';
+      const legend = document.createElement('legend'); legend.textContent = state.locale === 'en' ? 'Ingredients & quantities' : '材料与用量'; editor.append(legend);
+      const rows = document.createElement('div'); editor.append(rows);
+      const sync = () => { field.value = [...rows.querySelectorAll('input')].map(i => i.value).join('\n'); };
+      const addRow = (value = '') => {
+        const row = document.createElement('div'); row.className = 'ingredient-row';
+        const input = document.createElement('input'); input.value = value; input.placeholder = state.locale === 'en' ? 'Gin 45 ml' : '金酒 45 ml'; input.setAttribute('aria-label', legend.textContent); input.oninput = sync;
+        const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '−'; remove.setAttribute('aria-label', state.locale === 'en' ? 'Remove ingredient' : '移除材料');
+        remove.onclick = () => { row.remove(); if (!rows.children.length) addRow(); sync(); };
+        row.append(input, remove); rows.append(row);
+      };
+      const add = document.createElement('button'); add.type = 'button'; add.className = 'text-button'; add.textContent = state.locale === 'en' ? '+ Add ingredient' : '＋ 添加材料'; add.onclick = () => addRow();
+      editor.append(add); field.closest('label').after(editor); addRow(); addRow();
+      const extras = document.createElement('div'); extras.innerHTML = `<label>${state.locale === 'en' ? 'Tags (comma separated)' : '标签（用逗号分隔）'}<input name="tags" maxlength="500"></label><label>${state.locale === 'en' ? 'Notes' : '备注'}<textarea name="note" rows="2" maxlength="3000"></textarea></label>`;
+      form.querySelector('.modal-actions').before(extras);
+    }
     form.elements.color.oninput = () => BarChoices.updateArt(document.querySelector("#recipe-glass"), kind => glass(kind, form.elements.color.value));
     form.onsubmit = (event) => {
       event.preventDefault();
@@ -438,16 +516,16 @@
           .split("\n")
           .map((s) => s.trim())
           .filter(Boolean);
-      if (!name || !method || !parts.length) return;
+      if (!name || !method || !parts.length) { toast(state.locale === 'en' ? 'Enter a name, ingredients and method.' : '请填写酒名、材料和做法。'); return; }
       const r = {
         id: `user-${uid()}`,
         chineseName: name,
         englishName: f.english.value.trim(),
         ingredients: parts,
-        tags: ["我的配方"],
+        tags: native && f.tags.value.trim() ? f.tags.value.split(/[,，、]/).map(t => t.trim()).filter(Boolean) : ["我的配方"],
         glass: BarCore.glassNames[f.glass.value],
         method,
-        note: null,
+        note: native ? f.note.value.trim() || null : null,
         accentHex: f.color.value,
         appearance: { color: f.color.value, garnish: "none" },
         isUserCreated: true,
@@ -489,6 +567,16 @@
       `<form id="log-form"><h2>${entry ? "编辑日记" : "添加日记"}</h2><div id="log-preview" class="log-preview">${glass(look.glass, look.color, look.visual || {})}</div>${BarChoices.glasses({ id: "log-glass", value: look.glass, color: look.color, visual: look.visual })}<label>酒液颜色<input name="color" type="color" value="${look.color}"></label>${BarChoices.render({ id: "log-visual", name: "visual", label: "外观", options: { keep: "当前外观", plain: "纯色" }, value: "keep" })}<label>日期<input name="date" type="date" min="0001-01-01" max="9999-12-31" value="${e(entry?.date || (page === "journal" ? journalDate : today()))}" required></label><label>酒名<input name="name" required maxlength="100" value="${e(name)}"></label><label>今天的感受<textarea name="note" maxlength="3000" rows="4" placeholder="口味、用量调整或其他备注">${e(entry?.note || "")}</textarea></label><label>这一杯的照片<input type="file" data-photo-input accept="image/jpeg,image/png,image/webp" multiple></label><p class="small muted">最多 3 张，每张原图不超过 12 MB。仅在本机压缩保存，备份包含照片，不保留原图。</p><div class="photo-gallery" data-photo-preview></div><p class="small" data-photo-status role="status"></p><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存日记</button></div></form>`,
     );
     const form = document.querySelector("#log-form");
+    if (native) {
+      const photoLabel = form.querySelector('[data-photo-input]').closest('label');
+      photoLabel.classList.add('iphone-photo-picker');
+      photoLabel.firstChild.textContent = state.locale === 'en' ? 'Choose from Photos' : '从相册选择照片';
+      const cameraLabel = document.createElement('label'); cameraLabel.className = 'iphone-photo-picker';
+      cameraLabel.textContent = state.locale === 'en' ? 'Take a photo' : '拍照记录';
+      const camera = document.createElement('input'); camera.type = 'file'; camera.accept = 'image/*'; camera.setAttribute('capture', 'environment'); camera.dataset.photoCamera = '';
+      cameraLabel.append(camera); photoLabel.after(cameraLabel);
+      if (entry?.legacyPhotos && entry.photos.length > 3) photoLabel.nextElementSibling.after(Object.assign(document.createElement('p'), { className: 'small muted', textContent: state.locale === 'en' ? 'All photos from your original diary are retained.' : '原日记中的照片已全部保留。' }));
+    }
     const photos = BarPhotos.mount(form, entry?.photos || []);
     let visual = { ...look.visual };
     const preview = () => {
@@ -753,6 +841,30 @@
       }
     }
   });
+  window.BarNative = {
+    navigate(destination) {
+      if (!/^(discover|bar|dna|journal|settings|favorites|recipe\/[a-zA-Z0-9-]+)$/.test(destination)) return;
+      if (guide?.active) return;
+      if (modal.open) closeModal();
+      if (location.hash === `#${destination}`) route(); else location.hash = destination;
+    },
+    importRecipes(recipes) {
+      try {
+        const next = BarIPhone.mergeLegacy(state, { recipes, migrated: true });
+        if (!save(next)) return false;
+        location.hash = `recipe/${recipes.at(-1)?.id || ''}`; return true;
+      } catch { toast(localText('配方导入失败，原始记录已保留。')); return false; }
+    }
+  };
+  if (native && host.legacy && !locked) {
+    try {
+      if (host.legacy.error) throw new Error(host.legacy.error);
+      const next = BarIPhone.mergeLegacy(state, host.legacy);
+      if (!save(next)) throw new Error('旧数据迁移未完成，原始记录已保留。');
+    } catch (error) {
+      nativeEvent({ type: 'migrationError', message: error.message });
+    }
+  }
   applyTheme();
   const tasteUI = BarTasteUI.create({ getState:()=>state, getRecipes:recipes, save, showModal, closeModal, toast, refresh:route, badge });
   guide = BarGuide.create({
@@ -764,6 +876,25 @@
   });
   if (host.route) history.replaceState(null, "", `#${host.route}`);
   route();
+  if (native) {
+    let previousY = 0, scheduled = false;
+    window.addEventListener('scroll', () => {
+      if (scheduled) return; scheduled = true;
+      requestAnimationFrame(() => {
+        const y = Math.max(0, window.scrollY), delta = y - previousY;
+        if (Math.abs(delta) > 12 || y < 20) {
+          nativeEvent({ type: 'scroll', expanded: y < 20 || delta < 0 }); previousY = y;
+        }
+        scheduled = false;
+      });
+    }, { passive: true });
+    let lastOverlay;
+    new MutationObserver(() => {
+      const open = !!document.querySelector('dialog[open]');
+      if (open !== lastOverlay) { lastOverlay = open; nativeEvent({ type: 'overlay', open }); }
+    }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'], childList: true });
+    nativeEvent({ type: 'ready' });
+  }
   if (storageError) toast(storageError);
   else save();
   // The welcome tour waits for the bar lights, including skip/reduced motion.

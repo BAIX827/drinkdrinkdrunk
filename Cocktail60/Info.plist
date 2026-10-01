@@ -34,7 +34,9 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.food-and-drink</string>
-	<key>LSRequiresIPhoneOS</key>
+	<key>CFBundleURLTypes</key>
+    <array><dict><key>CFBundleURLSchemes</key><array><string>dddrunk</string></array></dict></array>
+    <key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>用于给饮酒日历拍照记录当天喝的鸡尾酒。</string>

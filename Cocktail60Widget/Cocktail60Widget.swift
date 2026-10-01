@@ -198,6 +198,7 @@ struct DailyCocktailWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DailyCocktailProvider()) { entry in
             DailyCocktailWidgetView(entry: entry)
+                .widgetURL(URL(string: "dddrunk://recipe/\(entry.recipe.id)"))
         }
         .configurationDisplayName("每日鸡尾酒")
         .description("每天推荐一款鸡尾酒配方。")
