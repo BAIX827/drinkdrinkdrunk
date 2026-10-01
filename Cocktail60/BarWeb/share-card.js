@@ -1,4 +1,5 @@
 (() => {
+  const { html: localHTML, t: localText } = globalThis.BarI18n || { html: s => s, t: s => s };
   const WIDTH = 1080, MAX_HEIGHT = 8192;
   const sans = '"PingFang SC", "Microsoft YaHei", sans-serif';
   const templates = [
@@ -27,11 +28,11 @@
     const bases = [...new Set(mainParts
       .flatMap(p => p.types.map(type => BarTasteData[BarCore.canonical(type)]?.base).filter(Boolean)))];
     return {
-      name: recipe.chineseName, english: recipe.englishName || '',
-      ingredients: [...recipe.ingredients], glass: recipe.glass || '',
-      base: bases.join(' / ') || (known ? '无基酒' : '基酒待补充'),
-      family: known ? profile.family : '', known,
-      tags: known ? BarTaste.characteristics(profile.vector) : [],
+      name: globalThis.BarI18n?.name(recipe) || recipe.chineseName, english: globalThis.BarI18n?.locale === 'en' ? '' : recipe.englishName || '',
+      ingredients: recipe.ingredients.map(value => recipe.isUserCreated ? value : localText(value)), glass: localText(recipe.glass || ''),
+      base: localText(bases.join(' / ') || (known ? '无基酒' : '基酒待补充')),
+      family: known ? localText(profile.family) : '', known,
+      tags: known ? BarTaste.characteristics(profile.vector).map(localText) : [],
       vector: known ? [...profile.vector] : null,
       source: recipe.source?.title || '', art: BarArt.drink(recipe),
     };
@@ -73,7 +74,7 @@
     }
     const divider = ingredientY - 18;
     const footer = divider + 24;
-    const sourceLines = data.source ? wrap(`配方来源 · ${data.source}`, 910, s => measure(s, 21, 'muted')) : [];
+    const sourceLines = data.source ? wrap(localText(`配方来源 · ${data.source}`), 910, s => measure(s, 21, 'muted')) : [];
     const height = Math.max(1080, footer + 238 + Math.max(1, sourceLines.length) * 29 + 55);
     if (height > MAX_HEIGHT) throw new Error('配方文字过长，无法放入一张清晰的图片。请精简后重试。');
     return { width: WIDTH, height, blocks, rows, mainY, divider, footer, sourceLines };
@@ -144,7 +145,7 @@
     ctx.beginPath(); ctx.moveTo(87, 69); ctx.lineTo(109, 69); ctx.lineTo(98, 81); ctx.closePath(); ctx.stroke();
     line(ctx, 98, 81, 98, 90); line(ctx, 92, 90, 104, 90);
     circle(ctx, 108, 69, 4, template.accent);
-    text(ctx, '大喝特喝', 134, 87, 27, template.ink, 'left', 'title');
+    text(ctx, localText('大喝特喝'), 134, 87, 27, template.ink, 'left', 'title');
     text(ctx, 'COCKTAIL RECIPE', 997, 84, 20, template.ink, 'right', 'english');
     box(ctx, 690, 122, 310, 246, 46, template.soft);
     if (template.motif === 'sun') circle(ctx, 925, 180, 37, template.accent);
@@ -152,8 +153,8 @@
     else { box(ctx, 713, 141, 56, 14, 7, template.accent); box(ctx, 939, 330, 38, 14, 7, template.accent); }
     ctx.drawImage(art, 732, 109, 234, 278);
     box(ctx, 60, mainY, 960, divider - mainY, 28, template.panel, template.edge, 3);
-    text(ctx, '配方', 98, mainY + 57, 32, template.ink, 'left', 'title');
-    text(ctx, `${data.ingredients.length} 项材料`, 978, mainY + 55, 24, template.ink, 'right');
+    text(ctx, localText('配方'), 98, mainY + 57, 32, template.ink, 'left', 'title');
+    text(ctx, localText(`${data.ingredients.length} 项材料`), 978, mainY + 55, 24, template.ink, 'right');
     ctx.strokeStyle = template.soft; ctx.lineWidth = 2;
     line(ctx, 98, mainY + 77, 981, mainY + 77);
     plan.rows.forEach((row, i) => {
@@ -172,19 +173,19 @@
       b.lines.forEach((s, i) => text(ctx, s, b.x, b.y + i * b.lineHeight, b.size, template.ink, b.align, b.kind));
     }
     box(ctx, 60, footer, 960, 238, 28, template.tasteBg);
-    const tags = !data.known ? '风味待补充' : data.tags.join(' · ') || '轻盈 · 柔和';
-    text(ctx, '风味', 99, footer + 57, 28, template.tasteInk, 'left', 'title');
+    const tags = !data.known ? localText('风味待补充') : data.tags.join(' · ') || localText('轻盈 · 柔和');
+    text(ctx, localText('风味'), 99, footer + 57, 28, template.tasteInk, 'left', 'title');
     text(ctx, tags, 978, footer + 57, 27, template.tasteInk, 'right');
     if (data.known) {
       [0, 1, 3].forEach((index, column) => {
         const x = 99 + column * 309;
-        text(ctx, BarTaste.dimensions[index], x, footer + 131, 27, template.tasteInk);
+        text(ctx, localText(BarTaste.dimensions[index]), x, footer + 131, 27, template.tasteInk);
         box(ctx, x, footer + 158, 264, 16, 8, '#ffffff28');
         if (data.vector[index]) box(ctx, x, footer + 158, 264 * data.vector[index] / 100, 16, 8, template.accent);
       });
-    } else text(ctx, '部分材料尚无风味数据', 99, footer + 137, 27, template.tasteInk);
+    } else text(ctx, localText('部分材料尚无风味数据'), 99, footer + 137, 27, template.tasteInk);
     plan.sourceLines.forEach((s, i) => text(ctx, s, 84, height - 48 - (plan.sourceLines.length - 1 - i) * 29, 21, template.ink));
-    if (!plan.sourceLines.length) text(ctx, '大喝特喝  /  MY LITTLE HOME BAR', 84, height - 48, 20, template.ink);
+    if (!plan.sourceLines.length) text(ctx, localText('大喝特喝  /  MY LITTLE HOME BAR'), 84, height - 48, 20, template.ink);
   }
   function loadArt(svg) {
     return new Promise((resolve, reject) => {
@@ -212,13 +213,13 @@
   }
   function filename(data, templateID) {
     const name = data.name.replace(/[<>:"/\\|?*\u0000-\u001f]/g, '-').replace(/[. ]+$/g, '').slice(0, 60) || '鸡尾酒';
-    return `大喝特喝-${name}-${(templates.find(t => t.id === templateID) || templates[0]).name}.png`;
+    return `${globalThis.BarI18n?.locale === "en" ? "DDDrunk" : "大喝特喝"}-${name}-${localText((templates.find(t => t.id === templateID) || templates[0]).name)}.png`;
   }
   function thumbnail(t) {
     // Match the exported card's flat border and compact color-block layout.
     const canvas = document.createElement('canvas'); canvas.width = 180; canvas.height = 132;
     const ctx = canvas.getContext('2d'); ctx.scale(1 / 6, 1 / 6); border(ctx, t, 792);
-    text(ctx, '配方卡', 130, 260, 94, t.ink, 'left', 'title');
+    text(ctx, localText('配方卡'), 130, 260, globalThis.BarI18n?.locale === 'en' ? 68 : 94, t.ink, 'left', 'title');
     box(ctx, 680, 135, 270, 190, 34, t.soft);
     box(ctx, 90, 374, 900, 165, 28, t.panel, t.edge);
     box(ctx, 90, 567, 900, 143, 28, t.tasteBg);
@@ -238,7 +239,7 @@
     modal.classList.add('share-dialog');
     modal.setAttribute('aria-labelledby', 'share-title');
     const panel = modal.querySelector('.share-panel'), image = panel.querySelector('#share-image');
-    image.alt = `${data.name}${data.english ? ` · ${data.english}` : ''}。配方：${data.ingredients.join('；')}。${data.known ? `主要风味：${data.tags.join('、') || '轻盈柔和'}；甜感 ${data.vector[0]}，酸感 ${data.vector[1]}，酒感 ${data.vector[3]}。` : '风味待补充。'}`;
+    image.alt = localText(`${data.name}${data.english ? ` · ${data.english}` : ''}。配方：${data.ingredients.join('；')}。${data.known ? `主要风味：${data.tags.join('、') || '轻盈柔和'}；甜感 ${data.vector[0]}，酸感 ${data.vector[1]}，酒感 ${data.vector[3]}。` : '风味待补充。'}`);
     const loading = panel.querySelector('#share-loading'), error = panel.querySelector('#share-error');
     const save = panel.querySelector('#share-save'), system = panel.querySelector('#share-system');
     const retry = panel.querySelector('#share-retry'), dimensions = panel.querySelector('#share-dimensions');
@@ -264,7 +265,7 @@
     };
     async function update() {
       const token = ++revision, choice = selected;
-      cleanCurrent(); error.textContent = ''; dimensions.textContent = ''; retry.hidden = true;
+      cleanCurrent(); error.textContent = localText(''); dimensions.textContent = localText(''); retry.hidden = true;
       loading.hidden = false; save.disabled = true; system.hidden = true;
       panel.querySelector('.share-preview').setAttribute('aria-busy', 'true');
       try {
@@ -273,10 +274,10 @@
         const file = new File([result.blob], filename(data, choice), { type: 'image/png' });
         current = { ...result, file, url: URL.createObjectURL(result.blob) };
         image.src = current.url; image.hidden = false;
-        dimensions.textContent = `PNG · ${result.width} × ${result.height}`;
+        dimensions.textContent = localText(`PNG · ${result.width} × ${result.height}`);
         save.disabled = false; system.disabled = false; system.hidden = !canShare(file);
       } catch (reason) {
-        if (!closed && token === revision) { error.textContent = reason.message || '图片生成失败，请重试。'; retry.hidden = false; }
+        if (!closed && token === revision) { error.textContent = localText(reason.message || '图片生成失败，请重试。'); retry.hidden = false; }
       } finally {
         if (!closed && token === revision) { loading.hidden = true; panel.querySelector('.share-preview').setAttribute('aria-busy', 'false'); }
       }
@@ -289,7 +290,7 @@
     }
     async function exportImage(useSystem) {
       if (!current || exporting) return;
-      setExporting(true); error.textContent = '';
+      setExporting(true); error.textContent = localText('');
       const output = current;
       try {
         if (native) {
@@ -310,7 +311,7 @@
           toast('已开始下载图片。');
         }
       } catch (reason) {
-        if (!closed && reason.name !== 'AbortError') error.textContent = useSystem ? '系统分享暂不可用，请保存图片后分享。' : '图片保存失败，请重试。';
+        if (!closed && reason.name !== 'AbortError') error.textContent = localText(useSystem ? '系统分享暂不可用，请保存图片后分享。' : '图片保存失败，请重试。');
       } finally { if (!closed) setExporting(false); }
     }
     save.onclick = () => exportImage(false); system.onclick = () => exportImage(true);

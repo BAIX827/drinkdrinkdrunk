@@ -9,7 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1180, height: 820),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable],
                               backing: .buffered, defer: false)
-        window.title = "大喝特喝 · 我的居家吧台"
+        window.title = BarWebHost.usesEnglish ? "drinkdrinkdrunk · My home bar" : "大喝特喝 · 我的居家吧台"
         window.minSize = NSSize(width: 420, height: 600)
         window.contentView = host.makeWebView()
         window.center()

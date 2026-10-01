@@ -1,9 +1,11 @@
 (() => {
+  const { html: localHTML, t: localText } = globalThis.BarI18n || { html: s => s, t: s => s };
   const { escape: e, bottle, glass } = BarArt;
   const { categories, match, ingredient, category, blankState, validateState } =
     BarCore;
   const key = "drinkdrinkdrunk.bar.v1";
   const catalog = BarData.catalog;
+  BarI18n.add(Object.fromEntries(BarData.recipes.filter(r => r.englishName).map(r => [r.chineseName, r.englishName])));
   const host = window.barHost || {};
   let state = blankState(),
     storageError = "",
@@ -41,6 +43,7 @@
     collection = "all";
   let tasteSort = "match";
   let modalReturnFocus, toastTimer;
+  let guide;
   const app = document.querySelector("#app"),
     modal = document.querySelector("#modal");
   const uid = () =>
@@ -73,7 +76,7 @@
   }
   function toast(message) {
     const node = document.querySelector("#toast");
-    node.textContent = message;
+    node.textContent = localText(message);
     node.classList.add("visible");
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => node.classList.remove("visible"), 4200);
@@ -99,6 +102,7 @@
     }
   }
   function applyTheme() {
+    BarI18n.setLocale(state.locale);
     document.documentElement.dataset.theme = state.theme;
     document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
   }
@@ -108,7 +112,7 @@
     return `<span class="availability ${m.count ? "missing" : ""}">${m.count ? `缺 ${m.count} 项 · ${e(m.missing.map((p) => p.types.join(" / ")).join("、"))}` : scope.length === Object.keys(categories).length ? "所列必需材料齐全" : "所检查材料齐全"}</span>`;
   }
   function shell() {
-    app.innerHTML = `<aside class="sidebar"><a class="brand" href="#discover"><img src="icon.svg" alt=""/><span>大喝特喝<small>DRINK, DRINK, DRUNK</small></span></a><span class="nav-caption">你的居家调酒手册</span><nav aria-label="主要导航">${[
+    app.innerHTML = localHTML(`<aside class="sidebar"><a class="brand" href="#discover"><img src="icon.svg" alt=""/><span>大喝特喝<small>${state.locale === "en" ? "DDDrunk" : "DRINK, DRINK, DRUNK"}</small></span></a><span class="nav-caption">你的居家调酒手册</span><nav aria-label="主要导航">${[
       ["discover", "◈", "发现配方"],
       ["bar", "▥", "我的吧台"],
       ["favorites", "♡", "我的收藏"],
@@ -121,7 +125,13 @@
       )
       .join(
         "",
-      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles" aria-hidden="true">${bottle({ color: "#a87949", shape: "whiskey" })}${bottle({ color: "#657f62", shape: "rum" })}${bottle({ color: "#698e89", shape: "gin" })}</div><a href="#settings">设置与数据备份 ↗</a></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer><span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`;
+      )}</nav><div class="sidebar-bottom"><div class="tiny-bottles" aria-hidden="true">${bottle({ color: "#a87949", shape: "whiskey" })}${bottle({ color: "#657f62", shape: "rum" })}${bottle({ color: "#698e89", shape: "gin" })}</div><a href="#settings">设置与数据备份 ↗</a></div></aside><div class="workspace"><header class="topbar"><span>MY LITTLE HOME BAR <span class="topbar-dot">●</span></span><div class="topbar-actions"><a href="#settings" class="text-button" aria-label="设置与备份">⚙</a><button class="secondary small" data-action="add-recipe">＋ 自建配方</button></div></header><main id="main" tabindex="-1"></main><footer><span>请适量饮用 · 饮酒后勿驾驶</span></footer></div>`);
+  }
+  function mountMusic() {
+    const music = document.createElement('div');
+    music.className = 'bar-music';
+    document.querySelector('.topbar-actions').prepend(music);
+    BarMusic.mount(music);
   }
   function route() {
     BarPlayer.stop();
@@ -130,12 +140,13 @@
       ? section
       : "discover";
     shell();
+    mountMusic();
     const main = document.querySelector("#main");
     if (section === "recipe" || section === "follow") {
       const recipe = recipes().find((r) => r.id === id);
       if (!recipe) {
         main.innerHTML =
-          '<h1>未找到这个配方</h1><a href="#discover">返回配方库</a>';
+          localHTML('<h1>未找到这个配方</h1><a href="#discover">返回配方库</a>');
         return;
       }
       if (section === "follow")
@@ -149,7 +160,7 @@
           location.hash = "journal";
           toast("已加入饮酒日记。");
           return true;
-        });
+        }, { paused: guide?.active });
       else detail(recipe);
     } else if (page === "bar") renderBar();
     else if (page === "journal") renderJournal();
@@ -161,10 +172,10 @@
   }
   function discover() {
     document.querySelector("#main").innerHTML =
-      `<section class="hero"><div class="hero-copy"><h1>${page === "favorites" ? "我的收藏" : "配方库"}</h1><a class="primary" href="#bar">整理我的吧台 <span>↗</span></a><div class="hero-stats"><span><b>${recipes().length}</b> 款配方</span><span><b>${state.inventory.length}</b> 件吧台材料</span><span><b id="favorite-count">${state.favorites.length}</b> 款收藏</span></div></div><div class="hero-art"><span class="spark one">✦</span><span class="spark two">✧</span><div class="hero-bottle">${bottle({ color: "#95ac8c", shape: "round" })}</div><div class="hero-glass">${glass("coupe", "#e5a365")}</div></div></section>
+      localHTML(`<section class="hero"><div class="hero-copy"><h1>${page === "favorites" ? "我的收藏" : "配方库"}</h1><a class="primary" href="#bar">整理我的吧台 <span>↗</span></a><div class="hero-stats"><span><b>${recipes().length}</b> 款配方</span><span><b>${state.inventory.length}</b> 件吧台材料</span><span><b id="favorite-count">${state.favorites.length}</b> 款收藏</span></div></div><div class="hero-art"><span class="spark one">✦</span><span class="spark two">✧</span><div class="hero-bottle">${bottle({ color: "#95ac8c", shape: "round" })}</div><div class="hero-glass">${glass("coupe", "#e5a365")}</div></div></section>
       <section class="discovery"><div class="section-heading"><div><h2>${page === "favorites" ? "我的收藏" : "配方列表"}</h2></div><div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="搜索酒名、基酒、材料…" aria-label="搜索配方" value="${e(query)}"></div></div>
       <div class="filter-row" aria-label="基酒筛选">${["", "金酒", "伏特加", "朗姆", "威士忌", "龙舌兰", "白兰地"].map((v) => `<button class="chip ${base === v ? "selected" : ""}" data-base="${v}" aria-pressed="${base === v}">${v || "全部配方"}</button>`).join("")}<button class="chip ${collection === "mine" ? "selected" : ""}" data-action="mine">我的配方</button><button class="chip ${collection === "guided" ? "selected" : ""}" data-action="guided">动画跟做</button><button class="chip ${collection === "researched" ? "selected" : ""}" data-action="researched">新增 IBA 精选</button></div>
-      <div class="inventory-filter"><div><strong>按我的材料找酒</strong><span class="muted small">按所选材料检查 · 可选配料不计缺项</span></div><div class="match-options">${[
+      <div class="inventory-filter"><div><strong>按我的材料找酒</strong></div><div class="match-options">${[
         ["all", "不限"],
         ["0", "缺 0 项"],
         ["1", "最多缺 1 项"],
@@ -182,14 +193,14 @@
             `<label><input type="checkbox" data-scope="${k}" ${scope.includes(k) ? "checked" : ""}> ${v}</label>`,
         )
         .join("")}</div></div>
-      <div class="result-heading"><span id="result-count" role="status"></span><span class="muted small">${scope.length === 5 ? "检查配方所列材料；冰块、方法中的装饰请另外备妥" : "未检查的类别不代表已经拥有"}</span></div><div id="recipe-grid" class="recipe-grid"></div></section>`;
+      <div class="result-heading"><span id="result-count" role="status"></span></div><div id="recipe-grid" class="recipe-grid"></div></section>`);
     if(page === "discover") {
-      document.querySelector(".hero").insertAdjacentHTML("afterend", tasteUI.welcome() + '<div id="taste-recommendations"></div>');
-      document.querySelector(".hero-copy > .primary").outerHTML = tasteUI.current().ready
+      document.querySelector(".hero").insertAdjacentHTML("afterend", localHTML(tasteUI.welcome() + '<div id="taste-recommendations"></div>'));
+      document.querySelector(".hero-copy > .primary").outerHTML = localHTML(tasteUI.current().ready
         ? '<a class="primary" href="#dna">我的口味 DNA ↗</a>'
-        : '<button class="primary" data-taste-onboard>风味调色盘</button>';
+        : '<button class="primary" data-taste-onboard>风味调色盘</button>');
     }
-    document.querySelector(".result-heading").insertAdjacentHTML("beforebegin", `<div class="taste-sort-row"><label>配方排序 <select id="taste-sort"><option value="match" ${tasteSort==="match"?"selected":""}>按我的口味匹配</option><option value="original" ${tasteSort==="original"?"selected":""}>原有顺序</option></select></label><a class="text-button" href="#compare">比较两杯 ↗</a></div>`);
+    document.querySelector(".result-heading").insertAdjacentHTML("beforebegin", localHTML(`<div class="taste-sort-row"><label>配方排序 <select id="taste-sort"><option value="match" ${tasteSort==="match"?"selected":""}>按我的口味匹配</option><option value="original" ${tasteSort==="original"?"selected":""}>原有顺序</option></select></label><a class="text-button" href="#compare">比较两杯 ↗</a></div>`));
     document.querySelector("#taste-sort").onchange=event=>{tasteSort=event.target.value;renderCards();};
     renderCards();
     document.querySelector("#search").oninput = (event) => {
@@ -200,7 +211,7 @@
   function renderCards() {
     const user = tasteUI.current();
     const count = document.querySelector("#favorite-count");
-    if (count) count.textContent = state.favorites.length;
+    if (count) count.textContent = localText(state.favorites.length);
     const q = query.trim().toLowerCase();
     const list = recipes().filter(
       (r) =>
@@ -209,7 +220,7 @@
         (collection !== "mine" || r.isUserCreated) &&
         (collection !== "guided" || r.steps) &&
         (collection !== "researched" || r.source) &&
-        `${r.chineseName} ${r.englishName} ${r.ingredients.join(" ")} ${r.tags.join(" ")}`
+        `${r.chineseName} ${r.englishName} ${r.ingredients.join(" ")} ${r.tags.join(" ")} ${localText(r.ingredients.join(" "))} ${localText(r.tags.join(" "))}`
           .toLowerCase()
           .includes(q) &&
         (limit === "all" ||
@@ -221,20 +232,20 @@
       return (pb.unknown.length?-1:BarTaste.score(pb.vector,user.vector)) - (pa.unknown.length?-1:BarTaste.score(pa.vector,user.vector)) || a.id.localeCompare(b.id);
     });
     const suggestions=document.querySelector("#taste-recommendations");
-    if(suggestions) suggestions.innerHTML=tasteUI.recommendations(list);
+    if(suggestions) suggestions.innerHTML=localHTML(tasteUI.recommendations(list));
     document.querySelector("#result-count").textContent =
-      `${list.length} 款配方`;
-    document.querySelector("#recipe-grid").innerHTML = list.length
+      localText(`${list.length} 款配方`);
+    document.querySelector("#recipe-grid").innerHTML = localHTML(list.length
       ? list
           .map(
             (r, index) =>
-              `<article class="recipe-card"><a href="#recipe/${e(r.id)}" class="recipe-visual palette-${index % 4}" aria-label="查看${e(r.chineseName)}"><span class="card-number">NO. ${String(BarData.recipes.findIndex((x) => x.id === r.id) + 1 || index + 1).padStart(3, "0")}</span>${BarArt.drink(r)}<span class="visual-tag">${r.steps ? "动画跟做" : e(r.baseSummary || r.tags[0] || "我的配方")}</span></a><button class="favorite ${state.favorites.includes(r.id) ? "saved" : ""}" data-favorite="${e(r.id)}" aria-label="${state.favorites.includes(r.id) ? "取消收藏" : "收藏"}${e(r.chineseName)}" aria-pressed="${state.favorites.includes(r.id)}">${state.favorites.includes(r.id) ? "♥" : "♡"}</button><div class="recipe-copy"><a href="#recipe/${e(r.id)}"><h3>${e(r.chineseName)}</h3><p class="english">${e(r.englishName)}</p></a><div class="recipe-tags">${r.tags
+              `<article class="recipe-card"><a href="#recipe/${e(r.id)}" class="recipe-visual palette-${index % 4}" aria-label="查看${e(BarI18n.name(r))}"><span class="card-number">NO. ${String(BarData.recipes.findIndex((x) => x.id === r.id) + 1 || index + 1).padStart(3, "0")}</span>${BarArt.drink(r)}<span class="visual-tag">${r.steps ? "动画跟做" : e(r.baseSummary || r.tags[0] || "我的配方")}</span></a><button class="favorite ${state.favorites.includes(r.id) ? "saved" : ""}" data-favorite="${e(r.id)}" aria-label="${state.favorites.includes(r.id) ? "取消收藏" : "收藏"}${e(BarI18n.name(r))}" aria-pressed="${state.favorites.includes(r.id)}">${state.favorites.includes(r.id) ? "♥" : "♡"}</button><div class="recipe-copy"><a href="#recipe/${e(r.id)}"><h3 translate="no">${e(BarI18n.name(r))}</h3><p class="english" translate="no">${e(BarI18n.locale === "en" ? "" : r.englishName)}</p></a><div class="recipe-tags">${r.tags
                 .slice(0, 3)
                 .map((t) => `<span>${e(t)}</span>`)
                 .join("")}</div>${tasteUI.card(r,user)}${badge(r)}</div></article>`,
           )
           .join("")
-      : `<div class="empty"><span>◇</span><h3>${page === "favorites" ? "收藏夹还在等第一杯" : "还没有找到合适的配方"}</h3><p>试试调整搜索、检查类别或缺项上限。</p><button class="secondary" data-action="reset-filters">重置筛选</button></div>`;
+      : `<div class="empty"><span>◇</span><h3>${page === "favorites" ? "收藏夹还在等第一杯" : "还没有找到合适的配方"}</h3><button class="secondary" data-action="reset-filters">重置筛选</button></div>`);
   }
   function renderBar() {
     const groups = Object.keys(categories).map((key) => [
@@ -244,38 +255,38 @@
     if (state.inventory.some((i) => !i.type))
       groups.push(["unmapped", state.inventory.filter((i) => !i.type)]);
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><h1>我的吧台</h1></div><button class="primary" data-action="add-item">＋ 登记材料</button></div><div class="bar-room"><div class="bar-sign"><span>EST. AT HOME</span><b>AFTER HOURS</b><span>YOUR LITTLE COCKTAIL CLUB</span></div><div class="bar-intro"><div><b>${state.inventory.length}</b> 件材料 · ${new Set(state.inventory.map((i) => i.type).filter(Boolean)).size} 种标准类型</div><a class="secondary" href="#discover">看看能调什么 ↗</a></div>${
+      localHTML(`<div class="page-heading"><div><h1>我的吧台</h1></div><button class="primary" data-action="add-item">＋ 登记材料</button></div><div class="bar-room"><div class="bar-sign"><span>EST. AT HOME</span><b>AFTER HOURS</b><span>YOUR LITTLE COCKTAIL CLUB</span></div><div class="bar-intro"><div><b>${state.inventory.length}</b> 件材料 · ${new Set(state.inventory.map((i) => i.type).filter(Boolean)).size} 种标准类型</div><a class="secondary" href="#discover">看看能调什么 ↗</a></div>${
         state.inventory.length
           ? groups
               .filter(([, items]) => items.length)
               .map(
                 ([key, items]) =>
-                  `<section class="shelf-section"><div class="section-heading"><h2>${categories[key] || "旧记录 · 请补选标准类型"}</h2><span class="muted">${items.length} 件</span></div><div class="shelf">${items.map((item) => `<button class="stock-item" data-edit-item="${e(item.id)}">${bottle(item)}<strong>${e(item.name)}</strong><small>${e(item.type || "待选择类型")}</small></button>`).join("")}</div></section>`,
+                  `<section class="shelf-section"><div class="section-heading"><h2>${categories[key] || "旧记录 · 请补选标准类型"}</h2><span class="muted">${items.length} 件</span></div><div class="shelf">${items.map((item) => `<button class="stock-item" data-edit-item="${e(item.id)}">${bottle(item)}<strong translate="no">${e(item.name)}</strong><small>${e(item.type || "待选择类型")}</small></button>`).join("")}</div></section>`,
               )
               .join("")
           : '<div class="empty bar-empty"><div class="empty-bottle">' +
             bottle({ color: "#b4c2ad" }) +
-            '</div><h2>暂无材料</h2><p>先登记家里的一瓶酒、一盒果汁或一罐糖浆。</p><button class="primary" data-action="add-item">登记第一件材料</button></div>'
-      }</div>`;
+            '</div><h2>暂无材料</h2><button class="primary" data-action="add-item">登记第一件材料</button></div>'
+      }</div>`);
   }
   function detail(r) {
     const full = match(r, state.inventory);
     document.querySelector("#main").innerHTML =
-      `<a class="back-link" href="#discover">← 回到配方库</a><div class="detail-layout"><div class="detail-art palette-1">${BarArt.drink(r)}<span>${e(r.glass)}</span></div><section class="detail-copy"><h1>${e(r.chineseName)}</h1><p class="detail-english">${e(r.englishName)}</p><div class="recipe-tags">${r.tags.map((t) => `<span>${e(t)}</span>`).join("")}</div>${tasteUI.detail(r)}<h2>配料</h2><p class="small muted">详情检查全部类别 · ${full.count ? `所列必需材料缺 ${full.count} 项` : "所列必需材料齐全"} · 冰块与方法中的装饰另备</p><ul class="ingredients">${r.parts
+      localHTML(`<a class="back-link" href="#discover">← 回到配方库</a><div class="detail-layout"><div class="detail-art palette-1">${BarArt.drink(r)}<span>${e(r.glass)}</span></div><section class="detail-copy"><h1 translate="no">${e(BarI18n.name(r))}</h1><p class="detail-english" translate="no">${e(BarI18n.locale === "en" ? "" : r.englishName)}</p><div class="recipe-tags">${r.tags.map((t) => `<span>${e(t)}</span>`).join("")}</div>${tasteUI.detail(r)}<h2>配料</h2><p class="small muted">${full.count ? `所列必需材料缺 ${full.count} 项` : "所列必需材料齐全"}</p><ul class="ingredients">${r.parts
         .map((p) => {
           const owned = state.inventory.some((i) =>
             p.types.some((t) => BarCore.satisfies(i.type, t)),
           );
-          return `<li class="${!owned && !p.optional ? "not-owned" : ""}"><span>${owned ? "✓" : p.optional ? "○" : "＋"} ${e(p.raw)}</span><small>${p.substitution ? "替代方案" : p.optional ? "可选" : owned ? "已有" : "缺少"}</small></li>`;
+          return `<li class="${!owned && !p.optional ? "not-owned" : ""}"><span>${owned ? "✓" : p.optional ? "○" : "＋"} <span translate="no">${e(BarI18n.recipeText(r, p.raw))}</span></span><small>${p.substitution ? "替代方案" : p.optional ? "可选" : owned ? "已有" : "缺少"}</small></li>`;
         })
         .join(
           "",
-        )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<h2>做法</h2><p class="method">${e(r.method)}</p>${r.note ? `<p class="notice">${e(r.note)}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="secondary" data-share-recipe="${e(r.id)}">分享卡片</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div></section></div>`;
+        )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<h2>做法</h2><p class="method" translate="no">${e(BarI18n.recipeText(r, r.method))}</p>${r.note ? `<p class="notice" translate="no">${e(BarI18n.recipeText(r, r.note))}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="secondary" data-share-recipe="${e(r.id)}">分享卡片</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div></section></div>`);
   }
   function showModal(html) {
     BarShare.dispose();
     modalReturnFocus = document.activeElement;
-    modal.innerHTML = `<button class="modal-close" data-action="close" aria-label="关闭">×</button>${html}`;
+    modal.innerHTML = localHTML(`<button class="modal-close" data-action="close" aria-label="关闭">×</button>${html}`);
     if (!modal.open) modal.showModal();
     BarChoices.reveal(modal);
   }
@@ -321,17 +332,17 @@
         )
         .join(
           "",
-        )}</select></label></div></div>${BarChoices.render({ id: "item-shape", name: "shape", label: "容器造型", options: BarCore.bottleShapes, value: item.shape, draw: shape => bottle({ ...item, shape }) })}<label>容器颜色<input type="color" name="color" value="${item.color}"></label><details><summary>亲手画外观 · 标签与瓶身涂鸦</summary><p class="small muted">拖动画板绘制。</p><canvas id="drawing" width="200" height="200" aria-label="材料外观画板"></canvas><button type="button" class="text-button" id="undo-drawing">撤销一笔</button><button type="button" class="text-button" id="clear-drawing">清空画板</button></details><div class="modal-actions">${id ? `<button type="button" class="danger" data-remove-item="${e(id)}">移除材料</button>` : ""}<button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存材料</button></div></form>`,
+        )}</select></label></div></div>${BarChoices.render({ id: "item-shape", name: "shape", label: "容器造型", options: BarCore.bottleShapes, value: item.shape, draw: shape => bottle({ ...item, shape }) })}<label>容器颜色<input type="color" name="color" value="${item.color}"></label><details><summary>亲手画外观 · 标签与瓶身涂鸦</summary><canvas id="drawing" width="200" height="200" aria-label="材料外观画板"></canvas><button type="button" class="text-button" id="undo-drawing">撤销一笔</button><button type="button" class="text-button" id="clear-drawing">清空画板</button></details><div class="modal-actions">${id ? `<button type="button" class="danger" data-remove-item="${e(id)}">移除材料</button>` : ""}<button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存材料</button></div></form>`,
     );
     const form = document.querySelector("#item-form"),
       canvas = document.querySelector("#drawing"),
       ctx = canvas.getContext("2d");
     const preview = () => {
-      document.querySelector("#bottle-preview").innerHTML = bottle({
+      document.querySelector("#bottle-preview").innerHTML = localHTML(bottle({
         color: form.elements.color.value,
         shape: form.elements.shape.value,
         drawing,
-      });
+      }));
       BarChoices.updateArt(document.querySelector("#item-shape"), shape => bottle({ shape, color: form.elements.color.value, drawing }));
     };
     const redraw = () => {
@@ -414,7 +425,7 @@
   }
   function openRecipe() {
     showModal(
-      `<form id="recipe-form"><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label><p class="small muted">请使用标准材料名称。</p>${BarChoices.glasses({ id: "recipe-glass", value: "highball", color: "#d8ac6d" })}<label>主色<input name="color" type="color" value="#d8ac6d"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存配方</button></div></form>`,
+      `<form id="recipe-form"><h2>记录你的配方</h2><label>中文名称<input name="name" maxlength="80" required></label><label>英文名称（可留空）<input name="english" maxlength="100"></label><label>材料与用量（每行一项）<textarea name="ingredients" rows="5" required placeholder="金酒 45 ml&#10;汤力水 120 ml"></textarea></label>${BarChoices.glasses({ id: "recipe-glass", value: "highball", color: "#d8ac6d" })}<label>主色<input name="color" type="color" value="#d8ac6d"></label><label>做法<textarea name="method" rows="3" required></textarea></label><div class="modal-actions"><button type="button" class="secondary" data-action="close">取消</button><button class="primary">保存配方</button></div></form>`,
     );
     const form = document.querySelector("#recipe-form");
     form.elements.color.oninput = () => BarChoices.updateArt(document.querySelector("#recipe-glass"), kind => glass(kind, form.elements.color.value));
@@ -452,25 +463,25 @@
     const entries = state.logs.filter(l => l.date === journalDate).reverse();
     const currentDate = today();
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><h1>饮酒日记</h1></div><button class="primary" data-action="log">＋ 记一杯</button></div>
+      localHTML(`<div class="page-heading"><div><h1>饮酒日记</h1></div><button class="primary" data-action="log">＋ 记一杯</button></div>
       <section class="journal-calendar" aria-label="饮酒日记月历">
-        <div class="calendar-heading"><div><h2 id="calendar-month" aria-live="polite">${month.year} 年 ${month.number} 月</h2><p class="muted small">本月 ${month.count} 条记录</p></div><div class="calendar-controls"><button class="secondary" data-journal-month="${month.previous || ""}" aria-label="上个月" ${month.previous ? "" : "disabled"}>‹</button><button class="secondary" data-action="journal-today">今天</button><button class="secondary" data-journal-month="${month.next || ""}" aria-label="下个月" ${month.next ? "" : "disabled"}>›</button></div></div>
-        <div class="calendar-weekdays" aria-hidden="true">${["一", "二", "三", "四", "五", "六", "日"].map(day => `<span>${day}</span>`).join("")}</div>
+        <div class="calendar-heading"><div><h2 id="calendar-month" aria-live="polite">${e(BarI18n.month(journalMonth))}</h2><p class="muted small">本月 ${month.count} 条记录</p></div><div class="calendar-controls"><button class="secondary" data-journal-month="${month.previous || ""}" aria-label="上个月" ${month.previous ? "" : "disabled"}>‹</button><button class="secondary" data-action="journal-today">今天</button><button class="secondary" data-journal-month="${month.next || ""}" aria-label="下个月" ${month.next ? "" : "disabled"}>›</button></div></div>
+        <div class="calendar-weekdays" aria-hidden="true">${BarI18n.weekdays.map(day => `<span>${day}</span>`).join("")}</div>
         <div class="calendar-days">${month.cells.map(day => day ? `
           <button class="calendar-day ${day.entries.length ? "has-entries" : ""}" data-journal-date="${day.date}" aria-pressed="${day.date === journalDate}" ${day.date === currentDate ? 'aria-current="date"' : ""} aria-label="${day.date}，${day.entries.length ? `${day.entries.length} 条记录：${e(day.entries.map(l => l.name).join("、"))}` : "暂无记录"}">
             <span class="calendar-day-number">${day.day}</span><span class="calendar-drinks" aria-hidden="true">${day.entries.slice(-2).map(l => l.glass ? `<span class="calendar-drink">${glass(l.glass, l.color, l.visual || {})}</span>` : '<span class="calendar-legacy">●</span>').join("")}</span>${day.entries.length > 2 ? `<span class="calendar-more">+${day.entries.length - 2}</span>` : ""}
           </button>` : '<span class="calendar-blank" aria-hidden="true"></span>').join("")}</div>
       </section>
-      <section class="journal-day-detail" aria-labelledby="journal-day-title"><div class="section-heading"><div><h2 id="journal-day-title" aria-live="polite">${Number(journalDate.slice(5, 7))} 月 ${Number(journalDate.slice(8))} 日${journalDate === currentDate ? " · 今天" : ""}</h2></div><span class="muted small">${entries.length} 条记录</span></div><div class="journal-list">${
+      <section class="journal-day-detail" aria-labelledby="journal-day-title"><div class="section-heading"><div><h2 id="journal-day-title" aria-live="polite">${e(BarI18n.day(journalDate))}${journalDate === currentDate ? " · 今天" : ""}</h2></div><span class="muted small">${entries.length} 条记录</span></div><div class="journal-list">${
         entries.length
           ? entries
               .map(
                 (l) =>
-                  `<article class="journal-entry"><div class="journal-glass" role="img" aria-label="${l.glass ? `${e(BarCore.glassNames[l.glass])} · 酒液颜色 ${e(l.color)}` : "旧日记未记录外观"}">${l.glass ? glass(l.glass, l.color, l.visual || {}) : '<span class="muted small">未记录外观</span>'}</div><div class="journal-copy"><time>${e(l.date)}</time><h2>${e(l.name)}</h2>${l.glass ? `<span class="muted small">${e(BarCore.glassNames[l.glass])}</span>` : ""}<p>${e(l.note || "未填写备注")}</p>${l.photos?.length ? `<div class="journal-photos">${l.photos.map((p,i)=>`<a href="${p}" download="cocktail-${e(l.date)}-${i+1}.jpg" aria-label="下载日记照片 ${i+1}"><img src="${p}" alt="${e(l.name)}的照片 ${i+1}" loading="lazy"></a>`).join("")}</div>` : ""}</div><div class="journal-actions">${l.recipeID && recipes().some(r=>r.id===l.recipeID) ? tasteUI.rateButton(l.recipeID) : ""}<button class="text-button" data-edit-log="${e(l.id)}" aria-label="编辑${e(l.name)}日记">${l.note ? "编辑" : "补充备注"}</button><button class="text-button" data-delete-log="${e(l.id)}" aria-label="删除${e(l.name)}日记">删除</button></div></article>`,
+                  `<article class="journal-entry"><div class="journal-glass" role="img" aria-label="${l.glass ? `${e(BarCore.glassNames[l.glass])} · 酒液颜色 ${e(l.color)}` : "旧日记未记录外观"}">${l.glass ? glass(l.glass, l.color, l.visual || {}) : '<span class="muted small">未记录外观</span>'}</div><div class="journal-copy"><time>${e(l.date)}</time><h2 translate="no">${e(BarI18n.savedName(l, recipes()))}</h2>${l.glass ? `<span class="muted small">${e(BarCore.glassNames[l.glass])}</span>` : ""}<p translate="no">${e(l.note || localText("未填写备注"))}</p>${l.photos?.length ? `<div class="journal-photos">${l.photos.map((p,i)=>`<a href="${p}" download="cocktail-${e(l.date)}-${i+1}.jpg" aria-label="下载日记照片 ${i+1}"><img src="${p}" alt="${e(BarI18n.savedName(l, recipes()))}的照片 ${i+1}" loading="lazy"></a>`).join("")}</div>` : ""}</div><div class="journal-actions">${l.recipeID && recipes().some(r=>r.id===l.recipeID) ? tasteUI.rateButton(l.recipeID) : ""}<button class="text-button" data-edit-log="${e(l.id)}" aria-label="编辑${e(BarI18n.savedName(l, recipes()))}日记">${l.note ? "编辑" : "补充备注"}</button><button class="text-button" data-delete-log="${e(l.id)}" aria-label="删除${e(BarI18n.savedName(l, recipes()))}日记">删除</button></div></article>`,
               )
               .join("")
-          : '<div class="calendar-empty"><p>这一天还没有记录</p><span class="muted small">选中日期后，点击“记一杯”添加记录。</span></div>'
-      }</div></section>`;
+          : '<div class="calendar-empty"><p>这一天还没有记录</p></div>'
+      }</div></section>`);
   }
   function openLog(name = "", appearance = {}, entry = null, recipeID = entry?.recipeID) {
     const look = BarCore.drinkAppearance({}, appearance);
@@ -481,7 +492,7 @@
     const photos = BarPhotos.mount(form, entry?.photos || []);
     let visual = { ...look.visual };
     const preview = () => {
-      document.querySelector("#log-preview").innerHTML = glass(form.elements.glass.value, form.elements.color.value, visual);
+      document.querySelector("#log-preview").innerHTML = localHTML(glass(form.elements.glass.value, form.elements.color.value, visual));
       BarChoices.updateArt(document.querySelector("#log-glass"), kind => glass(kind, form.elements.color.value, visual));
     };
     document.querySelector("#log-glass").onchange = preview;
@@ -517,7 +528,7 @@
   }
   function settings() {
     document.querySelector("#main").innerHTML =
-      `<div class="page-heading"><div><h1>设置与数据</h1></div></div>${storageError ? `<p class="notice">${e(storageError)}</p>` : ""}<section class="settings-card"><h2>显示外观</h2><label>主题<select id="theme">${[
+      localHTML(`<div class="page-heading"><div><h1>设置与数据</h1></div></div>${storageError ? `<p class="notice">${e(storageError)}</p>` : ""}<section class="settings-card"><h2>显示外观</h2><label>主题<select id="theme">${[
         ["bar", "深夜酒吧"],
         ["light", "日间"],
         ["dark", "低光"],
@@ -528,7 +539,16 @@
         )
         .join(
           "",
-        )}</select></label></section><section class="settings-card"><h2>备份与迁移</h2><p>备份包含材料、收藏、自建配方、日记照片和口味档案。设备之间不自动同步。</p><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>关于</h2><p>${BarData.recipes.length} 款配方，含 ${BarData.recipes.filter(r => r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length} 款 IBA 精选。</p></section>`;
+        )}</select></label></section><section class="settings-card" data-guide="backup"><h2>备份与迁移</h2><div class="detail-actions"><button class="primary" data-action="export">导出备份</button><button class="secondary" data-action="import">导入备份</button></div></section><section class="settings-card"><h2>新手引导</h2><button class="secondary" data-action="start-guide">重新查看新手引导</button></section><section class="settings-card"><h2>关于</h2><p>${BarData.recipes.length} 款配方，含 ${BarData.recipes.filter(r => r.source?.url.startsWith('https://iba-world.com/iba-cocktail/')).length} 款 IBA 精选。</p></section>`);
+    document.querySelector("#theme").closest("section").insertAdjacentHTML("beforeend", localHTML('<button type="button" class="secondary" data-action="replay-opening">重播开场动画</button><p class="small muted">开灯营业，欢迎回来。开启系统“减少动态效果”时自动跳过。</p>'));
+    document.querySelector(".page-heading").insertAdjacentHTML("afterend", localHTML(`<section class="settings-card"><h2 translate="no">语言 / Language</h2><label for="language">语言</label><select id="language"><option value="zh-CN" ${state.locale === "zh-CN" ? "selected" : ""} lang="zh-CN" translate="no">简体中文</option><option value="en" ${state.locale === "en" ? "selected" : ""} lang="en" translate="no">English</option></select><p class="small muted">选择界面语言，立即生效并保存在本机。</p></section>`));
+    document.querySelector("#language").onchange = event => {
+      if (save({ ...state, locale: event.target.value })) {
+        applyTheme();
+        route();
+        document.querySelector("#language").focus();
+      } else event.target.value = state.locale;
+    };
     document.querySelector("#theme").onchange = (event) => {
       if (save({ ...state, theme: event.target.value })) applyTheme();
     };
@@ -561,7 +581,7 @@
         );
         const a = document.createElement("a");
         a.href = url;
-        a.download = `我的吧台-${today()}.json`;
+        a.download = `${state.locale === "en" ? "DDDrunk-bar" : "我的吧台"}-${today()}.json`;
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       });
@@ -574,7 +594,7 @@
       const file = event.target.files[0];
       if (!file) return;
       if (file.size > 4000000) {
-        document.querySelector("#import-error").textContent = "文件超过 4 MB。";
+        document.querySelector("#import-error").textContent = localText("文件超过 4 MB。");
         return;
       }
       document.querySelector("#import-text").value = await file.text();
@@ -596,9 +616,9 @@
         } else locked = wasLocked;
       } catch (error) {
         document.querySelector("#import-error").textContent =
-          error instanceof SyntaxError
+          localText(error instanceof SyntaxError
             ? "JSON 格式不正确，请检查完整内容。"
-            : error.message;
+            : error.message);
       }
     };
   }
@@ -617,6 +637,7 @@
     const target = event.target.closest("button");
     if (!target) return;
     const d = target.dataset;
+    if (d.action === "replay-opening") window.BarOpening?.start({ replay: true });
     if (d.journalDate || d.journalMonth || d.action === "journal-today") {
       selectJournalDate(d.journalDate || (d.journalMonth ? `${d.journalMonth}-01` : today()));
       renderJournal();
@@ -626,6 +647,7 @@
       document.querySelector(focus)?.focus({ preventScroll: true });
     }
     if (d.action === "close") closeModal();
+    if (d.action === "start-guide") guide.start();
     if (d.shareRecipe) {
       const recipe = recipes().find(r => r.id === d.shareRecipe);
       if (recipe) BarShare.open(recipe, { showModal, toast });
@@ -719,11 +741,12 @@
     if (
       event.key === key &&
       !modal.open &&
-      !location.hash.startsWith("#follow/")
+      (!location.hash.startsWith("#follow/") || guide?.active)
     ) {
       try {
         state = validateState(JSON.parse(event.newValue));
         applyTheme();
+        if (guide?.active) return;
         route();
       } catch {
         toast("另一窗口的数据变动无法读取，请刷新后检查。");
@@ -732,8 +755,18 @@
   });
   applyTheme();
   const tasteUI = BarTasteUI.create({ getState:()=>state, getRecipes:recipes, save, showModal, closeModal, toast, refresh:route, badge });
+  guide = BarGuide.create({
+    getState: () => state,
+    getRecipeID: () => BarData.recipes.find(r => r.steps?.length)?.id || recipes()[0].id,
+    hasTaste: () => tasteUI.current().ready,
+    navigate: hash => { history.replaceState(null, '', `#${hash}`); route(); },
+    markSeen: version => save({ ...state, guideVersion: version }),
+  });
   if (host.route) history.replaceState(null, "", `#${host.route}`);
   route();
   if (storageError) toast(storageError);
   else save();
+  // The welcome tour waits for the bar lights, including skip/reduced motion.
+  const opening = window.BarOpening?.start() || Promise.resolve();
+  opening.then(() => { if (!locked) guide.autoStart(); });
 })();

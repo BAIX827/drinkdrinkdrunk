@@ -18,6 +18,18 @@ const {
 const recipe = (...ingredients) => ({ ingredients });
 const stock = (...types) => types.map((type) => ({ type, name: "任意名字" }));
 
+test("first-run guide migrates old backups and preserves user records on completion", () => {
+  const old = { ...blankState(), logs: [{ id: "kept", date: "2026-10-01", name: "我的酒", note: "保留" }], favorites: ["vesper-style"] };
+  delete old.guideVersion;
+  const migrated = validateState(old);
+  assert.equal(migrated.guideVersion, 0);
+  const completed = validateState(JSON.parse(JSON.stringify({ ...migrated, guideVersion: 1 })));
+  assert.deepEqual(completed, { ...migrated, guideVersion: 1 });
+  for (const invalid of ["1", true, -1, {}, null]) {
+    assert.equal(validateState({ ...old, guideVersion: invalid }).guideVersion, 0);
+  }
+});
+
 test("bar appearance replaces the old default without changing saved records or explicit themes", () => {
   const state = blankState();
   state.logs = [{ id: "night-test", date: "2026-10-01", name: "我的一杯", note: "保留记录" }];

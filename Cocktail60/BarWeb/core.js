@@ -41,7 +41,10 @@
     浓缩咖啡: "咖啡",
   };
   const clean = (text) => text.trim().replace(/\s+/g, " ");
-  const canonical = (name) => Object.hasOwn(aliases, clean(name)) ? aliases[clean(name)] : clean(name);
+  const canonical = (name) => {
+    const normalized = globalThis.BarI18n?.canonicalIngredient(clean(name)) || clean(name);
+    return Object.hasOwn(aliases, normalized) ? aliases[normalized] : normalized;
+  };
   function category(name) {
     if (name === "啤酒") return "spirit";
     if (/糖浆|糖$/.test(name)) return "syrup";
@@ -63,15 +66,15 @@
     // Preserve the exact original amount, alternatives, and optional markers.
     const substitution = raw.startsWith("没有");
     const text = raw.replace(/^没有龙舌兰糖浆可用/, "");
-    const marker = text.search(/\d|补满|少量|可选|漂浮|洗杯/);
+    const marker = text.search(/\d|补满|少量|可选|漂浮|洗杯|to top up|a little|optional|float|glass rinse/i);
     let names = (marker < 0 ? text : text.slice(0, marker)).trim();
     names = names.replace("波本或黑麦威士忌", "波本或黑麦");
-    const types = names.split("或").map(canonical);
+    const types = names.split(/或|\s+or\s+/i).map(canonical);
     return {
       raw,
       types,
       amount: marker < 0 ? "按配方" : text.slice(marker).trim(),
-      optional: /可选/.test(raw) || substitution,
+      optional: /可选|\boptional\b/i.test(raw) || substitution,
       substitution,
       category: category(types[0]),
     };
@@ -192,7 +195,9 @@
     logs: [],
     taste: { onboarding: null, ratings: [] },
     theme: "bar",
+    locale: "zh-CN",
     migrated: false,
+    guideVersion: 0,
   });
   function validateState(value) {
     if (
@@ -295,6 +300,8 @@
       theme: ["bar", "light", "dark"].includes(value.theme)
         ? value.theme
         : "bar",
+      guideVersion: value.guideVersion === 1 ? 1 : 0,
+      locale: value.locale === "en" ? "en" : "zh-CN",
     };
   }
   globalThis.BarCore = {

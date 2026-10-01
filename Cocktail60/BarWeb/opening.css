@@ -1,0 +1,82 @@
+/* The same wood, brass and illustrated glass as the shared bar. */
+#bar-opening {
+  --glass-edge: #b7cbbb;
+  --cap: #bc9a65;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 24px;
+  border: 0;
+  border-radius: 0;
+  color: #f0e7d6;
+  background: #0e1714;
+  box-shadow: none;
+  overflow: auto;
+  color-scheme: dark;
+  animation: opening-exit .5s ease-in 2.65s forwards;
+}
+#bar-opening[open] { display: grid; place-items: center; }
+#bar-opening::backdrop { background: transparent; backdrop-filter: none; }
+#bar-opening::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, #af864326, transparent 65%);
+  pointer-events: none;
+  animation: opening-glow 1.4s ease-out .25s both;
+}
+.opening-content { position: relative; width: min(560px, 100%); text-align: center; padding: 35px 0 50px; }
+.opening-eyebrow { margin: 0 0 16px; color: #b7b69f; font-size: 9px; letter-spacing: 4px; }
+#bar-opening h1 { font-size: clamp(30px, 5vw, 42px); font-weight: 600; letter-spacing: 8px; padding-left: 8px; color: #f0e7d6; }
+.opening-english { margin: 9px 0 2px; color: #c6a976; font-size: 9px; letter-spacing: 3px; }
+.opening-scene { display: block; width: 100%; height: auto; margin: 14px auto 0; overflow: visible; }
+.opening-room { animation: opening-room 1.3s ease-out .2s both; }
+.opening-light { animation: opening-glow .75s ease-out var(--on) both; }
+.opening-shelf, .opening-sign { animation: opening-switch .65s ease-out var(--on) both; }
+.opening-strip { filter: drop-shadow(0 2px 5px #f3ca7b88); }
+.opening-sign { filter: drop-shadow(0 0 9px #e1b66a40); }
+.opening-drink { animation: opening-drink .8s cubic-bezier(.2,.65,.3,1) var(--on) both; }
+.opening-welcome { margin: 20px 0 18px; color: #d4c5a7; font-size: 14px; letter-spacing: 4px; animation: opening-glow .7s ease-out 1.5s both; }
+.opening-rule { display: block; width: 32px; height: 1px; margin: auto; background: #b49761; animation: opening-glow .7s ease-out 1.5s both; }
+.opening-skip {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid #6d7159;
+  border-radius: 24px;
+  background: #17231c;
+  color: #d4c5a7;
+  font-size: 12px;
+}
+.opening-skip span { padding-left: 10px; }
+.opening-skip:hover { background: #29382e; border-color: #b49761; }
+.opening-skip:focus-visible { outline: 2px solid #d9b579; outline-offset: 4px; }
+@keyframes opening-room { from { opacity: .35; } to { opacity: 1; } }
+@keyframes opening-glow { from { opacity: 0; } to { opacity: 1; } }
+@keyframes opening-switch { from { opacity: .12; } to { opacity: 1; } }
+@keyframes opening-drink { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes opening-exit { to { opacity: 0; } }
+@media (max-width: 480px) {
+  #bar-opening { padding: 16px; }
+  .opening-content { padding: 60px 0; }
+  .opening-eyebrow { letter-spacing: 3px; }
+  .opening-scene { width: calc(100% + 16px); max-width: none; margin-left: -8px; margin-top: 28px; }
+  .opening-welcome { font-size: 13px; margin-top: 28px; }
+}
+@media (max-height: 520px) and (min-width: 481px) {
+  .opening-content { padding: 10px 0; }
+  .opening-eyebrow { margin-bottom: 6px; }
+  #bar-opening h1 { font-size: 26px; }
+  .opening-scene { width: 330px; margin-top: 0; }
+  .opening-welcome { margin: 0 0 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #bar-opening[open] { display: none; }
+}

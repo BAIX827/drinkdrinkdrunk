@@ -29,6 +29,7 @@ function playerHarness() {
     setTimeout: (fn, ms) => { const id=++timerID;pending.set(id,{fn,ms});return id; },
     clearTimeout: id => pending.delete(id),
   });
+  vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/i18n.js', import.meta.url),'utf8'),context);
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/core.js', import.meta.url),'utf8'),context);
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/art.js', import.meta.url),'utf8'),context);
   vm.runInContext(readFileSync(new URL('../Cocktail60/BarWeb/choices.js', import.meta.url),'utf8'),context);
@@ -58,6 +59,22 @@ test('layers appear only after their ingredient enters the glass and recipe appe
   h.click('next');h.click('next');h.click('next');h.click('record');
   assert.deepEqual(Array.from(saved.visual.layers),visual.layers);
 });
+test('guided tour mounts paused without advancing or recording, normal replay still works', () => {
+  const h = playerHarness();
+  let recorded = 0;
+  h.player.mount(h.root, h.recipe, [], () => { recorded++; }, { paused: true });
+  assert.equal(h.pending.size, 0);
+  assert.match(h.html(), /STEP 01/);
+  assert.match(h.html(), /▶ 继续/);
+  assert.equal(recorded, 0);
+  h.click('toggle');
+  assert.equal(h.pending.size, 1);
+  h.tick();
+  assert.match(h.html(), /STEP 02/);
+  h.player.stop();
+  assert.equal(h.pending.size, 0);
+});
+
 test('autoplay respects action duration, pause cancels timers, resume schedules once',()=>{
   const h=playerHarness();h.player.mount(h.root,h.recipe,[],()=>{});
   assert.equal(h.pending.size,1);assert.equal([...h.pending.values()][0].ms,8000);

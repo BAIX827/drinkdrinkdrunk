@@ -1,0 +1,20 @@
+/* English needs more room than the original compact Chinese labels. */
+html[lang="en"] .brand > span { font-size: 16px; letter-spacing: -.5px; }
+html[lang="en"] .brand small { letter-spacing: 2px; font-size: 10px; }
+html[lang="en"] .opening-content h1 { font-size: clamp(26px, 5vw, 48px); letter-spacing: -1px; }
+html[lang="en"] .visual-tag { font-size: 10px; letter-spacing: .02em; }
+html[lang="en"] .recipe-copy h3 { overflow-wrap: anywhere; }
+html[lang="en"] .play-controls { flex-wrap: wrap; }
+html[lang="en"] .choice-card > span:last-child { overflow-wrap: anywhere; }
+html[lang="en"] .flavor-wheel text { font-size: 11px; }
+html[lang="en"] .taste-bar-row { grid-template-columns: 76px minmax(0,1fr) 66px; }
+html[lang="en"] .compact .taste-bar-row { grid-template-columns: 58px minmax(0,1fr); }
+html[lang="en"] .calendar-weekdays { font-size: 12px; }
+html[lang="en"] .settings-card select { max-width: 100%; }
+@media(max-width: 680px) {
+  html[lang="en"] .topbar { height: auto; min-height: 61px; padding-block: 12px; }
+  html[lang="en"] .topbar-actions { gap: 6px; flex-wrap: wrap; }
+  html[lang="en"] .topbar-actions .small { font-size: 11px; padding-inline: 9px; }
+  html[lang="en"] .calendar-heading { flex-wrap: wrap; gap: 10px; }
+  html[lang="en"] .hero h1 { font-size: 36px; }
+}

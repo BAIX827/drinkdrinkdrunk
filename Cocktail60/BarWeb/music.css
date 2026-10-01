@@ -1,0 +1,8 @@
+.bar-music { display: flex; align-items: center; gap: 10px; position: relative; }
+.bar-music .music-toggle { white-space: nowrap; min-width: 106px; }
+.bar-music[data-playing="true"] .music-toggle { color: var(--green); border-color: var(--green); background: var(--soft); }
+.music-volume { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 10px; white-space: nowrap; }
+.music-volume input { width: 64px; min-height: 32px; padding: 0; margin: 0; accent-color: var(--green); cursor: pointer; }
+.music-status:not(:empty) { position: absolute; z-index: 5; top: calc(100% + 8px); right: 0; width: 220px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-size: 12px; }
+@media (max-width: 1100px) { .topbar > span { display: none; } .topbar-actions { width: 100%; } .bar-music { margin-right: auto; } }
+@media (max-width: 380px) { .bar-music { gap: 4px; } .music-volume span { display: none; } .music-volume input { width: 45px; } .topbar .music-toggle { min-width: 88px; padding-inline: 8px; } }

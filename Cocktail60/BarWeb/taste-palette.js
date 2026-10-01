@@ -1,4 +1,5 @@
 (() => {
+  const { html: localHTML, t: localText } = globalThis.BarI18n || { html: s => s, t: s => s };
   const T = BarTaste, { escape: e } = BarArt;
   const drawings = {
     lemon: '<path d="M13 43Q7 34 19 20Q34 7 43 15L48 13L47 20Q55 34 39 45Q24 55 17 45Z"/><path d="M21 37Q18 27 32 20" fill="none" stroke="#fff8dc" stroke-width="3"/>',
@@ -33,13 +34,13 @@
     const old = taste.onboarding;
     const selected = new Set(old?.palette || old?.flavors || []);
     let strength = old?.strength || (T.initial(old)[3] < 35 ? "light" : T.initial(old)[3] >= 65 ? "bold" : "balanced");
-    root.innerHTML = `<section class="palette-workbench"><div class="palette-preview"><span class="palette-caption">风味预览</span><div id="palette-scene"></div><div id="palette-picked" class="palette-tags" aria-live="polite"></div><div id="palette-wheel"></div></div><div class="palette-controls"><div class="palette-heading"><h2>风味调色盘</h2><p class="muted small">点选喜欢的味道，再点一次移除</p></div><div class="flavor-palette" role="group" aria-label="喜欢的风味">${Object.keys(T.palette).map(k=>`<button type="button" class="flavor-token" data-flavor="${k}" aria-pressed="${selected.has(k)}" style="--flavor:${T.palette[k][1]}"><span class="flavor-icon">${icon(k)}</span><strong>${e(T.palette[k][0])}</strong><small>${notes[k]}</small><span class="flavor-tick" aria-hidden="true">✓</span></button>`).join("")}</div>${BarChoices.render({ id:"palette-strength", label:"酒感", options:Object.fromEntries(Object.entries(T.strengths).map(([k,[name]])=>[k,name])), value:strength })}<div class="palette-actions"><button class="primary" id="palette-save">保存搭配</button><button class="text-button" id="palette-cancel">${T.dna(taste).ready ? "取消" : "先看配方"}</button></div></div></section>`;
+    root.innerHTML = localHTML(`<section class="palette-workbench"><div class="palette-preview"><span class="palette-caption">风味预览</span><div id="palette-scene"></div><div id="palette-picked" class="palette-tags" aria-live="polite"></div><div id="palette-wheel"></div></div><div class="palette-controls"><div class="palette-heading"><h2>风味调色盘</h2></div><div class="flavor-palette" role="group" aria-label="喜欢的风味">${Object.keys(T.palette).map(k=>`<button type="button" class="flavor-token" data-flavor="${k}" aria-pressed="${selected.has(k)}" style="--flavor:${T.palette[k][1]}"><span class="flavor-icon">${icon(k)}</span><strong>${e(T.palette[k][0])}</strong><small>${notes[k]}</small><span class="flavor-tick" aria-hidden="true">✓</span></button>`).join("")}</div>${BarChoices.render({ id:"palette-strength", label:"酒感", options:Object.fromEntries(Object.entries(T.strengths).map(([k,[name]])=>[k,name])), value:strength })}<div class="palette-actions"><button class="primary" id="palette-save">保存搭配</button><button class="text-button" id="palette-cancel">${T.dna(taste).ready ? "取消" : "先看配方"}</button></div></div></section>`);
     function update() {
       const keys = [...selected], onboarding = { palette: keys, strength };
       root.querySelectorAll("[data-flavor]").forEach(button => button.setAttribute("aria-pressed", selected.has(button.dataset.flavor)));
-      root.querySelector("#palette-scene").innerHTML = scene(keys);
-      root.querySelector("#palette-picked").innerHTML = keys.length ? keys.map(k=>`<span style="--flavor:${T.palette[k][1]}">${e(T.palette[k][0])}</span>`).join("") : '<span class="palette-placeholder">尚未选择风味</span>';
-      root.querySelector("#palette-wheel").innerHTML = keys.length ? wheel(T.dna({ ...taste, onboarding }).vector) : '<div class="palette-empty-wheel" aria-hidden="true"><span>甜</span><span>酸</span><span>苦</span><span>香</span></div>';
+      root.querySelector("#palette-scene").innerHTML = localHTML(scene(keys));
+      root.querySelector("#palette-picked").innerHTML = localHTML(keys.length ? keys.map(k=>`<span style="--flavor:${T.palette[k][1]}">${e(T.palette[k][0])}</span>`).join("") : '<span class="palette-placeholder">尚未选择风味</span>');
+      root.querySelector("#palette-wheel").innerHTML = localHTML(keys.length ? wheel(T.dna({ ...taste, onboarding }).vector) : '<div class="palette-empty-wheel" aria-hidden="true"><span>甜</span><span>酸</span><span>苦</span><span>香</span></div>');
       root.querySelector("#palette-save").disabled = !keys.length;
     }
     root.querySelectorAll("[data-flavor]").forEach(button => {

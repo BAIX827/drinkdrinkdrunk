@@ -10,6 +10,12 @@ import UIKit
 /// The same local bundle powers iOS, macOS, and the browser. No remote content is loaded.
 final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandlerWithReply, WKNavigationDelegate, WKUIDelegate {
     static let storageKey = "sharedBarStateV1"
+    static var usesEnglish: Bool {
+        guard let raw = UserDefaults.standard.string(forKey: storageKey),
+              let data = raw.data(using: .utf8),
+              let state = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else { return false }
+        return state["locale"] as? String == "en"
+    }
     private let onSave: ([String: Any]) -> Void
     private var resourceRoot: URL?
     private var exportingImage = false
@@ -67,6 +73,20 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandler
               state["inventory"] is [[String: Any]],
               state["favorites"] is [String] else { return }
         UserDefaults.standard.set(raw, forKey: Self.storageKey)
+        #if os(macOS)
+        let english = state["locale"] as? String == "en"
+        message.webView?.window?.title = english ? "drinkdrinkdrunk · My home bar" : "大喝特喝 · 我的居家吧台"
+        if let appMenu = NSApp.mainMenu?.items.first?.submenu {
+            appMenu.items.first?.title = english ? "About drinkdrinkdrunk" : "关于大喝特喝"
+            appMenu.items.last?.title = english ? "Quit DDDrunk" : "退出大喝特喝"
+        }
+        if let editItem = NSApp.mainMenu?.items.dropFirst().first, let editMenu = editItem.submenu {
+            editItem.title = english ? "Edit" : "编辑"
+            editMenu.title = editItem.title
+            let titles = english ? ["Undo", "Cut", "Copy", "Paste", "Select All"] : ["撤销", "剪切", "复制", "粘贴", "全选"]
+            for (item, title) in zip(editMenu.items, titles) { item.title = title }
+        }
+        #endif
         onSave(state)
     }
 

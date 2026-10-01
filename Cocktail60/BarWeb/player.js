@@ -1,4 +1,5 @@
 (() => {
+  const { html: localHTML, t: localText } = globalThis.BarI18n || { html: s => s, t: s => s };
   const { escape: e, bottle, glass, vessel, rim } = BarArt;
   const labels = {
     pour: "量取与倒入",
@@ -54,7 +55,7 @@
           ingredient: p,
           tool: "量酒器 / 备料碟",
           target: "counter",
-          hint: `备好 ${p.raw}，先不要混合${p.optional ? "；此项可选" : ""}。`,
+          hint: `${localText('备好')} ${p.raw}${localText('，先不要混合')}${p.optional ? localText("；此项可选") : ""}.`,
         })),
       {
         action: "method",
@@ -64,7 +65,7 @@
       },
     ];
   }
-  function mount(node, recipe, inventory, finish) {
+  function mount(node, recipe, inventory, finish, { paused = false } = {}) {
     stop();
     active = true;
     index = 0;
@@ -80,7 +81,7 @@
     selectedColor = appearance.color;
     selectedVisual = appearance.visual || {};
     lookMode = 'recipe';
-    playing = true;
+    playing = !paused;
     render();
     say();
     schedule();
@@ -98,9 +99,9 @@
     if (!speech || !window.speechSynthesis || !playing) return;
     const step = steps[index];
     const utterance = new SpeechSynthesisUtterance(
-      `${index + 1}，${step.ingredient?.raw || labels[step.action]}。${step.hint}`,
+      `${index + 1}. ${step.ingredient ? BarI18n.recipeText(current, step.ingredient.raw) : localText(labels[step.action])}. ${BarI18n.recipeText(current, step.hint)}`,
     );
-    utterance.lang = "zh-CN";
+    utterance.lang = globalThis.BarI18n?.locale === "en" ? "en-US" : "zh-CN";
     speechSynthesis.speak(utterance);
   }
   function next() {
@@ -165,8 +166,7 @@
       color: current.accentHex,
       name: step.ingredient?.types.join(" / "),
     };
-    root.innerHTML = `<div class="player-top"><div><span class="eyebrow">FOLLOW ALONG · ${current.steps ? "动画跟做" : "备料与原方引导"}</span><h1>${e(current.chineseName)}</h1><p>${e(current.englishName)} · 原方杯型：${e(current.glass)}</p></div><button data-player="exit" class="secondary">退出跟做</button></div>
-      ${!current.steps ? '<p class="notice">自建配方：先备料，再按做法调制。</p>' : ""}
+    root.innerHTML = localHTML(`<div class="player-top"><div><span class="eyebrow">FOLLOW ALONG · ${current.steps ? "动画跟做" : "备料与原方引导"}</span><h1 translate="no">${e(BarI18n.name(current))}</h1><p>${BarI18n.locale === "en" ? "" : e(current.englishName) + " · "}原方杯型：${e(current.glass)}</p></div><button data-player="exit" class="secondary">退出跟做</button></div>
       <div class="player-layout"><section class="stage-panel"><div class="stage ${playing ? "" : "paused"} ${complete ? "completed" : ""} action-${e(step.action)}" style="--target-rim:${targetRim}px;--drink-color:${selectedColor}" role="img" aria-label="${complete ? `调制完成 · ${e(glassNames[selectedGlass])}` : `${e(labels[step.action])} → ${e(targetName)}：${e(step.ingredient?.raw || step.hint)}`}">
       <span class="stage-label">${complete ? "调制完成" : e(labels[step.action])}</span>
       <div class="source-object">${
@@ -185,12 +185,12 @@
       }</div><div class="liquid-stream"></div><div class="spoon"></div>
       <div class="target-object">${target === "glass" ? glass(selectedGlass, selectedColor, appearance) : vessel(target, appearance)}</div>
       ${!complete && !["glass", "counter"].includes(step.target) ? `<div class="waiting-glass">${glass(selectedGlass, selectedColor, { level: 0, garnish: false })}<small>${e(glassNames[selectedGlass])}</small></div>` : ""}
-      <span class="stage-floor">${complete ? e(glassNames[selectedGlass]) : `${item ? `你的「${e(item.name)}」` : e(source.name || step.tool)} → ${e(targetName)}`}</span></div>
+      <span class="stage-floor">${complete ? e(glassNames[selectedGlass]) : `${item ? `你的「<span translate="no">${e(item.name)}</span>」` : e(source.name || step.tool)} → ${e(targetName)}`}</span></div>
       ${BarChoices.glasses({ id: "player-glass", label: "最终杯型", value: selectedGlass, color: selectedColor, visual: selectedVisual })}${BarChoices.render({ id: "player-look", label: "外观", options: { recipe: "配方外观", plain: "纯色" }, value: lookMode })}<label class="glass-select drink-color">酒液颜色 <input type="color" id="player-color" value="${selectedColor}"></label></section>
-      <section class="step-panel" aria-live="polite"><div class="step-count">STEP ${String(index + 1).padStart(2, "0")} <span>/ ${String(steps.length).padStart(2, "0")}</span></div><progress value="${complete ? steps.length : index + 1}" max="${steps.length}"></progress><h2>${complete ? "这一杯，完成了。" : e(labels[step.action])}</h2><div class="amount">${complete ? "" : e(step.ingredient?.raw || (step.duration ? `${step.duration} 秒` : step.tool))}</div><p class="step-hint">${complete ? "" : e(step.hint)}</p><p class="muted">器具：${e(step.tool)} · 目标：${e(targetName)}</p><div class="next-step">${index < steps.length - 1 ? `接下来 · ${e(steps[index + 1].ingredient?.raw || labels[steps[index + 1].action])}` : "最后一步 · 完成后记录这一杯"}</div>
+      <section class="step-panel" aria-live="polite"><div class="step-count">STEP ${String(index + 1).padStart(2, "0")} <span>/ ${String(steps.length).padStart(2, "0")}</span></div><progress value="${complete ? steps.length : index + 1}" max="${steps.length}"></progress><h2>${complete ? "这一杯，完成了。" : e(labels[step.action])}</h2><div class="amount" translate="no">${complete ? "" : e(step.ingredient ? BarI18n.recipeText(current, step.ingredient.raw) : localText(step.duration ? `${step.duration} 秒` : step.tool))}</div><p class="step-hint" translate="no">${complete ? "" : e(BarI18n.recipeText(current, step.hint))}</p><p class="muted">器具：${e(step.tool)} · 目标：${e(targetName)}</p><div class="next-step">${index < steps.length - 1 ? `接下来 · ${e(steps[index + 1].ingredient?.raw || labels[steps[index + 1].action])}` : "最后一步 · 完成后记录这一杯"}</div>
       <div class="play-controls"><button data-player="prev" class="secondary" ${index === 0 ? "disabled" : ""}>上一步</button><button data-player="toggle" class="primary">${complete ? "重新播放" : playing ? "Ⅱ 暂停" : "▶ 继续"}</button><button data-player="next" class="secondary" ${complete ? "disabled" : ""}>${index === steps.length - 1 ? "完成" : "下一步"}</button></div>
       ${complete ? `<button data-player="record" class="primary wide" ${recorded ? "disabled" : ""}>${recorded ? "已加入饮酒日记" : "一键加入饮酒日记"}</button>` : ""}
-      <div class="play-options"><label>每步等待 <select id="player-delay">${[5, 8, 15, 30, 60].map((s) => `<option value="${s}" ${delay === s ? "selected" : ""}>${s} 秒</option>`).join("")}</select></label><label><input type="checkbox" id="player-speech" ${speech ? "checked" : ""} ${!window.speechSynthesis ? "disabled" : ""}> 语音提示</label><button class="text-button" data-player="wake">${wakeLock ? "已保持常亮" : "保持屏幕常亮"}</button><p id="wake-status" class="small" role="status"></p></div></section></div>`;
+      <div class="play-options"><label>每步等待 <select id="player-delay">${[5, 8, 15, 30, 60].map((s) => `<option value="${s}" ${delay === s ? "selected" : ""}>${s} 秒</option>`).join("")}</select></label><label><input type="checkbox" id="player-speech" ${speech ? "checked" : ""} ${!window.speechSynthesis ? "disabled" : ""}> 语音提示</label><button class="text-button" data-player="wake">${wakeLock ? "已保持常亮" : "保持屏幕常亮"}</button><p id="wake-status" class="small" role="status"></p></div></section></div>`);
     restoreChoices();
     root.querySelectorAll("[data-player]").forEach(
       (button) =>
@@ -221,7 +221,7 @@
               if (playing && step.action === "ice" && !renderedIce) render();
               else {
                 root.querySelector(".stage").classList.toggle("paused", !playing);
-                button.textContent = playing ? "Ⅱ 暂停" : "▶ 继续";
+                button.textContent = localText(playing ? "Ⅱ 暂停" : "▶ 继续");
               }
             }
             if (!playing) window.speechSynthesis?.cancel();
@@ -234,7 +234,7 @@
             if (onFinish(current, { glass: selectedGlass, color: selectedColor, visual: selectedVisual }) === true) {
               stop();
               button.disabled = true;
-              button.textContent = "已加入饮酒日记";
+              button.textContent = localText("已加入饮酒日记");
             } else {
               recorded = false;
             }
@@ -243,10 +243,10 @@
             try {
               if (!navigator.wakeLock) throw new Error();
               wakeLock = await navigator.wakeLock.request("screen");
-              button.textContent = "已保持常亮";
+              button.textContent = localText("已保持常亮");
             } catch {
               root.querySelector("#wake-status").textContent =
-                "当前环境不支持常亮，可在系统设置中延长锁屏时间。";
+                localText("当前环境不支持常亮，可在系统设置中延长锁屏时间。");
             }
           }
         }),
@@ -283,7 +283,7 @@
       clearTimeout(timer);
       window.speechSynthesis?.cancel();
       root.querySelector(".stage").classList.add("paused");
-      root.querySelector('[data-player="toggle"]').textContent = "▶ 继续";
+      root.querySelector('[data-player="toggle"]').textContent = localText("▶ 继续");
     }
   });
   window.addEventListener("pagehide", stop);

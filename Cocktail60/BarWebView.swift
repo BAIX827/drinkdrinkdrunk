@@ -6,6 +6,7 @@ struct BarWebView: View {
     @EnvironmentObject private var myLiquorStore: MyLiquorStore
     @EnvironmentObject private var recipeStore: RecipeStore
     @EnvironmentObject private var favoritesStore: FavoritesStore
+    @AppStorage(BarWebHost.storageKey) private var savedBarState = ""
     var initialRoute = "bar"
 
     var body: some View {
@@ -27,14 +28,20 @@ struct BarWebView: View {
                     favoritesStore.replace(with: favorites)
                 }
             }
-            .navigationTitle("大喝特喝 · 我的吧台")
+            .navigationTitle(usesEnglish ? "DDDrunk · My bar" : "大喝特喝 · 我的吧台")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("完成") { dismiss() }
+                    Button(usesEnglish ? "Done" : "完成") { dismiss() }
                 }
             }
         }
+    }
+
+    private var usesEnglish: Bool {
+        guard let data = savedBarState.data(using: .utf8),
+              let state = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else { return false }
+        return state["locale"] as? String == "en"
     }
 }
 

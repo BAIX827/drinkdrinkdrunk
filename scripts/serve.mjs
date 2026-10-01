@@ -10,6 +10,7 @@ const types = {
   ".css": "text/css",
   ".svg": "image/svg+xml",
   ".json": "application/json",
+  ".wav": "audio/wav",
 };
 const server = createServer(async (req, res) => {
   try {
@@ -26,7 +27,7 @@ const server = createServer(async (req, res) => {
     }
     const data = await readFile(file);
     res.writeHead(200, {
-      "Content-Type": `${types[extname(file)] || "application/octet-stream"}; charset=utf-8`,
+      "Content-Type": `${types[extname(file)] || "application/octet-stream"}${extname(file) === '.wav' ? '' : '; charset=utf-8'}`,
       "Cache-Control": "no-cache",
       "X-Content-Type-Options": "nosniff",
     });
