@@ -1,0 +1,38 @@
+dialog.share-dialog { width: min(1040px, calc(100% - 32px)); padding: 28px; }
+.share-eyebrow { color: var(--green); font-size: 10px; letter-spacing: 2px; }
+.share-panel h2 { margin: 6px 30px 22px 0; }
+.share-layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 28px; align-items: start; }
+.share-preview { padding: 20px; min-height: 240px; background: var(--sidebar); border: 1px solid var(--line); border-radius: 10px; text-align: center; }
+.share-preview img { display: block; width: 100%; height: auto; box-shadow: 0 8px 22px #0003; }
+.share-preview img[hidden] { display: none; }
+.share-preview p { color: var(--muted); padding: 60px 0; }
+.share-options { position: sticky; top: 0; min-width: 0; }
+.share-options fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.share-options legend { margin-bottom: 12px; font-size: 14px; }
+.share-templates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+dialog label.share-template { margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; cursor: pointer; position: relative; }
+.share-template:has(input:checked) { border-color: var(--green); background: var(--soft); box-shadow: inset 0 0 0 1px var(--green); }
+.share-template:has(input:focus-visible) { outline: 3px solid var(--green); outline-offset: 3px; }
+.share-template input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.share-template img { width: 62px; height: 46px; flex-shrink: 0; border-radius: 2px; }
+.share-template strong { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-size: 13px; }
+.share-template strong small { font-size: 10px; font-weight: 400; color: var(--green); }
+.share-template span span { display: block; margin-top: 5px; font-size: 11px; color: var(--muted); }
+.share-dimensions { font-size: 12px; color: var(--muted); margin: 20px 0 12px; }
+.share-actions { display: grid; gap: 9px; }
+.share-actions button { width: 100%; }
+.share-panel button[hidden] { display: none; }
+.share-panel button:disabled { opacity: .55; cursor: wait; }
+@media(max-width: 680px) {
+  dialog.share-dialog { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; margin: 0; border-radius: 0; padding: 20px 16px; }
+  .share-layout { display: flex; flex-direction: column; gap: 16px; }
+  .share-panel { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  .share-preview { width: 100%; padding: 12px; }
+  .share-options { position: static; width: 100%; }
+  .share-templates { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  dialog label.share-template { flex-direction: column; align-items: center; padding: 8px 3px; gap: 7px; text-align: center; }
+  .share-template strong { font-size: 12px; justify-content: center; flex-wrap: wrap; gap: 3px; }
+  .share-template span span { display: none; }
+  .share-template img { width: 72px; height: 53px; }
+  .share-actions { position: fixed; z-index: 1; left: 0; right: 0; bottom: 0; display: flex; padding: 12px 16px max(12px, env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--line); }
+}

@@ -62,3 +62,18 @@ test('bottle caps cover and stay centered on their own necks', () => {
     assert.ok(y <= top && y + height > top, `${shape}: overlaps neck opening`);
   }
 });
+
+test('martini reflection follows the sloped wall with clearance for its full stroke', () => {
+  const svg = BarArt.glass('martini');
+  const [, path, width] = svg.match(/data-reflection="true" d="([^"]+)"[^>]+stroke-width="([\d.]+)"/);
+  const [x1, y1, x2, y2] = path.match(/[\d.]+/g).map(Number);
+  // Martini's left edge connects (15,42) to (80,118); require a parallel
+  // reflection that stays inside, including round end caps and the wall stroke.
+  const wallLength = Math.hypot(65, 76);
+  const offsets = [0, .25, .5, .75, 1].map(t => {
+    const x = x1 + (x2 - x1) * t, y = y1 + (y2 - y1) * t;
+    return ((x - 15) * 76 - (y - 42) * 65) / wallLength;
+  });
+  assert.ok(offsets.every(offset => offset > Number(width) / 2 + 1.5));
+  assert.ok(Math.max(...offsets) - Math.min(...offsets) < .2);
+});

@@ -8,10 +8,11 @@ import UIKit
 #endif
 
 /// The same local bundle powers iOS, macOS, and the browser. No remote content is loaded.
-final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate, WKUIDelegate {
+final class BarWebHost: NSObject, WKScriptMessageHandler, WKScriptMessageHandlerWithReply, WKNavigationDelegate, WKUIDelegate {
     static let storageKey = "sharedBarStateV1"
     private let onSave: ([String: Any]) -> Void
     private var resourceRoot: URL?
+    private var exportingImage = false
 
     init(onSave: @escaping ([String: Any]) -> Void = { _ in }) {
         self.onSave = onSave
@@ -19,6 +20,11 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate, 
 
     func makeWebView(bootstrap: [String: Any] = [:]) -> WKWebView {
         var initial = bootstrap
+        #if os(macOS)
+        initial["platform"] = "macos"
+        #else
+        initial["platform"] = "ios"
+        #endif
         if let saved = UserDefaults.standard.string(forKey: Self.storageKey) {
             initial["state"] = saved
         }
@@ -32,6 +38,7 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate, 
             ))
         }
         controller.add(self, name: "barState")
+        controller.addScriptMessageHandler(self, contentWorld: .page, name: "barShare")
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = controller
         configuration.websiteDataStore = .default()
@@ -76,6 +83,69 @@ final class BarWebHost: NSObject, WKScriptMessageHandler, WKNavigationDelegate, 
             return
         }
         decisionHandler(isLocalResource(url) || url.absoluteString == "about:blank" ? .allow : .cancel)
+    }
+
+    // Images are created by the local card renderer. Keep export independent of saved bar state.
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage,
+                               replyHandler: @escaping (Any?, String?) -> Void) {
+        guard message.name == "barShare", message.frameInfo.isMainFrame,
+              let webView = message.webView, let url = webView.url, isLocalResource(url),
+              let body = message.body as? [String: Any],
+              let base64 = body["base64"] as? String, base64.utf8.count <= 16_000_000,
+              let data = Data(base64Encoded: base64), data.count <= 12_000_000,
+              data.starts(with: [137, 80, 78, 71, 13, 10, 26, 10]),
+              let proposedName = body["filename"] as? String, proposedName.count <= 180,
+              proposedName.hasSuffix(".png"), !proposedName.contains("/"), !proposedName.contains("\\"),
+              !exportingImage else {
+            replyHandler(nil, "无法导出这张图片。")
+            return
+        }
+        #if os(macOS)
+        guard let image = NSBitmapImageRep(data: data), image.pixelsWide == 1080,
+              image.pixelsHigh >= 1080, image.pixelsHigh <= 8192,
+              let window = webView.window else {
+            replyHandler(nil, "图片无效或窗口不可用。")
+            return
+        }
+        exportingImage = true
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.png]
+        panel.nameFieldStringValue = proposedName
+        panel.beginSheetModal(for: window) { [weak self] response in
+            defer { self?.exportingImage = false }
+            guard response == .OK, let destination = panel.url else {
+                replyHandler("cancelled", nil)
+                return
+            }
+            do {
+                try data.write(to: destination, options: .atomic)
+                replyHandler("saved", nil)
+            } catch { replyHandler(nil, "图片保存失败，请重试。") }
+        }
+        #else
+        guard let image = UIImage(data: data), let cgImage = image.cgImage,
+              cgImage.width == 1080, cgImage.height >= 1080, cgImage.height <= 8192,
+              var presenter = webView.window?.rootViewController else {
+            replyHandler(nil, "图片无效或窗口不可用。")
+            return
+        }
+        while let presented = presenter.presentedViewController { presenter = presented }
+        guard !presenter.isBeingDismissed else {
+            replyHandler(nil, "请稍后重试。")
+            return
+        }
+        exportingImage = true
+        let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activity.popoverPresentationController?.sourceView = webView
+        activity.popoverPresentationController?.sourceRect = CGRect(x: webView.bounds.midX, y: webView.bounds.maxY - 40, width: 1, height: 1)
+        activity.completionWithItemsHandler = { [weak self] _, completed, _, error in
+            self?.exportingImage = false
+            if error != nil { replyHandler(nil, "图片分享失败，请重试。") }
+            else { replyHandler(completed ? "completed" : "cancelled", nil) }
+        }
+        presenter.present(activity, animated: true)
+        #endif
     }
 
     #if os(macOS)

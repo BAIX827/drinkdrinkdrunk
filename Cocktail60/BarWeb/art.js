@@ -26,6 +26,12 @@
       rum: 'M46 14H62V66Q76 69 76 82V146Q76 153 67 153H41Q32 153 32 146V82Q32 69 46 66Z',
     };
     const necks = { bottle: [42, 20], round: [43, 18], whiskey: [43, 22], gin: [44, 20], vodka: [43, 22], rum: [46, 16] };
+    const highlights = {
+      bottle: 'M35 74V139', round: 'M25 79Q15 108 27 137',
+      carton: 'M35 51V139', jar: 'M31 55V139', whiskey: 'M32 73V139',
+      gin: 'M32 66V139', vodka: 'M34 75V139',
+      tequila: 'M30 81Q27 86 28 98V136', rum: 'M40 83V140',
+    };
     const [neckX, neckWidth] = necks[item.shape] || necks.bottle;
     const cap = item.shape === 'carton'
       ? '<path d="M40 18H69M28 41H82M40 18L52 41L69 18" fill="none" stroke="#fff8e8" stroke-width="3"/>'
@@ -38,7 +44,7 @@
           `<polyline points="${points.map((p) => p.map(Number).join(",")).join(" ")}"/>`,
       )
       .join("");
-    return `<svg viewBox="0 0 110 170" aria-hidden="true" data-bottle="${escape(item.shape || 'bottle')}"><ellipse cx="55" cy="159" rx="34" ry="5" fill="#203d3d" opacity=".1"/><path d="${paths[item.shape] || paths.bottle}" fill="${color}" stroke="#29494d" stroke-width="2.5"/><path d="M36 77V140" stroke="white" stroke-width="5" opacity=".3" stroke-linecap="round"/>${cap}<rect x="32" y="83" width="45" height="41" rx="${item.shape === 'whiskey' ? 1 : 8}" fill="${item.shape === 'whiskey' ? '#293b3b' : '#fff8e8'}" stroke="#d3b982"/><path d="M43 100H65M47 107H61" stroke="${item.shape === 'whiskey' ? '#ecd7ae' : '#29494d'}" opacity=".7" stroke-width="2"/><g fill="none" stroke="#29494d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(14 40) scale(.42)">${strokes}</g></svg>`;
+    return `<svg viewBox="0 0 110 170" aria-hidden="true" data-bottle="${escape(item.shape || 'bottle')}"><ellipse cx="55" cy="159" rx="34" ry="5" fill="#203d3d" opacity=".1"/><path d="${paths[item.shape] || paths.bottle}" fill="${color}" stroke="#29494d" stroke-width="2.5"/>${reflection(paths[item.shape] || paths.bottle, highlights[item.shape] || highlights.bottle, 2.5, .25)}${cap}<rect x="32" y="83" width="45" height="41" rx="${item.shape === 'whiskey' ? 1 : 8}" fill="${item.shape === 'whiskey' ? '#293b3b' : '#fff8e8'}" stroke="#d3b982"/><path d="M43 100H65M47 107H61" stroke="${item.shape === 'whiskey' ? '#ecd7ae' : '#29494d'}" opacity=".7" stroke-width="2"/><g fill="none" stroke="#29494d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(14 40) scale(.42)">${strokes}</g></svg>`;
   }
   const glassShapes = {
     hurricane: { path: 'M48 20H112Q88 66 111 102Q125 144 80 147Q35 144 49 102Q72 66 48 20Z', rim:20, bottom:147, left:48, right:112, cubes:[[69,122,22,-10],[91,119,22,9],[80,88,21,-7]] },
@@ -53,7 +59,20 @@
     wine: { path: "M39 25H121Q149 113 80 115Q11 113 39 25Z", rim: 25, bottom: 115, left: 39, right: 121, cubes: [[62,87,24,-14],[94,87,25,12],[79,57,24,-8]] },
   };
   const vesselShape = { path: "M40 62H120L108 172H52Z", rim: 62, bottom: 172, left: 40, right: 120, cubes: [[70,147,25,-10],[94,120,24,12],[68,93,25,-8]] };
+  // Follow each glass wall, inset from its outline. Curved bowls need curved
+  // reflections; a shared fixed slope can put the stroke outside a martini glass.
+  const glassHighlights = {
+    hurricane: 'M58 35Q66 53 64 70', mug: 'M42 54V84',
+    shot: 'M55 91L57 113', margarita: 'M26 55Q31 72 48 76',
+    bowl: 'M26 84Q29 108 40 126', coupe: 'M32 60Q37 82 51 91',
+    martini: 'M33 54L47 70.4', highball: 'M50 32L51.7 68',
+    rocks: 'M37 89L39.3 119', wine: 'M44 40Q36 65 41 82',
+  };
   let drawingID = 0;
+  function reflection(outline, path, width = 2.2, opacity = .4) {
+    const id = `reflection-${++drawingID}`;
+    return `<defs><clipPath id="${id}"><path d="${outline}"/></clipPath></defs><path data-reflection="true" d="${path}" fill="none" stroke="white" stroke-width="${width}" stroke-linecap="round" opacity="${opacity}" clip-path="url(#${id})"/>`;
+  }
   function contents(shape, color, options) {
     const id = `drink-contents-${++drawingID}`;
     const level = Math.max(0, Math.min(0.9, options.level ?? 0.7));
@@ -70,7 +89,7 @@
     const stem = ["highball", "rocks", "mug", "shot", "bowl"].includes(kind)
       ? ""
       : `<path d="M80 ${shape.bottom}V170M52 174H108" fill="none" stroke="#31535a" stroke-width="4" stroke-linecap="round"/>`;
-    return `<svg viewBox="0 0 160 190" aria-hidden="true" data-glass="${escape(kind)}"><ellipse cx="80" cy="181" rx="46" ry="5" fill="#203d3d" opacity=".09"/><path d="${shape.path}" fill="#e2eff0" fill-opacity=".23"/>${contents(shape, color, options)}<path d="${shape.path}" fill="none" stroke="#31535a" stroke-width="3" stroke-linejoin="round"/><path d="M${shape.left+10} ${shape.rim+13}l6 19" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".65"/>${stem}${kind === "mug" ? '<path d="M115 66Q151 63 146 105Q145 130 115 130" fill="none" stroke="#31535a" stroke-width="5"/>' : ""}${garnish(options.garnish, shape)}</svg>`;
+    return `<svg viewBox="0 0 160 190" aria-hidden="true" data-glass="${escape(kind)}"><ellipse cx="80" cy="181" rx="46" ry="5" fill="#203d3d" opacity=".09"/><path d="${shape.path}" fill="#e2eff0" fill-opacity=".23"/>${contents(shape, color, options)}<path d="${shape.path}" fill="none" stroke="#31535a" stroke-width="3" stroke-linejoin="round"/>${reflection(shape.path, glassHighlights[kind] || glassHighlights.coupe)}${stem}${kind === "mug" ? '<path d="M115 66Q151 63 146 105Q145 130 115 130" fill="none" stroke="#31535a" stroke-width="5"/>' : ""}${garnish(options.garnish, shape)}</svg>`;
   }
   function garnish(type, shape) {
     if (type === false || type === 'none') return '';
@@ -91,7 +110,7 @@
       : '<ellipse cx="80" cy="62" rx="40" ry="7" fill="#dfe9df" stroke="#31535a" stroke-width="3"/>';
     const blender = kind === "blender" ? '<path d="M120 80Q151 82 140 128L114 136" fill="none" stroke="#31535a" stroke-width="6"/><rect x="45" y="155" width="70" height="22" rx="5" fill="#31535a"/><circle cx="80" cy="166" r="5" fill="#e0b788"/>' : '';
     const color = /^#[a-f\d]{6}$/i.test(options.color) ? options.color : "#d69867";
-    return `<svg viewBox="0 0 160 190" aria-hidden="true" data-vessel="${escape(kind)}"><ellipse cx="80" cy="181" rx="46" ry="5" fill="#203d3d" opacity=".09"/><path d="${vesselShape.path}" fill="#b7c8c3" fill-opacity=".4"/>${contents(vesselShape, color, options)}<path d="${vesselShape.path}" fill="none" stroke="#31535a" stroke-width="3"/>${lid}<path d="M56 79L63 151" stroke="white" stroke-width="5" opacity=".5"/>${blender}</svg>`;
+    return `<svg viewBox="0 0 160 190" aria-hidden="true" data-vessel="${escape(kind)}"><ellipse cx="80" cy="181" rx="46" ry="5" fill="#203d3d" opacity=".09"/><path d="${vesselShape.path}" fill="#b7c8c3" fill-opacity=".4"/>${contents(vesselShape, color, options)}<path d="${vesselShape.path}" fill="none" stroke="#31535a" stroke-width="3"/>${lid}${reflection(vesselShape.path, 'M49 79L54 125', 2.5, .35)}${blender}</svg>`;
   }
   const rim = (kind) => (glassShapes[kind] || vesselShape).rim;
   globalThis.BarArt = { escape, bottle, glass, vessel, rim, drink };

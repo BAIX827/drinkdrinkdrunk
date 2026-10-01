@@ -40,6 +40,8 @@
 	<string>用于给饮酒日历拍照记录当天喝的鸡尾酒。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>用于从相册选择照片保存到饮酒日历记录。</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>用于将你选择的鸡尾酒分享卡片保存到相册。</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

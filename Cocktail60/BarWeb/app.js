@@ -270,9 +270,10 @@
         })
         .join(
           "",
-        )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<h2>做法</h2><p class="method">${e(r.method)}</p>${r.note ? `<p class="notice">${e(r.note)}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div></section></div>`;
+        )}</ul>${r.source ? `<p class="recipe-source"><a href="${e(r.source.url)}" target="_blank" rel="noopener noreferrer">${e(r.source.title)} ↗</a></p>` : ""}<h2>做法</h2><p class="method">${e(r.method)}</p>${r.note ? `<p class="notice">${e(r.note)}</p>` : ""}<div class="detail-actions"><a class="primary" href="#follow/${e(r.id)}">▶ 开始跟做</a><button class="secondary" data-favorite="${e(r.id)}">${state.favorites.includes(r.id) ? "♥ 已收藏" : "♡ 收藏"}</button><button class="secondary" data-share-recipe="${e(r.id)}">分享卡片</button><button class="text-button" data-log-recipe="${e(r.id)}">记一杯</button>${state.customRecipes.some((x) => x.id === r.id) ? `<button class="text-button" data-delete-recipe="${e(r.id)}">删除自建配方</button>` : ""}</div></section></div>`;
   }
   function showModal(html) {
+    BarShare.dispose();
     modalReturnFocus = document.activeElement;
     modal.innerHTML = `<button class="modal-close" data-action="close" aria-label="关闭">×</button>${html}`;
     if (!modal.open) modal.showModal();
@@ -625,6 +626,10 @@
       document.querySelector(focus)?.focus({ preventScroll: true });
     }
     if (d.action === "close") closeModal();
+    if (d.shareRecipe) {
+      const recipe = recipes().find(r => r.id === d.shareRecipe);
+      if (recipe) BarShare.open(recipe, { showModal, toast });
+    }
     if (d.action === "add-item") openItem();
     if (d.editItem) openItem(d.editItem);
     if (d.removeItem)
