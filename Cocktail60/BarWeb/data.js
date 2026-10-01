@@ -20,8 +20,8 @@ globalThis.BarData = {
       "accentHex": "#7895B2",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
-        "garnish": "lemon",
+        "color": "#ecead0",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -160,10 +160,11 @@ globalThis.BarData = {
       "accentHex": "#7D8E95",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "lemon",
-        "ice": true,
-        "foam": false
+        "color": "#d4aa84",
+        "garnish": "lemon-twist",
+        "ice": false,
+        "foam": false,
+        "rock": true
       },
       "parts": [
         {
@@ -297,10 +298,15 @@ globalThis.BarData = {
       "accentHex": "#6C9A8B",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#dfc593",
+        "garnish": "mint",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "orange",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -485,10 +491,13 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "none",
+        "color": "#f5a752",
+        "garnish": "orange-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -614,10 +623,14 @@ globalThis.BarData = {
       "accentHex": "#E0A64F",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e6ca79",
-        "garnish": "lime",
+        "color": "#f1cc96",
+        "garnish": "pineapple",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "umbrella",
+          "cherry"
+        ]
       },
       "parts": [
         {
@@ -829,10 +842,14 @@ globalThis.BarData = {
       "accentHex": "#9B6B5D",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#e1cdb5",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "cocoa"
+        ]
       },
       "parts": [
         {
@@ -956,10 +973,11 @@ globalThis.BarData = {
       "accentHex": "#7A584E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
-        "garnish": "olive",
+        "color": "#92755c",
+        "garnish": "coffee",
         "ice": false,
-        "foam": false
+        "foam": true,
+        "opaque": true
       },
       "parts": [
         {
@@ -1095,7 +1113,8 @@ globalThis.BarData = {
         "color": "#b68b68",
         "garnish": "coffee",
         "ice": false,
-        "foam": true
+        "foam": true,
+        "opaque": true
       },
       "parts": [
         {
@@ -1255,10 +1274,15 @@ globalThis.BarData = {
       "accentHex": "#8E6258",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#9a7356",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "cocoa",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -1417,10 +1441,14 @@ globalThis.BarData = {
       "accentHex": "#A06B4D",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#725237",
         "garnish": "none",
         "ice": false,
-        "foam": false
+        "foam": true,
+        "opaque": true,
+        "extras": [
+          "cocoa"
+        ]
       },
       "parts": [
         {
@@ -1543,10 +1571,14 @@ globalThis.BarData = {
       "accentHex": "#A46C59",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#e0c9ae",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "cinnamon"
+        ]
       },
       "parts": [
         {
@@ -1677,10 +1709,14 @@ globalThis.BarData = {
       "accentHex": "#B07855",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#e4d2bb",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "nutmeg"
+        ]
       },
       "parts": [
         {
@@ -1812,7 +1848,7 @@ globalThis.BarData = {
       "accentHex": "#D09058",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e7ebc2",
         "garnish": "lime",
         "ice": false,
         "foam": false
@@ -1976,10 +2012,15 @@ globalThis.BarData = {
       "accentHex": "#6FAE9A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#f1edcd",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -2166,10 +2207,11 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#eef0da",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -2319,10 +2361,14 @@ globalThis.BarData = {
       "accentHex": "#9B5F43",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "none",
+        "color": "#553826",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -2446,10 +2492,11 @@ globalThis.BarData = {
       "accentHex": "#8CA66E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
+        "color": "#f3f4ed",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -2602,10 +2649,14 @@ globalThis.BarData = {
       "accentHex": "#79A9A0",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#ebeecf",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -2792,10 +2843,11 @@ globalThis.BarData = {
       "accentHex": "#BC7B4A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#e0c795",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -2947,10 +2999,13 @@ globalThis.BarData = {
       "accentHex": "#B85C7A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lime",
+        "color": "#ca4d59",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -3100,7 +3155,7 @@ globalThis.BarData = {
       "accentHex": "#A76546",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
+        "color": "#d4aa84",
         "garnish": "none",
         "ice": false,
         "foam": false
@@ -3229,10 +3284,14 @@ globalThis.BarData = {
       "accentHex": "#A56A5C",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#cca27a",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "nutmeg"
+        ]
       },
       "parts": [
         {
@@ -3393,7 +3452,7 @@ globalThis.BarData = {
       "accentHex": "#7AA6A4",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#f0ebc5",
         "garnish": "lemon",
         "ice": false,
         "foam": false
@@ -3584,7 +3643,7 @@ globalThis.BarData = {
       "accentHex": "#85A984",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e7ebc2",
         "garnish": "lime",
         "ice": false,
         "foam": false
@@ -3775,10 +3834,13 @@ globalThis.BarData = {
       "accentHex": "#C17C50",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#dfc494",
+        "garnish": "orange",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry"
+        ]
       },
       "parts": [
         {
@@ -3967,10 +4029,15 @@ globalThis.BarData = {
       "accentHex": "#6CA98C",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#ecefd6",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "mint",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -4149,10 +4216,14 @@ globalThis.BarData = {
       "accentHex": "#8F5B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "none",
+        "color": "#54392b",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -4306,10 +4377,13 @@ globalThis.BarData = {
       "accentHex": "#A56B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#af6d48",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -4490,10 +4564,14 @@ globalThis.BarData = {
       "accentHex": "#D3A148",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e6ca79",
-        "garnish": "lime",
+        "color": "#f1d586",
+        "garnish": "pineapple",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -4674,10 +4752,11 @@ globalThis.BarData = {
       "accentHex": "#A97D50",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#e2cb9c",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -4857,10 +4936,14 @@ globalThis.BarData = {
       "accentHex": "#806154",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#755841",
         "garnish": "none",
         "ice": false,
-        "foam": false
+        "foam": true,
+        "opaque": true,
+        "extras": [
+          "cocoa"
+        ]
       },
       "parts": [
         {
@@ -5012,10 +5095,14 @@ globalThis.BarData = {
       "accentHex": "#9A695C",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#e7d6bf",
         "garnish": "none",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "cinnamon"
+        ]
       },
       "parts": [
         {
@@ -5176,10 +5263,14 @@ globalThis.BarData = {
       "accentHex": "#86614F",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#755841",
         "garnish": "none",
         "ice": false,
-        "foam": false
+        "foam": true,
+        "opaque": true,
+        "extras": [
+          "cinnamon"
+        ]
       },
       "parts": [
         {
@@ -5333,10 +5424,11 @@ globalThis.BarData = {
       "accentHex": "#A78A50",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e2cb9c",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -5515,10 +5607,13 @@ globalThis.BarData = {
       "accentHex": "#A7A552",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "none",
+        "color": "#d8a757",
+        "garnish": "apple",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cinnamon"
+        ]
       },
       "parts": [
         {
@@ -5675,10 +5770,14 @@ globalThis.BarData = {
       "accentHex": "#8B6F4D",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "lemon",
+        "color": "#a2602e",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -5926,10 +6025,14 @@ globalThis.BarData = {
       "accentHex": "#8D604A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
+        "color": "#8b5326",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -6209,10 +6312,13 @@ globalThis.BarData = {
       "accentHex": "#B55D7A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lemon",
+        "color": "#cd6463",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -6458,10 +6564,15 @@ globalThis.BarData = {
       "accentHex": "#5798C8",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#f1eed3",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -6707,10 +6818,14 @@ globalThis.BarData = {
       "accentHex": "#4F8FC7",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1eed3",
+        "garnish": "lemon-twist",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -6956,10 +7071,14 @@ globalThis.BarData = {
       "accentHex": "#6AAE75",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1eed3",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -7205,10 +7324,13 @@ globalThis.BarData = {
       "accentHex": "#A7557C",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
+        "color": "#cd6062",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -7454,10 +7576,14 @@ globalThis.BarData = {
       "accentHex": "#4A9FC4",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#f1eed3",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -7702,10 +7828,14 @@ globalThis.BarData = {
       "accentHex": "#75A653",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#dbe289",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -7918,10 +8048,14 @@ globalThis.BarData = {
       "accentHex": "#B6814C",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e8dbba",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -8193,10 +8327,14 @@ globalThis.BarData = {
       "accentHex": "#D18E56",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "lemon",
+        "color": "#edad65",
+        "garnish": "mint",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "orange",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -8413,10 +8551,15 @@ globalThis.BarData = {
       "accentHex": "#D19A4E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "lemon",
+        "color": "#f3bf71",
+        "garnish": "orange",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "umbrella",
+          "straw"
+        ],
+        "crushed": true
       },
       "parts": [
         {
@@ -8660,10 +8803,15 @@ globalThis.BarData = {
       "accentHex": "#C77A4D",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "lime",
+        "color": "#efc073",
+        "garnish": "mint",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry",
+          "straw"
+        ],
+        "crushed": true
       },
       "parts": [
         {
@@ -8905,10 +9053,14 @@ globalThis.BarData = {
       "accentHex": "#D38352",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "lemon",
+        "color": "#f3c072",
+        "garnish": "orange",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry",
+          "umbrella"
+        ]
       },
       "parts": [
         {
@@ -9122,10 +9274,14 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e6ca79",
+        "color": "#e7ebc2",
         "garnish": "mint",
-        "ice": true,
-        "foam": false
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "lime-wedge"
+        ],
+        "crushed": true
       },
       "parts": [
         {
@@ -9309,10 +9465,11 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
+        "color": "#f3f4ed",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -9439,10 +9596,15 @@ globalThis.BarData = {
       "accentHex": "#67A979",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#ebeece",
         "garnish": "mint",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "lime-wedge",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -9626,10 +9788,14 @@ globalThis.BarData = {
       "accentHex": "#9B6048",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "lime",
+        "color": "#4e3c32",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -9751,7 +9917,7 @@ globalThis.BarData = {
       "accentHex": "#B9A057",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e8ebc6",
         "garnish": "lime",
         "ice": false,
         "foam": false
@@ -9885,7 +10051,7 @@ globalThis.BarData = {
       "accentHex": "#D0B05D",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e8eac1",
         "garnish": "lime",
         "ice": true,
         "foam": false
@@ -10029,10 +10195,11 @@ globalThis.BarData = {
       "accentHex": "#C6A15B",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e7ebc2",
         "garnish": "lime",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "rim": "salt"
       },
       "parts": [
         {
@@ -10190,10 +10357,11 @@ globalThis.BarData = {
       "accentHex": "#D78B79",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#f0dcc8",
+        "garnish": "grapefruit",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -10316,10 +10484,16 @@ globalThis.BarData = {
       "accentHex": "#B8744F",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#dec997",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "mint"
+        ],
+        "glass": "mug",
+        "copper": true
       },
       "parts": [
         {
@@ -10444,10 +10618,14 @@ globalThis.BarData = {
       "accentHex": "#C47A48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#d4a969",
+        "garnish": "orange",
         "ice": false,
-        "foam": true
+        "foam": true,
+        "extras": [
+          "cherry",
+          "bitters"
+        ]
       },
       "parts": [
         {
@@ -10611,10 +10789,14 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "orange",
-        "ice": true,
-        "foam": false
+        "color": "#c78840",
+        "garnish": "orange-twist",
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "cherry"
+        ],
+        "rock": true
       },
       "parts": [
         {
@@ -10774,10 +10956,14 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "lemon",
+        "color": "#a2602e",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -11036,10 +11222,11 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#eaecc9",
         "garnish": "lime",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "rim": "salt"
       },
       "parts": [
         {
@@ -11176,7 +11363,7 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e7eac0",
         "garnish": "lime",
         "ice": false,
         "foam": false
@@ -11313,10 +11500,15 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#ebeece",
         "garnish": "mint",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "lime-wedge",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -11485,7 +11677,7 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e8ebc6",
         "garnish": "lime",
         "ice": false,
         "foam": false
@@ -11619,10 +11811,14 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "lime",
+        "color": "#4e3c32",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -11745,10 +11941,15 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
-        "garnish": "none",
+        "color": "#f1e3c0",
+        "garnish": "pineapple",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -11881,10 +12082,13 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#e8eac1",
         "garnish": "mint",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "lime-wedge"
+        ]
       },
       "parts": [
         {
@@ -12073,10 +12277,13 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lime",
+        "color": "#b5836f",
+        "garnish": "mint",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry"
+        ]
       },
       "parts": [
         {
@@ -12317,10 +12524,14 @@ globalThis.BarData = {
       "accentHex": "#D18B48",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lemon",
+        "color": "#e7a664",
+        "garnish": "orange",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry",
+          "umbrella"
+        ]
       },
       "parts": [
         {
@@ -12505,10 +12716,11 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
+        "color": "#f3f4ed",
         "garnish": "lime",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -12632,7 +12844,7 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e3e8d6",
+        "color": "#f1efe3",
         "garnish": "olive",
         "ice": false,
         "foam": false
@@ -12744,8 +12956,8 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e3e8d6",
-        "garnish": "olive",
+        "color": "#f1efe3",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -12851,8 +13063,8 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
-        "garnish": "none",
+        "color": "#ecead0",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -12985,8 +13197,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c35639",
-        "garnish": "orange",
+        "color": "#b5393f",
+        "garnish": "orange-twist",
         "ice": false,
         "foam": false
       },
@@ -13113,10 +13325,15 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
+        "color": "#f1ecc9",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -13268,10 +13485,15 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1ecc9",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -13423,10 +13645,11 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1ecc9",
+        "garnish": "lemon-wedge",
         "ice": true,
-        "foam": false
+        "foam": true,
+        "bubbles": true
       },
       "parts": [
         {
@@ -13591,10 +13814,12 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#f2eddb",
-        "garnish": "lime",
+        "color": "#f4efe0",
+        "garnish": "none",
         "ice": false,
-        "foam": true
+        "foam": true,
+        "bubbles": true,
+        "opaque": true
       },
       "parts": [
         {
@@ -13860,8 +14085,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#ead08a",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -13996,8 +14221,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c0b8d8",
-        "garnish": "none",
+        "color": "#b9b0db",
+        "garnish": "cherry",
         "ice": false,
         "foam": false
       },
@@ -14159,8 +14384,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lemon",
+        "color": "#d49690",
+        "garnish": "raspberry",
         "ice": false,
         "foam": true
       },
@@ -14329,8 +14554,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f0eac2",
+        "garnish": "mint",
         "ice": false,
         "foam": false
       },
@@ -14493,9 +14718,13 @@ globalThis.BarData = {
       "isUserCreated": false,
       "appearance": {
         "color": "#e4d3ab",
-        "garnish": "lemon",
-        "ice": true,
+        "garnish": "blackberry",
+        "ice": false,
         "foam": false,
+        "extras": [
+          "lemon"
+        ],
+        "crushed": true,
         "layers": [
           "#e4d3ab",
           "#943c68"
@@ -14651,8 +14880,8 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1ebc5",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -14786,10 +15015,16 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#dec997",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "mint"
+        ],
+        "glass": "mug",
+        "copper": true
       },
       "parts": [
         {
@@ -14914,8 +15149,8 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lime",
+        "color": "#e0566f",
+        "garnish": "orange-twist",
         "ice": false,
         "foam": false
       },
@@ -15237,10 +15472,11 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
+        "color": "#3b2418",
         "garnish": "none",
-        "ice": true,
-        "foam": false
+        "ice": false,
+        "foam": false,
+        "rock": true
       },
       "parts": [
         {
@@ -15342,6 +15578,10 @@ globalThis.BarData = {
         "garnish": "none",
         "ice": true,
         "foam": false,
+        "opaque": true,
+        "extras": [
+          "straw"
+        ],
         "layers": [
           "#f0e1c7",
           "#76503b"
@@ -15473,10 +15713,15 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c94430",
-        "garnish": "lemon",
+        "color": "#c75745",
+        "garnish": "celery",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "lemon-wedge",
+          "pepper"
+        ],
+        "rim": "spice"
       },
       "parts": [
         {
@@ -15705,10 +15950,13 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "none",
+        "color": "#f5a64c",
+        "garnish": "orange",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -15804,10 +16052,13 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "none",
+        "color": "#cf5c63",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -15931,10 +16182,19 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "none",
+        "color": "#e1885f",
+        "garnish": "orange",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry",
+          "straw"
+        ],
+        "layers": [
+          "#f2a447",
+          "#c8344a"
+        ],
+        "layerPart": "蔓越莓汁"
       },
       "parts": [
         {
@@ -16085,10 +16345,15 @@ globalThis.BarData = {
       "accentHex": "#7FA6BD",
       "isUserCreated": false,
       "appearance": {
-        "color": "#43bada",
+        "color": "#7babda",
         "garnish": "lemon",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry",
+          "straw"
+        ]
       },
       "parts": [
         {
@@ -16211,10 +16476,14 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "orange",
-        "ice": true,
-        "foam": false
+        "color": "#c7883f",
+        "garnish": "orange-twist",
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "cherry"
+        ],
+        "rock": true
       },
       "parts": [
         {
@@ -16375,10 +16644,14 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#d4a969",
+        "garnish": "orange",
         "ice": false,
-        "foam": true
+        "foam": true,
+        "extras": [
+          "cherry",
+          "bitters"
+        ]
       },
       "parts": [
         {
@@ -16536,8 +16809,8 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "none",
+        "color": "#b07033",
+        "garnish": "cherry",
         "ice": false,
         "foam": false
       },
@@ -16671,8 +16944,8 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "none",
+        "color": "#b07033",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -16797,10 +17070,14 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
+        "color": "#ca8c42",
         "garnish": "mint",
-        "ice": true,
-        "foam": false
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "straw"
+        ],
+        "crushed": true
       },
       "parts": [
         {
@@ -16950,8 +17227,8 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c35639",
-        "garnish": "none",
+        "color": "#b94c2f",
+        "garnish": "orange-twist",
         "ice": false,
         "foam": false
       },
@@ -17077,8 +17354,8 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#d6a459",
+        "garnish": "ginger",
         "ice": false,
         "foam": false
       },
@@ -17240,7 +17517,7 @@ globalThis.BarData = {
       "isUserCreated": false,
       "appearance": {
         "color": "#e6c286",
-        "garnish": "lemon",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false,
         "layers": [
@@ -17403,10 +17680,11 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "none",
-        "ice": true,
-        "foam": false
+        "color": "#c68338",
+        "garnish": "lemon-twist",
+        "ice": false,
+        "foam": false,
+        "rock": true
       },
       "parts": [
         {
@@ -17502,8 +17780,8 @@ globalThis.BarData = {
       "accentHex": "#9A5C3E",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c68c47",
-        "garnish": "none",
+        "color": "#c98b42",
+        "garnish": "lemon-twist",
         "ice": false,
         "foam": false
       },
@@ -17669,6 +17947,10 @@ globalThis.BarData = {
         "garnish": "none",
         "ice": false,
         "foam": false,
+        "opaque": true,
+        "extras": [
+          "nutmeg"
+        ],
         "layers": [
           "#f0e5d2",
           "#63432d"
@@ -17818,10 +18100,12 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#f0dcc8",
+        "garnish": "grapefruit",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "rim": "salt"
       },
       "parts": [
         {
@@ -17974,6 +18258,10 @@ globalThis.BarData = {
         "garnish": "orange",
         "ice": true,
         "foam": false,
+        "extras": [
+          "cherry",
+          "straw"
+        ],
         "layers": [
           "#f4b43f",
           "#df4a48"
@@ -18096,10 +18384,19 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#bba57e",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ],
+        "layers": [
+          "#e8d4a0",
+          "#7d2346"
+        ],
+        "layerPart": "黑醋栗利口酒"
       },
       "parts": [
         {
@@ -18251,10 +18548,15 @@ globalThis.BarData = {
       "accentHex": "#D0A052",
       "isUserCreated": false,
       "appearance": {
-        "color": "#754633",
-        "garnish": "lime",
+        "color": "#4e3c32",
+        "garnish": "lime-wedge",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "straw"
+        ],
+        "rim": "salt"
       },
       "parts": [
         {
@@ -18404,10 +18706,14 @@ globalThis.BarData = {
       "accentHex": "#31535A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#c35639",
-        "garnish": "none",
+        "color": "#b63f44",
+        "garnish": "orange",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "lemon-twist"
+        ]
       },
       "parts": [
         {
@@ -18531,10 +18837,11 @@ globalThis.BarData = {
       "accentHex": "#C9A65B",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
+        "color": "#f2915b",
         "garnish": "orange",
         "ice": true,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -18655,10 +18962,11 @@ globalThis.BarData = {
       "accentHex": "#C9A65B",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
+        "color": "#f3cd95",
         "garnish": "none",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -18746,10 +19054,11 @@ globalThis.BarData = {
       "accentHex": "#C9A65B",
       "isUserCreated": false,
       "appearance": {
-        "color": "#efa048",
-        "garnish": "none",
+        "color": "#f4b261",
+        "garnish": "orange",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -18843,10 +19152,11 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#f1e5af",
+        "garnish": "lemon-twist",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "bubbles": true
       },
       "parts": [
         {
@@ -19004,10 +19314,11 @@ globalThis.BarData = {
       "accentHex": "#B76E54",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lemon",
+        "color": "#c3935e",
+        "garnish": "orange-twist",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "rim": "sugar"
       },
       "parts": [
         {
@@ -19146,10 +19457,14 @@ globalThis.BarData = {
       "accentHex": "#B76E54",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e9d9bd",
+        "color": "#8e7967",
         "garnish": "none",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "opaque": true,
+        "extras": [
+          "nutmeg"
+        ]
       },
       "parts": [
         {
@@ -19283,10 +19598,13 @@ globalThis.BarData = {
       "accentHex": "#B76E54",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e7dfa7",
-        "garnish": "lime",
+        "color": "#e6e6c3",
+        "garnish": "none",
         "ice": false,
-        "foam": true
+        "foam": true,
+        "extras": [
+          "bitters"
+        ]
       },
       "parts": [
         {
@@ -19478,10 +19796,14 @@ globalThis.BarData = {
       "accentHex": "#31535A",
       "isUserCreated": false,
       "appearance": {
-        "color": "#e5e5c9",
-        "garnish": "lime",
-        "ice": true,
-        "foam": false
+        "color": "#f2f1e9",
+        "garnish": "lime-wedge",
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "lime"
+        ],
+        "crushed": true
       },
       "parts": [
         {
@@ -19618,10 +19940,13 @@ globalThis.BarData = {
       "accentHex": "#79A883",
       "isUserCreated": false,
       "appearance": {
-        "color": "#d26b7d",
-        "garnish": "lime",
+        "color": "#dcb06e",
+        "garnish": "pineapple",
         "ice": false,
-        "foam": false
+        "foam": false,
+        "extras": [
+          "cherry"
+        ]
       },
       "parts": [
         {
@@ -19977,6 +20302,7 @@ globalThis.BarData = {
       "appearance": {
         "color": "#df9751",
         "garnish": "none",
+        "ice": false,
         "foam": false
       },
       "source": {
@@ -20136,6 +20462,7 @@ globalThis.BarData = {
       "appearance": {
         "color": "#c8d38e",
         "garnish": "none",
+        "ice": false,
         "foam": false
       },
       "source": {
@@ -20284,6 +20611,7 @@ globalThis.BarData = {
       "appearance": {
         "color": "#d394a1",
         "garnish": "none",
+        "ice": false,
         "foam": true
       },
       "source": {
@@ -20422,7 +20750,9 @@ globalThis.BarData = {
       "appearance": {
         "color": "#a9d3a6",
         "garnish": "mint",
-        "foam": false
+        "ice": false,
+        "foam": false,
+        "opaque": true
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -20571,6 +20901,7 @@ globalThis.BarData = {
       "appearance": {
         "color": "#eed2b8",
         "garnish": "none",
+        "ice": false,
         "foam": false
       },
       "source": {
@@ -20754,7 +21085,8 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#e4dba4",
-        "garnish": "orange",
+        "garnish": "orange-twist",
+        "ice": false,
         "foam": false
       },
       "source": {
@@ -20924,6 +21256,7 @@ globalThis.BarData = {
       "appearance": {
         "color": "#99b664",
         "garnish": "none",
+        "ice": false,
         "foam": false
       },
       "source": {
@@ -21040,13 +21373,18 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#ead4a0",
+        "garnish": "lime-wedge",
+        "ice": true,
+        "foam": false,
+        "bubbles": true,
         "layers": [
           "#764325",
           "#ead4a0"
         ],
         "layerPart": "黑朗姆",
-        "garnish": "lime",
-        "ice": true
+        "extras": [
+          "straw"
+        ]
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21148,8 +21486,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#ec793f",
-        "garnish": "orange",
-        "ice": true
+        "garnish": "orange-wedge",
+        "ice": true,
+        "foam": true
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21331,7 +21670,10 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#d4ad62",
-        "garnish": "lemon"
+        "garnish": "lemon-twist",
+        "ice": false,
+        "foam": false,
+        "rim": "sugar"
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21491,7 +21833,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#dfb46d",
-        "ice": false
+        "garnish": "none",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21639,7 +21983,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#e6cf9c",
-        "ice": false
+        "garnish": "lemon",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21786,7 +22132,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#ca654e",
-        "ice": false
+        "garnish": "lemon-twist",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -21938,7 +22286,13 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#e9d49a",
-        "ice": false
+        "garnish": "orange-twist",
+        "ice": false,
+        "foam": false,
+        "bubbles": true,
+        "extras": [
+          "cherry"
+        ]
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22095,7 +22449,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#a6573e",
-        "ice": false
+        "garnish": "orange-twist",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22275,7 +22631,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#bf6841",
-        "ice": true
+        "garnish": "pineapple",
+        "ice": true,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22386,7 +22744,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#a94a66",
-        "ice": false
+        "garnish": "none",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22506,7 +22866,10 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#e6d381",
-        "ice": false
+        "garnish": "lemon",
+        "ice": false,
+        "foam": false,
+        "rim": "sugar"
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22661,7 +23024,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#aa593e",
-        "ice": false
+        "garnish": "lemon-twist",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22819,7 +23184,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#d3995b",
-        "ice": false
+        "garnish": "none",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -22977,7 +23344,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#de9b61",
-        "ice": false
+        "garnish": "lime",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -23179,7 +23548,10 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#b89c5a",
-        "ice": false
+        "garnish": "mint",
+        "ice": false,
+        "foam": false,
+        "bubbles": true
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -23340,7 +23712,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#e7a569",
-        "ice": false
+        "garnish": "none",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -23459,7 +23833,9 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#d4c6ab",
-        "ice": false
+        "garnish": "mint",
+        "ice": false,
+        "foam": false
       },
       "source": {
         "title": "IBA · 官方配方与教程",
@@ -23622,7 +23998,12 @@ globalThis.BarData = {
       ],
       "appearance": {
         "color": "#b87345",
-        "ice": false
+        "garnish": "orange-twist",
+        "ice": false,
+        "foam": false,
+        "extras": [
+          "cherry"
+        ]
       },
       "source": {
         "title": "IBA · 官方配方与教程",

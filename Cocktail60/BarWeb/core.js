@@ -137,12 +137,21 @@
     bowl: "分享碗",
   };
   const bottleShapes = { bottle: '经典长瓶', round: '圆肚酒瓶', whiskey: '方肩威士忌瓶', gin: '平肩金酒瓶', vodka: '圆肩伏特加瓶', tequila: '矮身龙舌兰瓶', rum: '修长朗姆瓶', carton: '果汁纸盒', jar: '糖浆罐' };
+  const bottlePatterns = { classic: '经典标签', blank: '素瓶无标', stripes: '斜纹', dots: '波点', star: '星标', crest: '徽章', leaf: '草本枝叶', citrus: '柑橘切片', wave: '海浪纹', deco: '装饰艺术', agave: '龙舌兰叶', anchor: '船锚', crown: '皇冠', heart: '爱心', wax: '封蜡瓶口', diamond: '菱格瓶身' };
+  // A curated ink palette shared by the label and hand-drawing tools.
+  const inkPalette = ['#29494d', '#1f1f1f', '#fff8e8', '#d9b579', '#a3142c', '#e0607e', '#e57f28', '#e3c53a', '#6f9a3f', '#2f8f8a', '#3b6fb6', '#6d4ba3'];
   const validColor = value => /^#[0-9a-f]{6}$/i.test(value);
+  // Drink decoration vocabulary shared by validation, art and the WeChat renderer.
+  const garnishKinds = ['none','orange','lime','lemon','mint','olive','coffee','grapefruit','cucumber','lime-wedge','lemon-wedge','orange-wedge','lemon-twist','orange-twist','basil','cherry','pineapple','blackberry','raspberry','ginger','apple','celery'];
+  const extraKinds = ['orange','lime','lemon','grapefruit','cucumber','lime-wedge','lemon-wedge','orange-wedge','lemon-twist','orange-twist','mint','basil','cherry','pineapple','blackberry','raspberry','ginger','apple','cinnamon','umbrella','straw','nutmeg','cocoa','pepper','bitters'];
+  const rimKinds = ['salt','sugar','spice'];
   function validVisual(v) {
     return v && typeof v === 'object' && !Array.isArray(v) &&
       (v.layers === undefined || (Array.isArray(v.layers) && v.layers.length === 2 && v.layers.every(validColor))) &&
-      (v.garnish === undefined || ['none','orange','lime','lemon','mint','olive','coffee'].includes(v.garnish)) &&
-      ['ice','foam'].every(k => v[k] === undefined || typeof v[k] === 'boolean');
+      (v.garnish === undefined || garnishKinds.includes(v.garnish)) &&
+      (v.extras === undefined || (Array.isArray(v.extras) && v.extras.length <= 4 && v.extras.every(x => extraKinds.includes(x)))) &&
+      (v.rim === undefined || rimKinds.includes(v.rim)) &&
+      ['ice','foam','bubbles','crushed','rock','opaque','copper'].every(k => v[k] === undefined || typeof v[k] === 'boolean');
   }
   function drinkAppearance(recipe = {}, selected = {}) {
     const defaultGlass = /飓风/.test(recipe.glass) ? 'hurricane' : /热饮/.test(recipe.glass) ? 'mug'
@@ -154,7 +163,8 @@
     return {
       ...(recipe.appearance ? { visual: { ...recipe.appearance } } : {}),
       ...(selected.visual ? { visual: { ...selected.visual } } : {}),
-      glass: Object.hasOwn(glassNames, selected.glass) ? selected.glass : defaultGlass,
+      glass: Object.hasOwn(glassNames, selected.glass) ? selected.glass
+        : Object.hasOwn(glassNames, recipe.appearance?.glass) ? recipe.appearance.glass : defaultGlass,
       color: /^#[0-9a-f]{6}$/i.test(selected.color) ? selected.color
         : validColor(recipe.appearance?.color) ? recipe.appearance.color
         : /^#[0-9a-f]{6}$/i.test(recipe.accentHex) ? recipe.accentHex : "#da9561",
@@ -239,7 +249,12 @@
                   p.length === 2 &&
                   p.every((v) => Number.isFinite(v) && v >= 0 && v <= 200),
               ),
-          ),
+          ) &&
+          (i.pattern === undefined || Object.hasOwn(bottlePatterns, i.pattern)) &&
+          (i.ink === undefined || validColor(i.ink)) &&
+          (i.drawMode === undefined || ['label', 'bottle'].includes(i.drawMode)) &&
+          (i.strokeColors === undefined || (Array.isArray(i.strokeColors) && i.strokeColors.length <= 200 && i.strokeColors.every(validColor))) &&
+          (i.strokeWidths === undefined || (Array.isArray(i.strokeWidths) && i.strokeWidths.length <= 200 && i.strokeWidths.every(w => Number.isFinite(w) && w >= .5 && w <= 16))),
       )
     )
       throw new Error("库存数据格式不正确。");
@@ -298,7 +313,8 @@
         method: r.method, note: typeof r.note === 'string' ? r.note : null,
         accentHex: /^#[0-9a-f]{6}$/i.test(r.accentHex) ? r.accentHex : '#b87b5d',
         ...(r.appearance ? { appearance: { color: r.appearance.color, layers: r.appearance.layers,
-          garnish: r.appearance.garnish, ice: r.appearance.ice, foam: r.appearance.foam } } : {}),
+          garnish: r.appearance.garnish, ice: r.appearance.ice, foam: r.appearance.foam,
+          ...Object.fromEntries(['extras','rim','bubbles','crushed','rock','opaque','copper'].filter(k => r.appearance[k] !== undefined).map(k => [k, r.appearance[k]])) } } : {}),
         ...(r.photo ? { photo: r.photo } : {}),
         isUserCreated: true,
       })),
@@ -321,6 +337,11 @@
     validateState,
     glassNames,
     bottleShapes,
+    bottlePatterns,
+    inkPalette,
+    garnishKinds,
+    extraKinds,
+    rimKinds,
     drinkAppearance,
     journalMonth,
   };

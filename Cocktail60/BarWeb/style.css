@@ -2009,3 +2009,46 @@ progress::-webkit-progress-value {
 .recipe-source-photo { margin: 24px 0 0; }
 .recipe-source-photo img { display: block; max-width: 100%; max-height: 340px; object-fit: contain; border-radius: 14px; }
 .recipe-source-photo figcaption { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+/* Bottle studio: preset label art or a fully hand-drawn bottle. */
+.bottle-studio { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 16px; margin: 18px 0 0; min-width: 0; }
+.bottle-studio legend { padding: 0 6px; font-size: 13px; font-weight: 600; }
+.studio-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 999px; background: var(--soft); margin-bottom: 14px; }
+.studio-modes label { position: relative; }
+.studio-modes input { position: absolute; opacity: 0; inset: 0; }
+.studio-modes span { display: block; text-align: center; padding: 8px 10px; border-radius: 999px; font-size: 12px; cursor: pointer; transition: background .2s, color .2s; }
+.studio-modes input:checked + span { background: var(--green); color: var(--on-green); font-weight: 600; box-shadow: 0 2px 10px var(--glow); }
+.studio-modes input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.studio-panel[hidden] { display: none; }
+.studio-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.studio-label { font-size: 12px; color: var(--muted); }
+.inline-color { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.inline-color input { width: 54px; min-height: 34px; padding: 2px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 7px; }
+.swatch { position: relative; width: 28px; height: 28px; cursor: pointer; }
+.swatch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.swatch span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--swatch); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line), inset 0 1px 2px #0000002e; transition: transform .15s, box-shadow .15s; }
+.swatch input:checked + span { transform: scale(1.12); box-shadow: 0 0 0 2px var(--green), 0 0 10px var(--glow); }
+.swatch input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.swatch.custom span { background: conic-gradient(#e0607e, #e3c53a, #6f9a3f, #3b6fb6, #6d4ba3, #e0607e); color: #fff; font-size: 14px; text-shadow: 0 1px 2px #0008; }
+.swatch.custom input { opacity: 0; }
+.legacy-note { margin-top: 10px; }
+.draw-layout { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 18px; align-items: start; margin-top: 10px; }
+.draw-board { position: relative; aspect-ratio: 110 / 170; border-radius: 14px; background: repeating-linear-gradient(0deg, transparent 0 19px, #29494d0f 19px 20px), repeating-linear-gradient(90deg, transparent 0 19px, #29494d0f 19px 20px), #faf6ed; border: 1px solid #c5cec2; overflow: hidden; }
+.draw-guide { position: absolute; inset: 0; opacity: .16; pointer-events: none; filter: grayscale(1); }
+.draw-guide svg { width: 100%; height: 100%; display: block; }
+#drawing { position: absolute; inset: 0; width: 100%; height: 100%; background: transparent; border: 0; border-radius: 0; cursor: crosshair; }
+.draw-tools { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.brush-sizes { display: flex; flex-wrap: wrap; gap: 6px; }
+.brush-sizes label { position: relative; }
+.brush-sizes input { position: absolute; inset: 0; opacity: 0; margin: 0; }
+.brush-sizes span { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; cursor: pointer; }
+.brush-sizes i { display: inline-block; width: var(--brush); height: var(--brush); border-radius: 50%; background: currentColor; }
+.brush-sizes input:checked + span { border-color: var(--green); color: var(--green); background: var(--soft); }
+.brush-sizes input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.draw-tools .check { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.draw-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 560px) {
+  .draw-layout { grid-template-columns: minmax(0, 1fr); }
+  .draw-board { width: min(240px, 100%); margin: 0 auto; }
+}

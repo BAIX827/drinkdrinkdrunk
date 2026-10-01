@@ -178,26 +178,27 @@ input[type="checkbox"] { accent-color: var(--brass); }
   padding-bottom: 8px;
   isolation: isolate;
   overflow: hidden;
-  background-image:
-    radial-gradient(ellipse 70% 60% at 50% 0, #ffffff0d, transparent 70%),
-    linear-gradient(180deg, #00000026, transparent 45%);
+  background-image: radial-gradient(ellipse 60% 80% at 50% -10%, var(--lamp-soft), transparent 72%), linear-gradient(180deg, #00000026, transparent 45%);
 }
-/* Pendant lamp and its cone of light. */
+/* Soft overhead light and a thin double brass frame with corner studs. */
 .recipe-visual::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: -1;
+  inset: 5px;
+  z-index: 1;
   pointer-events: none;
+  border: 1px solid var(--brass-line);
+  border-radius: 9px;
+  outline: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+  outline-offset: 2px;
   background:
-    radial-gradient(ellipse 10px 6px at 50% 0, var(--brass) 0 96%, transparent 100%),
-    radial-gradient(circle 5px at 50% 7px, #fff3d6, transparent),
-    radial-gradient(ellipse 42% 95% at 50% -4%, var(--lamp-soft), transparent 72%),
-    conic-gradient(from 180deg at 50% 3px, transparent 152deg, #ffd99412 166deg, #ffd99424 180deg, #ffd99412 194deg, transparent 208deg);
-  transition: opacity .3s;
-  opacity: .85;
+    radial-gradient(circle, var(--brass) 0 1.8px, transparent 2.4px) -4px -4px / 9px 9px no-repeat,
+    radial-gradient(circle, var(--brass) 0 1.8px, transparent 2.4px) calc(100% + 4px) -4px / 9px 9px no-repeat,
+    radial-gradient(circle, var(--brass) 0 1.8px, transparent 2.4px) -4px calc(100% + 4px) / 9px 9px no-repeat,
+    radial-gradient(circle, var(--brass) 0 1.8px, transparent 2.4px) calc(100% + 4px) calc(100% + 4px) / 9px 9px no-repeat;
+  transition: border-color .3s;
 }
-.recipe-card:hover .recipe-visual::before { opacity: 1; }
+.recipe-card:hover .recipe-visual::before { border-color: var(--brass); }
 /* Walnut ledge the glass stands on. */
 .recipe-visual::after {
   content: "";
@@ -265,10 +266,7 @@ input[type="checkbox"] { accent-color: var(--brass); }
   padding-bottom: 66px;
   border: 1px solid var(--brass-line);
   background:
-    radial-gradient(ellipse 18px 10px at 50% 0, var(--brass) 0 96%, transparent 100%),
-    radial-gradient(circle 8px at 50% 12px, #fff4d8, transparent),
-    radial-gradient(ellipse 50% 75% at 50% -6%, var(--lamp-soft), transparent 72%),
-    conic-gradient(from 180deg at 50% 6px, transparent 150deg, #ffd9940f 165deg, #ffd99426 180deg, #ffd9940f 195deg, transparent 210deg),
+    radial-gradient(ellipse 55% 70% at 50% -8%, var(--lamp-soft), transparent 72%),
     linear-gradient(180deg, #00000040, transparent 50%),
     var(--art-1);
   box-shadow: inset 0 0 70px #00000040, 0 16px 40px var(--shadow);
@@ -287,9 +285,26 @@ input[type="checkbox"] { accent-color: var(--brass); }
     linear-gradient(180deg, var(--walnut-a), var(--walnut-b));
   box-shadow: 0 -10px 24px #0000003d;
 }
+.detail-art::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px solid var(--brass-line);
+  border-radius: 13px;
+  outline: 1px solid color-mix(in srgb, var(--brass) 22%, transparent);
+  outline-offset: 3px;
+  background:
+    radial-gradient(circle, var(--brass) 0 2.4px, transparent 3px) -5px -5px / 11px 11px no-repeat,
+    radial-gradient(circle, var(--brass) 0 2.4px, transparent 3px) calc(100% + 5px) -5px / 11px 11px no-repeat,
+    radial-gradient(circle, var(--brass) 0 2.4px, transparent 3px) -5px calc(100% + 5px) / 11px 11px no-repeat,
+    radial-gradient(circle, var(--brass) 0 2.4px, transparent 3px) calc(100% + 5px) calc(100% + 5px) / 11px 11px no-repeat;
+}
 .detail-art svg { position: relative; filter: drop-shadow(0 8px 10px #00000059); }
 .detail-art > span {
   position: absolute;
+  z-index: 2;
   bottom: 22px;
   margin: 0;
   padding: 3px 12px 2px;

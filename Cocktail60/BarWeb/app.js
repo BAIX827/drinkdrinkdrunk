@@ -370,7 +370,18 @@
       shape: "bottle",
       drawing: [],
     };
-    let drawing = structuredClone(item.drawing);
+    const drawnBefore = item.drawMode === "bottle";
+    // Hand-drawn bottles and old label doodles are kept separately while editing.
+    let free = drawnBefore ? structuredClone(item.drawing) : [];
+    let freeColors = drawnBefore ? [...(item.strokeColors || [])] : [];
+    let freeWidths = drawnBefore ? [...(item.strokeWidths || [])] : [];
+    let legacy = drawnBefore ? [] : structuredClone(item.drawing);
+    let mode = drawnBefore ? "drawn" : "template";
+    let pen = { color: "#29494d", width: 3 };
+    const inkNames = ["墨绿色", "炭黑色", "奶油白", "黄铜色", "酒红色", "玫瑰粉", "橘子橙", "柠檬黄", "青柠绿", "孔雀蓝", "宝石蓝", "葡萄紫"];
+    const swatches = (name, value, label) => `<div class="swatches" role="radiogroup" aria-label="${label}">${BarCore.inkPalette.map((c, i) =>
+      `<label class="swatch" title="${inkNames[i]}"><input type="radio" name="${name}" value="${c}" ${c === value ? "checked" : ""} aria-label="${inkNames[i]}"><span style="--swatch:${c}"></span></label>`).join("")}<label class="swatch custom" title="自选颜色"><input type="color" data-custom="${name}" value="${BarCore.inkPalette.includes(value) ? "#b5533a" : value}" aria-label="自选颜色"><span aria-hidden="true">＋</span></label></div>`;
+    const sizes = [[1.5, "细线"], [3, "中线"], [6, "粗线"], [11, "马克笔"]];
     showModal(
       `<form id="item-form"><h2>${id ? "编辑材料" : "登记一件材料"}</h2><div class="item-editor"><div id="bottle-preview">${bottle(item)}</div><div><label>展示名称<input name="name" maxlength="80" required value="${e(item.name)}" placeholder="例如：我的蓝瓶酒"></label><label>标准材料类型<select name="type" required><option value="">请选择标准类型</option>${Object.entries(
         categories,
@@ -387,53 +398,67 @@
         )
         .join(
           "",
-        )}</select></label></div></div>${BarChoices.render({ id: "item-shape", name: "shape", label: "容器造型", options: BarCore.bottleShapes, value: item.shape, draw: shape => bottle({ ...item, shape }) })}<label>容器颜色<input type="color" name="color" value="${item.color}"></label><details><summary>亲手画外观 · 标签与瓶身涂鸦</summary><canvas id="drawing" width="200" height="200" aria-label="材料外观画板"></canvas><button type="button" class="text-button" id="undo-drawing">撤销一笔</button><button type="button" class="text-button" id="clear-drawing">清空画板</button></details><div class="modal-actions">${id ? `<button type="button" class="danger" data-remove-item="${e(id)}">移除材料</button>` : ""}<button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存材料</button></div></form>`,
+        )}</select></label></div></div>
+      <fieldset class="bottle-studio"><legend>瓶身外观</legend>
+        <div class="studio-modes" role="radiogroup" aria-label="外观方式"><label><input type="radio" name="studio" value="template" ${mode === "template" ? "checked" : ""}><span>经典瓶身 · 预设图案</span></label><label><input type="radio" name="studio" value="drawn" ${mode === "drawn" ? "checked" : ""}><span>整瓶手绘</span></label></div>
+        <div class="studio-panel" data-panel="template" ${mode === "template" ? "" : "hidden"}>
+          ${BarChoices.render({ id: "item-shape", name: "shape", label: "容器造型", options: BarCore.bottleShapes, value: item.shape, draw: shape => bottle({ ...item, drawing: legacy, drawMode: undefined, shape }) })}
+          <label class="inline-color">容器颜色<input type="color" name="color" value="${item.color}"></label>
+          ${BarChoices.render({ id: "item-pattern", name: "pattern", label: "瓶标图案", options: BarCore.bottlePatterns, value: item.pattern || "classic", draw: pattern => bottle({ ...item, drawing: [], drawMode: undefined, pattern }) })}
+          <div class="studio-row"><span class="studio-label">图案颜色</span>${swatches("ink", item.ink || "", "图案颜色")}<button type="button" class="text-button" id="ink-default">恢复默认</button></div>
+          ${legacy.length ? `<p class="small muted legacy-note">这件材料保留着旧版标签涂鸦。<button type="button" class="text-button" id="clear-legacy">清除旧涂鸦</button></p>` : ""}
+        </div>
+        <div class="studio-panel" data-panel="drawn" ${mode === "drawn" ? "" : "hidden"}>
+          <p class="small muted">在画板上画出整只瓶子，保存后它会摆上酒架，也会出现在跟做动画里。</p>
+          <div class="draw-layout"><div class="draw-board"><div class="draw-guide" aria-hidden="true"></div><canvas id="drawing" width="330" height="510" aria-label="整瓶手绘画板"></canvas></div>
+          <div class="draw-tools"><span class="studio-label">画笔颜色</span>${swatches("pen", pen.color, "画笔颜色")}<span class="studio-label">笔触</span><div class="brush-sizes" role="radiogroup" aria-label="笔触粗细">${sizes.map(([w, t]) => `<label><input type="radio" name="brush" value="${w}" ${Number(w) === pen.width ? "checked" : ""}><span><i style="--brush:${Math.max(2, Number(w) * 1.6)}px"></i>${t}</span></label>`).join("")}</div>
+          <label class="check"><input type="checkbox" id="guide-toggle" checked> 显示参考轮廓</label>
+          <div class="draw-actions"><button type="button" class="secondary" id="undo-drawing">撤销一笔</button><button type="button" class="text-button" id="clear-drawing">清空画板</button></div></div></div>
+        </div>
+      </fieldset><div class="modal-actions">${id ? `<button type="button" class="danger" data-remove-item="${e(id)}">移除材料</button>` : ""}<button type="button" class="secondary" data-action="close">取消</button><button type="submit" class="primary">保存材料</button></div></form>`,
     );
     const form = document.querySelector("#item-form"),
       canvas = document.querySelector("#drawing"),
       ctx = canvas.getContext("2d");
+    const ink = () => form.querySelector('input[name="ink"]:checked')?.value || form.dataset.ink || undefined;
+    const template = () => ({ color: form.elements.color.value, shape: form.elements.shape.value, pattern: form.elements.pattern.value, ink: ink() });
+    const current = () => mode === "drawn"
+      ? { ...template(), drawMode: "bottle", drawing: free, strokeColors: freeColors, strokeWidths: freeWidths }
+      : { ...template(), drawing: legacy };
     const preview = () => {
-      document.querySelector("#bottle-preview").innerHTML = localHTML(bottle({
-        color: form.elements.color.value,
-        shape: form.elements.shape.value,
-        drawing,
-      }));
-      BarChoices.updateArt(document.querySelector("#item-shape"), shape => bottle({ shape, color: form.elements.color.value, drawing }));
+      document.querySelector("#bottle-preview").innerHTML = localHTML(bottle(current()));
+      BarChoices.updateArt(document.querySelector("#item-shape"), shape => bottle({ ...template(), drawing: legacy, shape }));
+      BarChoices.updateArt(document.querySelector("#item-pattern"), pattern => bottle({ ...template(), drawing: [], pattern }));
+      document.querySelector(".draw-guide").innerHTML = BarArt.bottle({ ...template(), pattern: "blank" });
     };
     const redraw = () => {
-      ctx.clearRect(0, 0, 200, 200);
-      ctx.strokeStyle = "#29494d";
-      ctx.lineWidth = 4;
+      ctx.setTransform(3, 0, 0, 3, 0, 0);
+      ctx.clearRect(0, 0, 110, 170);
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      for (const stroke of drawing) {
+      free.forEach((points, i) => {
+        ctx.strokeStyle = freeColors[i] || "#29494d";
+        ctx.lineWidth = freeWidths[i] || 3;
         ctx.beginPath();
-        stroke.forEach(([x, y], i) =>
-          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y),
-        );
+        points.forEach(([x, y], j) => (j ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+        if (points.length === 1) ctx.lineTo(points[0][0] + .1, points[0][1]);
         ctx.stroke();
-      }
+      });
       preview();
     };
     let stroke;
     const point = (event) => {
       const rect = canvas.getBoundingClientRect();
-      return [
-        Math.max(
-          0,
-          Math.min(200, ((event.clientX - rect.left) * 200) / rect.width),
-        ),
-        Math.max(
-          0,
-          Math.min(200, ((event.clientY - rect.top) * 200) / rect.height),
-        ),
-      ];
+      const x = ((event.clientX - rect.left) * 110) / rect.width, y = ((event.clientY - rect.top) * 170) / rect.height;
+      return [Math.round(Math.max(0, Math.min(110, x)) * 10) / 10, Math.round(Math.max(0, Math.min(170, y)) * 10) / 10];
     };
     canvas.onpointerdown = (event) => {
-      if (drawing.length >= 200) return;
+      if (free.length >= 200) return;
       canvas.setPointerCapture(event.pointerId);
       stroke = [point(event)];
-      drawing.push(stroke);
+      free.push(stroke);
+      freeColors.push(pen.color);
+      freeWidths.push(pen.width);
       redraw();
     };
     canvas.onpointermove = (event) => {
@@ -446,27 +471,62 @@
       stroke = null;
     };
     document.querySelector("#clear-drawing").onclick = () => {
-      drawing = [];
+      free = []; freeColors = []; freeWidths = [];
       redraw();
     };
     document.querySelector("#undo-drawing").onclick = () => {
-      drawing.pop();
+      free.pop(); freeColors.pop(); freeWidths.pop();
       redraw();
     };
+    document.querySelector("#clear-legacy")?.addEventListener("click", (event) => {
+      legacy = [];
+      event.target.closest(".legacy-note").remove();
+      preview();
+    });
+    document.querySelector("#guide-toggle").onchange = (event) => {
+      document.querySelector(".draw-guide").hidden = !event.target.checked;
+    };
+    document.querySelector("#ink-default").onclick = () => {
+      form.querySelectorAll('input[name="ink"]').forEach((input) => { input.checked = false; });
+      delete form.dataset.ink;
+      preview();
+    };
+    form.querySelectorAll('input[name="studio"]').forEach((input) => input.onchange = () => {
+      mode = input.value;
+      form.querySelectorAll(".studio-panel").forEach((panel) => { panel.hidden = panel.dataset.panel !== mode; });
+      if (mode === "template") BarChoices.reveal(form);
+      redraw();
+    });
+    form.querySelectorAll('input[name="pen"]').forEach((input) => input.onchange = () => { pen.color = input.value; });
+    form.querySelectorAll('input[name="brush"]').forEach((input) => input.onchange = () => { pen.width = Number(input.value); });
+    form.querySelectorAll("input[data-custom]").forEach((input) => input.oninput = () => {
+      const name = input.dataset.custom;
+      form.querySelectorAll(`input[name="${name}"]`).forEach((radio) => { radio.checked = false; });
+      if (name === "pen") pen.color = input.value; else form.dataset.ink = input.value;
+      preview();
+    });
+    form.querySelectorAll('input[name="ink"]').forEach((input) => input.onchange = () => { delete form.dataset.ink; preview(); });
     form.elements.color.oninput = preview;
     document.querySelector("#item-shape").onchange = preview;
+    document.querySelector("#item-pattern").onchange = preview;
     redraw();
     form.onsubmit = (event) => {
       event.preventDefault();
       const name = form.elements.name.value.trim();
       if (!name) return;
+      const { drawMode, strokeColors, strokeWidths, pattern, ink: oldInk, ...base } = item;
+      if (mode === "drawn" && !free.length) mode = "template";
+      const look = current();
       const updated = {
-        ...item,
+        ...base,
         name,
         type: form.elements.type.value,
-        color: form.elements.color.value,
-        shape: form.elements.shape.value,
-        drawing,
+        color: look.color,
+        shape: look.shape,
+        drawing: look.drawing,
+        ...(look.pattern && look.pattern !== "classic" ? { pattern: look.pattern } : {}),
+        ...(look.ink ? { ink: look.ink } : {}),
+        ...(mode === "drawn" ? { drawMode: "bottle", strokeColors: freeColors, strokeWidths: freeWidths } : {}),
       };
       const inventory = id
         ? state.inventory.map((i) => (i.id === id ? updated : i))

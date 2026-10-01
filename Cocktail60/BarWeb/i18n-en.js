@@ -497,4 +497,52 @@ After Hours · 电钢琴 / 低音 / 轻鼓 · 纯音乐|After Hours · Electric 
 酸|Sour
 苦|Bitter
 香|Aroma
+瓶身外观|Bottle look
+外观方式|Look style
+经典瓶身 · 预设图案|Classic bottle · preset art
+整瓶手绘|Draw the whole bottle
+瓶标图案|Label art
+图案颜色|Art color
+恢复默认|Default
+画笔颜色|Pen color
+笔触|Brush
+笔触粗细|Brush size
+细线|Fine
+中线|Medium
+粗线|Bold
+马克笔|Marker
+显示参考轮廓|Show tracing guide
+整瓶手绘画板|Bottle drawing board
+在画板上画出整只瓶子，保存后它会摆上酒架，也会出现在跟做动画里。|Draw the whole bottle here. Once saved it sits on your shelf and appears in follow-along animations.
+这件材料保留着旧版标签涂鸦。|This item still has a doodle from the old label editor.
+清除旧涂鸦|Clear old doodle
+自选颜色|Custom color
+墨绿色|Bottle green
+炭黑色|Charcoal
+奶油白|Cream
+黄铜色|Brass
+酒红色|Wine red
+玫瑰粉|Rose
+橘子橙|Orange
+柠檬黄|Lemon
+青柠绿|Lime
+孔雀蓝|Teal
+宝石蓝|Royal blue
+葡萄紫|Grape
+经典标签|Classic label
+素瓶无标|No label
+斜纹|Stripes
+波点|Polka dots
+星标|Star
+徽章|Crest
+柑橘切片|Citrus
+海浪纹|Waves
+装饰艺术|Art deco
+龙舌兰叶|Agave
+船锚|Anchor
+皇冠|Crown
+爱心|Heart
+封蜡瓶口|Wax seal
+草本枝叶|Herbal sprig
+菱格瓶身|Diamond cut
 `.trim().split('\n').map(line => { const i=line.indexOf('|'); return [line.slice(0,i),line.slice(i+1)]; })));
