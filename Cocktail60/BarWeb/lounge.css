@@ -1,0 +1,560 @@
+/* Lounge layer: materials and light for the After Hours bar.
+   Loaded last. Only surfaces, type and light change here; layout, data and
+   accessibility stay with style.css / iphone.css. Every texture is a local
+   data URI so the CSP and offline use are unaffected. */
+
+:root {
+  --brass-hi: #f7e1b0;
+  --brass: #d9b579;
+  --brass-lo: #8d6b3b;
+  --brass-line: #d9b57947;
+  --lamp: #ffd08a;
+  --lamp-soft: #ffcf8a1f;
+  --walnut-a: #4b3323;
+  --walnut-b: #2a1d14;
+  --well: #00000033;
+  --rule: #d9b5793b;
+  --stitch: #d9b5794d;
+  --grain-opacity: .055;
+  --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "Noto Serif SC", Georgia, serif;
+  --latin-serif: Georgia, "Times New Roman", serif;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .93 0 0 0 0 .82 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --wood-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='80'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .28' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .08 0 0 0 0 .045 0 0 0 0 .02 1.6 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] {
+  --lamp: #e9b46f;
+  --lamp-soft: #e9b46f12;
+  --walnut-a: #3a281c;
+  --walnut-b: #1d140e;
+  --grain-opacity: .04;
+}
+:root[data-theme="light"] {
+  --brass-hi: #fff0cc;
+  --brass: #c49a5c;
+  --brass-lo: #7c5a2f;
+  --brass-line: #9d773f40;
+  --lamp: #ffc874;
+  --lamp-soft: #ffc8743d;
+  --walnut-a: #b98e62;
+  --walnut-b: #8c6542;
+  --well: #6b522b14;
+  --rule: #8d6d4540;
+  --stitch: #8d6d4560;
+  --grain-opacity: .07;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .24 0 0 0 0 .14 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Room: film grain, vignette, serif display type ---------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image: var(--grain);
+  opacity: var(--grain-opacity);
+}
+body {
+  background-image:
+    radial-gradient(ellipse 120% 70% at 85% -10%, var(--ambient), transparent 62%),
+    radial-gradient(ellipse 90% 60% at 50% 120%, #00000030, transparent 70%);
+  background-attachment: fixed;
+}
+:root[data-theme="light"] body { background-image: radial-gradient(ellipse 120% 70% at 85% -10%, var(--ambient), transparent 62%); }
+
+.hero h1, .page-heading h1, .detail-copy h1, .player-top h1, .palette-heading h2,
+.taste-panel h2, .detail-copy h2, .section-heading h2, .recipe-copy h3, .step-panel h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+.detail-english, .english { font-family: var(--latin-serif); font-style: italic; }
+.brand b, .brand strong { font-family: var(--serif); }
+
+/* Brass hairline frame shared by the main cards. */
+.recipe-card, .inventory-filter, .taste-panel, .palette-workbench, .step-panel,
+.settings-card, .journal-calendar, .taste-history, .iphone-filters {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(150deg, var(--brass) 0, var(--line) 22%, var(--line) 74%, var(--brass-lo) 100%) border-box;
+}
+
+/* ---------- Buttons and controls: polished brass ---------- */
+.primary {
+  background: linear-gradient(180deg, var(--brass-hi) 0, var(--brass) 48%, var(--brass-lo) 130%);
+  border-color: var(--brass-lo);
+  color: var(--on-green);
+  box-shadow: inset 0 1px #ffffff8c, inset 0 -1px #0000002e, 0 4px 18px var(--glow);
+  text-shadow: 0 1px #ffffff40;
+  position: relative;
+  overflow: hidden;
+}
+.primary::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -60%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, #ffffff55, transparent);
+  transform: skewX(-18deg);
+  transition: left .6s ease;
+  pointer-events: none;
+}
+.primary:hover::after { left: 120%; }
+:root[data-theme="light"] .primary { color: #fffaf0; text-shadow: 0 -1px #0000002e; }
+
+.secondary {
+  background: linear-gradient(180deg, #ffffff0a, transparent), var(--surface);
+  box-shadow: inset 0 1px #ffffff0d, 0 1px 2px #0000002e;
+}
+
+.chip {
+  border-radius: 999px;
+  padding-inline: 15px;
+  background: linear-gradient(180deg, #ffffff0a, transparent 60%), var(--surface);
+  box-shadow: inset 0 1px #ffffff0f, 0 1px 2px #00000033;
+  transition: border-color .2s, box-shadow .2s, color .2s;
+}
+.chip:hover { border-color: var(--brass-line); color: var(--brass); }
+.chip.selected {
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 55%, var(--brass-lo) 140%);
+  border-color: var(--brass-lo);
+  color: var(--on-green);
+  box-shadow: inset 0 1px #ffffff99, inset 0 -1px #00000030, 0 2px 12px var(--glow);
+  font-weight: 600;
+}
+:root[data-theme="light"] .chip.selected { color: #fffaf0; }
+
+.search-wrap input {
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--well), transparent 70%), var(--surface);
+  box-shadow: inset 0 2px 6px var(--well);
+  transition: border-color .2s, box-shadow .2s;
+}
+.search-wrap input:focus {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: inset 0 2px 6px var(--well), 0 0 0 3px var(--brass-line), 0 0 22px var(--glow);
+}
+.search-wrap > span { color: var(--brass); }
+
+input[type="checkbox"] { accent-color: var(--brass); }
+
+/* ---------- Discover hero: wainscot panels under a pendant light ---------- */
+.hero {
+  background:
+    radial-gradient(ellipse 55% 85% at 78% -12%, var(--lamp-soft), transparent 70%),
+    repeating-linear-gradient(90deg, transparent 0 118px, #00000022 118px 119px, #ffffff08 119px 120px),
+    linear-gradient(180deg, #ffffff06, transparent 40%),
+    var(--hero);
+  border-color: var(--brass-line);
+  box-shadow: inset 0 1px var(--brass), inset 0 0 80px #0000002a, 0 18px 45px var(--shadow);
+}
+.hero h1::before {
+  content: "— TONIGHT’S MENU —";
+  display: block;
+  margin-bottom: 10px;
+  font: 600 10px/1 var(--latin-serif);
+  letter-spacing: 4px;
+  color: var(--brass);
+  opacity: .9;
+}
+.hero::after {
+  height: 7px;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 45%, var(--brass-lo));
+  box-shadow: 0 -1px 10px var(--glow);
+}
+.hero h1 + .primary, .hero-copy .primary { margin-top: 14px; }
+.hero-stats b { font-family: var(--latin-serif); color: var(--brass); font-weight: 600; }
+
+/* ---------- Recipe cards: each drink stands in its own lit alcove ---------- */
+.recipe-card { transition: transform .25s ease, box-shadow .25s ease; }
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px var(--shadow), 0 0 0 1px var(--brass-line);
+}
+.recipe-visual {
+  align-items: flex-end;
+  padding-bottom: 8px;
+  isolation: isolate;
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 0, #ffffff0d, transparent 70%),
+    linear-gradient(180deg, #00000026, transparent 45%);
+}
+/* Pendant lamp and its cone of light. */
+.recipe-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 10px 6px at 50% 0, var(--brass) 0 96%, transparent 100%),
+    radial-gradient(circle 5px at 50% 7px, #fff3d6, transparent),
+    radial-gradient(ellipse 42% 95% at 50% -4%, var(--lamp-soft), transparent 72%),
+    conic-gradient(from 180deg at 50% 3px, transparent 152deg, #ffd99412 166deg, #ffd99424 180deg, #ffd99412 194deg, transparent 208deg);
+  transition: opacity .3s;
+  opacity: .85;
+}
+.recipe-card:hover .recipe-visual::before { opacity: 1; }
+/* Walnut ledge the glass stands on. */
+.recipe-visual::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, #ffffff2e 0 1px, transparent 1px 4px, #00000040 100%),
+    var(--wood-grain),
+    linear-gradient(180deg, var(--walnut-a), var(--walnut-b));
+  box-shadow: 0 -6px 14px #00000038;
+}
+.recipe-visual svg { position: relative; transform-origin: 50% 96%; filter: drop-shadow(0 4px 6px #0000004d); }
+.recipe-card:hover .recipe-visual svg { transform: rotate(-3deg) translateY(-2px); }
+.card-number {
+  z-index: 2;
+  padding: 2px 6px 1px;
+  border-radius: 3px;
+  font: 700 8px/1.4 var(--latin-serif);
+  letter-spacing: 1.4px;
+  color: #3a2b15;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 60%, var(--brass-lo));
+  box-shadow: inset 0 1px #ffffffa0, 0 1px 3px #0000004d;
+  text-shadow: 0 1px #ffffff59;
+}
+.visual-tag {
+  z-index: 2;
+  bottom: 4px;
+  background: #0000003d;
+  border: 1px solid #ffffff1f;
+  color: #f2dfbd;
+  backdrop-filter: blur(4px);
+}
+.favorite { z-index: 3; }
+.favorite.saved { color: #e07a5f; text-shadow: 0 0 12px #e07a5f80; }
+.recipe-copy h3 { font-size: 17px; }
+.recipe-tags span {
+  border: 1px solid var(--rule);
+  background: transparent;
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+/* Availability reads like a small pilot lamp on the bar. */
+.availability { border-top-style: dashed; border-top-color: var(--rule); }
+.availability::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  vertical-align: 1px;
+  background: currentColor;
+  box-shadow: 0 0 0 2px #00000026, 0 0 9px currentColor;
+}
+
+/* ---------- Recipe detail: spotlight on a bar top ---------- */
+.detail-art {
+  justify-content: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+  padding-bottom: 66px;
+  border: 1px solid var(--brass-line);
+  background:
+    radial-gradient(ellipse 18px 10px at 50% 0, var(--brass) 0 96%, transparent 100%),
+    radial-gradient(circle 8px at 50% 12px, #fff4d8, transparent),
+    radial-gradient(ellipse 50% 75% at 50% -6%, var(--lamp-soft), transparent 72%),
+    conic-gradient(from 180deg at 50% 6px, transparent 150deg, #ffd9940f 165deg, #ffd99426 180deg, #ffd9940f 195deg, transparent 210deg),
+    linear-gradient(180deg, #00000040, transparent 50%),
+    var(--art-1);
+  box-shadow: inset 0 0 70px #00000040, 0 16px 40px var(--shadow);
+}
+.detail-art::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, #ffffff40 0 1px, #00000000 1px, #ffffff0d 12px, transparent 30px),
+    var(--wood-grain),
+    linear-gradient(180deg, var(--walnut-a), var(--walnut-b));
+  box-shadow: 0 -10px 24px #0000003d;
+}
+.detail-art svg { position: relative; filter: drop-shadow(0 8px 10px #00000059); }
+.detail-art > span {
+  position: absolute;
+  bottom: 22px;
+  margin: 0;
+  padding: 3px 12px 2px;
+  border-radius: 3px;
+  font: 600 11px/1.5 var(--serif);
+  letter-spacing: 2px;
+  color: #3a2b15 !important;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 60%, var(--brass-lo));
+  box-shadow: inset 0 1px #ffffffa0, 0 2px 5px #00000066;
+}
+.detail-copy h1 { font-size: 36px; }
+
+/* Flavour profile as a printed bar menu: double rule, tube gauges. */
+.taste-panel { position: relative; }
+.taste-panel::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--rule);
+  border-radius: calc(16px - 6px);
+  pointer-events: none;
+}
+.taste-track {
+  height: 7px;
+  background: linear-gradient(180deg, #00000040, #ffffff08);
+  box-shadow: inset 0 1px 2px #00000059, 0 1px #ffffff0d;
+}
+.taste-track > span {
+  position: relative;
+  background: linear-gradient(90deg, var(--brass-lo), var(--brass) 70%, var(--brass-hi));
+  box-shadow: 0 0 8px var(--glow);
+}
+.taste-track.alternate > span { background: linear-gradient(90deg, #8f4f35, var(--orange)); }
+.taste-bar-row small { font-family: var(--latin-serif); }
+
+/* Ingredient list with menu-style dot leaders. */
+.ingredients li { align-items: baseline; border-bottom: 0; padding: 9px 0; }
+.ingredients li > span:first-child { order: 0; }
+.ingredients li::after {
+  content: "";
+  order: 1;
+  flex: 1 1 24px;
+  min-width: 16px;
+  border-bottom: 2px dotted var(--rule);
+  transform: translateY(-4px);
+}
+.ingredients li > small { order: 2; font-family: var(--latin-serif); letter-spacing: .5px; }
+.method { line-height: 1.95; }
+
+/* ---------- Follow-along: a lit bar counter with a ribbed bar mat ---------- */
+.stage-panel {
+  border-color: var(--brass-line);
+  background:
+    radial-gradient(ellipse 50% 70% at 50% -10%, var(--lamp-soft), transparent 70%),
+    linear-gradient(180deg, #00000030, transparent 40%),
+    var(--hero);
+  box-shadow: inset 0 0 70px #00000033, 0 16px 40px var(--shadow);
+}
+.stage { isolation: isolate; }
+.stage::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  right: -22px;
+  bottom: 0;
+  height: 60px;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, #ffffff38 0 1px, transparent 1px 10px),
+    var(--wood-grain),
+    linear-gradient(180deg, var(--walnut-a), var(--walnut-b));
+}
+.stage::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 110px);
+  width: 220px;
+  bottom: 46px;
+  height: 18px;
+  z-index: -1;
+  border-radius: 5px;
+  background: repeating-linear-gradient(90deg, #151a17 0 5px, #262d29 5px 7px);
+  box-shadow: inset 0 1px #ffffff1a, 0 3px 6px #00000080;
+  transform: perspective(240px) rotateX(48deg);
+}
+.stage-floor { z-index: 1; color: #e8d6b4; text-shadow: 0 1px 2px #000; }
+.step-count {
+  font-family: var(--latin-serif);
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--brass);
+}
+progress::-webkit-progress-value { background: linear-gradient(90deg, var(--brass-lo), var(--brass), var(--brass-hi)); box-shadow: 0 0 8px var(--glow); }
+progress::-webkit-progress-bar { box-shadow: inset 0 1px 2px #00000059; }
+.amount { font-family: var(--latin-serif); }
+
+/* ---------- My bar: mirrored back bar, walnut shelves, under-shelf light ---------- */
+.bar-room {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0, #ffd38a26, transparent 70%),
+    linear-gradient(115deg, transparent 0 30%, #ffffff07 30% 34%, transparent 34% 62%, #ffffff05 62% 64%, transparent 64%),
+    repeating-linear-gradient(90deg, transparent 0 109px, #ffffff04 110px 111px),
+    #172b28;
+  border-color: var(--brass-line);
+  box-shadow: inset 0 0 90px #04110f99, inset 0 1px var(--brass), 0 18px 40px var(--shadow);
+}
+.bar-sign b {
+  color: #f6d9a3;
+  text-shadow: 0 0 6px #ffd28f99, 0 0 22px #e6b06680, 0 0 44px #e6b06640;
+  animation: bar-sign-hum 7s ease-in-out infinite;
+}
+.bar-sign { border-bottom: 0; position: relative; }
+.bar-sign::after {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass), transparent);
+}
+@keyframes bar-sign-hum {
+  0%, 100% { opacity: 1; }
+  46% { opacity: 1; }
+  47% { opacity: .72; }
+  48% { opacity: 1; }
+  50% { opacity: .85; }
+  51% { opacity: 1; }
+}
+.bar-room .shelf {
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, #efc47826, transparent 26px),
+    repeating-linear-gradient(to bottom, transparent 0 168px, #ffd28f2e 168px 176px, transparent 176px 224px),
+    #061e2040;
+  box-shadow: inset 0 2px 0 #d2ab6d70, inset 0 0 30px #00000059;
+}
+.bar-room .stock-item { position: relative; isolation: isolate; padding-bottom: 12px; }
+/* Each bottle sits on its own run of walnut, lit from the strip beneath. */
+.bar-room .stock-item::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 160px;
+  height: 14px;
+  z-index: -1;
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, #ffe1a866 0 1px, transparent 1px),
+    var(--wood-grain),
+    linear-gradient(180deg, #a07650, #5a3c27);
+  box-shadow: 0 6px 14px #000000a0, 0 -12px 22px -10px #ffcf8a59;
+}
+.bar-room .stock-item svg { filter: drop-shadow(0 -2px 10px #ffcf8a24) drop-shadow(0 6px 8px #00000066); }
+.bar-room .stock-item strong {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 1px 9px;
+  border-radius: 3px;
+  font-family: var(--serif);
+  font-size: 12px;
+  color: #3a2b15;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 60%, var(--brass-lo));
+  box-shadow: inset 0 1px #ffffffa0, 0 2px 4px #00000073;
+}
+.bar-room .stock-item small { display: block; margin-top: 4px; }
+.bar-room .bar-intro { backdrop-filter: blur(6px); }
+.bar-room .bar-intro b { font-family: var(--latin-serif); color: #f6d9a3; }
+
+/* ---------- Taste DNA: stitched leather coasters on a record ---------- */
+.palette-preview, .dna-identity {
+  background:
+    radial-gradient(ellipse 55% 80% at 50% -10%, var(--lamp-soft), transparent 70%),
+    var(--hero);
+  box-shadow: inset 0 0 60px #00000033, inset 0 1px var(--brass-line);
+}
+.palette-coaster {
+  border: 0;
+  background:
+    radial-gradient(circle, transparent 0 17%, var(--brass-line) 17.5% 18.5%, transparent 19%),
+    repeating-radial-gradient(circle, #ffffff0a 0 1px, transparent 1px 4px),
+    radial-gradient(circle, #0e0f0e 0 66%, #1d211e 67% 69%, transparent 70%);
+  box-shadow: 0 10px 26px #00000066;
+  opacity: .9;
+}
+:root[data-theme="light"] .palette-coaster {
+  background:
+    radial-gradient(circle, transparent 0 17%, var(--brass-line) 17.5% 18.5%, transparent 19%),
+    repeating-radial-gradient(circle, #ffffff12 0 1px, transparent 1px 4px),
+    radial-gradient(circle, #2b2a26 0 66%, #43403a 67% 69%, transparent 70%);
+}
+.palette-glass { z-index: 1; }
+.palette-drops span { box-shadow: 0 0 10px var(--flavor), 0 2px 6px #00000066; }
+.flavor-token {
+  isolation: isolate;
+  background: linear-gradient(160deg, #ffffff0d, transparent 60%), var(--surface);
+  box-shadow: inset 0 1px #ffffff0f, 0 4px 12px var(--shadow);
+}
+.flavor-token::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--grain) 0 0 / 120px;
+  opacity: .12;
+  pointer-events: none;
+}
+.flavor-token::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed var(--stitch);
+  border-radius: 10px;
+  pointer-events: none;
+  transition: border-color .2s;
+}
+.flavor-token[aria-pressed="true"] {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 0, color-mix(in srgb, var(--flavor) 22%, transparent), transparent 75%),
+    var(--soft);
+  box-shadow: inset 0 0 0 1px var(--flavor), 0 0 18px color-mix(in srgb, var(--flavor) 35%, transparent);
+}
+.flavor-token[aria-pressed="true"]::after { border-color: var(--flavor); }
+.flavor-icon { filter: drop-shadow(0 3px 4px #00000059); }
+.wheel-shape { fill: var(--brass); fill-opacity: .2; stroke: var(--brass); filter: drop-shadow(0 0 6px var(--glow)); }
+.wheel-dot { fill: var(--brass-hi); }
+.wheel-grid { stroke: var(--rule); }
+
+/* ---------- iPhone: frosted top bar and sticky search ---------- */
+html[data-platform="iphone"] .topbar,
+html[data-platform="iphone"] .iphone-search,
+html[data-platform="iphone"] .discovery > .section-heading {
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+html[data-platform="iphone"] .topbar {
+  border-bottom-color: transparent;
+  box-shadow: 0 1px 0 var(--brass-line), 0 8px 18px -12px #00000080;
+}
+html[data-platform="iphone"] .topbar > span { font-family: var(--serif); font-weight: 700; letter-spacing: 1px; }
+html[data-platform="iphone"] .recipe-visual { border-right: 1px dashed var(--rule); padding-bottom: 8px; }
+html[data-platform="iphone"] .recipe-visual::after { height: 16px; }
+html[data-platform="iphone"] .card-number { top: 9px; left: 8px; font-size: 7px; }
+html[data-platform="iphone"] .hero h1::before { font-size: 9px; letter-spacing: 3px; margin-bottom: 7px; }
+html[data-platform="iphone"] .detail-copy h1 { font-size: 30px; }
+
+@media (max-width: 850px) {
+  .detail-art { position: relative; padding-bottom: 58px; }
+  .detail-art::after { height: 64px; }
+}
+@media (max-width: 640px) {
+  .bar-room .stock-item { border-bottom: 0; }
+  .bar-room .stock-item::before { top: 136px; left: -6px; right: -6px; }
+}
+@media (max-width: 600px) {
+  .bar-room .shelf { background: linear-gradient(#e3b76d22, transparent 40px), #0c232333; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-sign b { animation: none; }
+  .primary::after { display: none; }
+  .recipe-card, .recipe-card:hover { transform: none; }
+}
+html[data-platform="iphone"] .topbar button[data-action="add-recipe"] { box-shadow: none; background: transparent; }
