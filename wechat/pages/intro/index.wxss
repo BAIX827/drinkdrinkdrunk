@@ -1,0 +1,1 @@
+.intro-page .eyebrow{letter-spacing:2rpx;font-size:19rpx}.intro-page>.row{align-items:flex-start}.intro-card{padding:28rpx}.intro-art{height:220rpx;max-height:22vh}.intro-card .title{font-size:36rpx;line-height:1.4;margin:16rpx 0}.intro-card .badge{font-size:24rpx}.intro-card .actions button{min-height:84rpx}

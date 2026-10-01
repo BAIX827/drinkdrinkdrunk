@@ -13,7 +13,7 @@ U.page(Page, {
       profile: p, score: dna.ready && !p.unknown.length ? S.taste.score(p.vector, dna.vector) : null,
       explanation: S.taste.explain(p, dna), bars: S.taste.dimensions.map((name, i) => ({ name, value: p.vector[i] })),
       dna, personalBars:S.taste.dimensions.map((name,i)=>({name,first:p.vector[i],second:dna.vector[i]})),
-      rating: rating ? rating.value : '', feedback: rating ? rating.feedback : [],
+      rating: rating ? rating.value : '', feedback: rating ? rating.feedback : [], savedRating: rating ? rating.value : '', ratingDirty:false,
       ratings: [{ key: 'like', name: '喜欢' }, { key: 'okay', name: '还行' }, { key: 'dislike', name: '不喜欢' }],
       compareOptions: this.allRecipes.map(other => require('../../shared/engine').i18n.name(other)) });
     this.feedbackOptions();
@@ -21,7 +21,9 @@ U.page(Page, {
   },
   feedbackOptions() { this.setData({ feedbackOptions: Object.entries(S.taste.feedback).map(([key, [name]]) => ({ key, name, selected: this.data.feedback.includes(key) })) }); },
   favorite() { U.action(() => { S.update(s => { s.favorites = s.favorites.includes(this.id) ? s.favorites.filter(id => id !== this.id) : [...s.favorites, this.id]; }); this.refresh(); }); },
-  rate(e) { this.persistRating(e.currentTarget.dataset.key, this.data.feedback); },
+  rate(e) { if(this.data.profile.unknown.length)return U.toast('这款配方含有尚无风味数据的材料，暂时无法纳入口味学习。');this.setData({rating:e.currentTarget.dataset.key,ratingDirty:true}); },
+  saveRating() { if(this.data.rating)this.persistRating(this.data.rating,this.data.feedback); },
+  cancelRating() { this.refresh(); },
   persistRating(value, feedback) {
     U.action(() => {
       const r = this.data.recipe, p = this.data.profile;
@@ -35,7 +37,7 @@ U.page(Page, {
     let feedback = this.data.feedback.includes(key) ? this.data.feedback.filter(k => k !== key) : [...this.data.feedback, key];
     if (key === 'strong') feedback = feedback.filter(k => k !== 'weak');
     if (key === 'weak') feedback = feedback.filter(k => k !== 'strong');
-    this.persistRating(this.data.rating, feedback);
+    this.setData({feedback,ratingDirty:true});this.feedbackOptions();
   },
   removeRating() { U.action(() => { S.update(s => { s.taste.ratings = s.taste.ratings.filter(r => r.recipeID !== this.id); }); this.refresh(); }); },
   compare(e) { const r = this.allRecipes[Number(e.detail.value)], p = S.taste.profile(r); this.setData({ compare: { name: r.chineseName, unknown: p.unknown.length > 0, bars: S.taste.dimensions.map((name, i) => ({ name, first: this.data.profile.vector[i], second: p.vector[i] })) } }); },

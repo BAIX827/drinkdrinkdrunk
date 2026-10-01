@@ -11,4 +11,21 @@ const steps = [
   ['也可以写下自己的配方','每行填写一种材料与用量，并写下完整做法。自建配方也能查看、分享和按原方跟做。','我的配方'],
   ['最后，记得备份你的吧台','备份包括材料、收藏、配方、照片日记和口味档案。设备之间不会自动同步，导入将替换当前数据。','设置与数据']
 ];
-U.page(Page,{data:{index:0,total:steps.length},onLoad(){this.show();},onShow(){U.theme(this);},show(){this.setData({title:steps[this.data.index][0],description:steps[this.data.index][1],destination:steps[this.data.index][2]});},next(){if(this.data.index===steps.length-1)return this.finish();this.setData({index:this.data.index+1});this.show();},previous(){this.setData({index:Math.max(0,this.data.index-1)});this.show();},finish(){U.action(()=>{S.update(s=>{s.guideVersion=1;});wx.navigateBack({fail:()=>wx.switchTab({url:'/pages/discover/index'})});});}});
+U.page(Page, {
+  data:{index:0,total:steps.length,finishing:false},
+  onLoad(){this.show();},
+  onShow(){U.theme(this);},
+  show(){this.setData({title:steps[this.data.index][0],description:steps[this.data.index][1],destination:steps[this.data.index][2]});},
+  next(){if(this.data.finishing)return;if(this.data.index===steps.length-1)return this.finish();this.setData({index:this.data.index+1});this.show();},
+  previous(){if(this.data.finishing)return;this.setData({index:Math.max(0,this.data.index-1)});this.show();},
+  finish(){
+    if(this.data.finishing)return;
+    this.setData({finishing:true});
+    const result=U.action(()=>{
+      S.update(s=>{s.guideVersion=1;});
+      wx.navigateBack({fail:()=>wx.switchTab({url:'/pages/discover/index',fail:()=>this.setData({finishing:false})})});
+      return true;
+    });
+    if(result===false)this.setData({finishing:false});
+  }
+});

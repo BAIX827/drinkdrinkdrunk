@@ -17,5 +17,5 @@ U.page(Page, {
   }); },
   removeUnknown(e) { U.action(() => { S.update(s => { s.inventory = s.inventory.filter(i => i.id !== e.currentTarget.dataset.id); }); this.refresh(); }); },
   edit(e) { wx.navigateTo({ url: '/pages/bottle/index' + (e.currentTarget.dataset.id ? '?id=' + encodeURIComponent(e.currentTarget.dataset.id) : '') }); },
-  discover() { wx.switchTab({ url: '/pages/discover/index' }); }
+  discover() { getApp().discoverReady = true; wx.switchTab({ url: '/pages/discover/index' }); }
 });

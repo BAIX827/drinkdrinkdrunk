@@ -1,6 +1,6 @@
 const S = require('../../shared/store'), U = require('../../shared/ui');
 U.page(Page, {
-  data: { type: 'log', editing: false, name: '', english: '', ingredients: '', method: '', date: S.today(), note: '', photos: [], glassIndex: 0, glassNames: Object.values(S.core.glassNames), recipeIndex: 0, recipeNames: [], busy: false, color:'#d4a16e' },
+  data: { type: 'log', editing: false, appearanceOpen:false, name: '', english: '', ingredients: '', method: '', date: S.today(), note: '', photos: [], glassIndex: 0, glassNames: Object.values(S.core.glassNames), recipeIndex: 0, recipeNames: [], busy: false, color:'#d4a16e' },
   onLoad(options) {
     this.type = options.type === 'recipe' ? 'recipe' : 'log'; this.id = options.id || ''; this.recipeID = options.recipe || '';
     this.allRecipes = S.recipes(); this.setData({ type: this.type, editing: !!this.id, date: options.date || S.today(), recipeNames: [U.t('手动填写酒名'), ...this.allRecipes.map(r => require('../../shared/engine').i18n.name(r))] });
@@ -12,14 +12,22 @@ U.page(Page, {
     } else if (this.recipeID) {
       const r = S.recipe(this.recipeID); if (r) this.setData({ name: r.chineseName, recipeIndex: this.allRecipes.findIndex(v => v.id === r.id) + 1 });
     }
+    const r = S.recipe(this.recipeID);
+    this.setLook(this.type === 'log' ? S.core.drinkAppearance(r || {}, existing || {}) : S.core.drinkAppearance(existing || {glass:'高球杯'}));
     wx.setNavigationBarTitle({ title: this.type === 'recipe' ? (this.id ? '编辑配方' : '我的新配方') : (this.id ? '编辑日记' : '记下这一杯') });
   },
   onShow() { U.theme(this); },
   input(e) { const key = e.currentTarget.dataset.field; this.setData({ [key]: e.detail.value }); if (key === 'name' && this.type === 'log') { this.recipeID = ''; this.setData({ recipeIndex: 0 }); } },
   date(e) { this.setData({ date: e.detail.value }); },
-  glass(e) { this.setData({ glassIndex: Number(e.detail.value) }); },
-  color(e){if(/^#[0-9a-f]{6}$/i.test(e.detail.value))this.setData({color:e.detail.value});},
-  selectRecipe(e) { const index = Number(e.detail.value), r = this.allRecipes[index - 1]; this.recipeID = r ? r.id : ''; this.setData({ recipeIndex: index, name: r ? r.chineseName : this.data.name }); },
+  toggleAppearance() { if(this.data.appearanceOpen)this.closeAppearance();else this.setData({appearanceOpen:true}); },
+  closeAppearance() { if(!/^#[0-9a-f]{6}$/i.test(this.data.color))return U.toast('请输入六位十六进制颜色，例如 #d4a16e。');this.setData({appearanceOpen:false}); },
+  setLook(look) { this.originalVisual = look.visual || {}; this.setData({look,lookMode:'keep',color:look.color,glassIndex:Math.max(0,Object.keys(S.core.glassNames).indexOf(look.glass))}); this.choices(); },
+  choices() { this.setData({glassChoices:Object.entries(S.core.glassNames).map(([key,name],index)=>({key,name,index,look:{glass:key,color:this.data.color}}))}); },
+  glass(e) { const index=Number(e.currentTarget?.dataset.index ?? e.detail.value); this.setData({glassIndex:index,look:{...this.data.look,glass:Object.keys(S.core.glassNames)[index]}}); },
+  color(e){const color=e.detail.value;this.setData({color});if(/^#[0-9a-f]{6}$/i.test(color)){this.setData({look:{...this.data.look,color}});this.choices();}},
+  appearance(e) { const mode=e.currentTarget.dataset.mode;this.setData({lookMode:mode,look:{...this.data.look,visual:mode==='keep'?this.originalVisual:{}}}); },
+  cancel() { wx.navigateBack(); },
+  selectRecipe(e) { const index = Number(e.detail.value), r = this.allRecipes[index - 1]; this.recipeID = r ? r.id : ''; this.setData({ recipeIndex: index, name: r ? r.chineseName : this.data.name }); if(r)this.setLook(S.core.drinkAppearance(r)); },
   async addPhotos() {
     if (this.data.busy || this.data.photos.length >= 3) return;
     this.setData({ busy: true });
@@ -63,6 +71,7 @@ U.page(Page, {
     this.saving = true;
     const result = U.action(() => {
       const d = this.data, name = d.name.trim(); if (!name) throw new Error('请填写名称。');
+      if (!/^#[0-9a-f]{6}$/i.test(d.color)) throw new Error('请输入六位十六进制颜色，例如 #d4a16e。');
       if (this.type === 'recipe') {
         const ingredients = d.ingredients.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
         if (!ingredients.length || !d.method.trim()) throw new Error('请填写材料与调制方法。每行填写一种材料和用量。');
@@ -73,8 +82,9 @@ U.page(Page, {
         if (this.id) wx.navigateBack(); else wx.redirectTo({ url: `/pages/recipe/index?id=${id}` });
       } else {
         const r = S.recipe(this.recipeID), entry = { ...(this.original || {}), id: this.id || S.id('log'), name, date: d.date, note: d.note.trim(), photos: d.photos };
-        if (r) Object.assign(entry, { recipeID: r.id }, S.core.drinkAppearance(r, this.original && this.original.recipeID === r.id ? this.original : {}));
-        else { delete entry.recipeID; if (this.original && this.original.recipeID) { delete entry.glass; delete entry.color; delete entry.visual; } }
+        Object.assign(entry, d.look);
+        if (r) entry.recipeID = r.id;
+        else delete entry.recipeID;
         S.update(s => { s.logs = s.logs.filter(l => l.id !== entry.id).concat([entry]); }); getApp().journalDate = entry.date;
         wx.switchTab({ url: '/pages/journal/index' });
       }

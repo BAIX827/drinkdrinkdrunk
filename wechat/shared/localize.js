@@ -10,8 +10,8 @@ function view(data) {
     const result = {};
     for (const field of Object.keys(value)) {
       if (['v','_raw','photos','backupText'].includes(field)) continue;
-      const userText = field === 'name' && (('type' in value && value.name !== value.type) || (key === 'logs' && value.userNamed)) || field === 'note' && 'date' in value;
-      result[field] = visit(value[field], field, custom || userText || ['step','ingredients','nextLabel'].includes(field) && data.recipe && data.recipe.isUserCreated, depth + 1);
+      const userText = field === 'name' && (('type' in value && value.name !== value.type) || (['logs','history'].includes(key) && value.userNamed)) || field === 'note' && 'date' in value;
+      result[field] = visit(value[field], field, custom || userText || ['step','stepList','ingredients','nextLabel'].includes(field) && data.recipe && data.recipe.isUserCreated, depth + 1);
       if (E.i18n.locale === 'en' && !userText && (field === 'chineseName' || field === 'name')) {
         if (value.englishName) result[field] = value.englishName;
         else if (value.english && value.id) result[field] = value.english;
